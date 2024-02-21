@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/lib/providers/next-theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/config";
 import "../styles/globals.css";
+import { Navbar } from "@/components/nav/navbar";
 
 export const metadata: Metadata = {
   title: {
@@ -63,6 +64,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           {children}
           <Toaster richColors />
         </ThemeProvider>
