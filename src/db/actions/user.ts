@@ -3,7 +3,7 @@
 import { db, eq } from "@/db";
 import { User, users } from "@/db/schema/user";
 import bcryptjs from "bcryptjs";
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import {
   SignInWithPasswordFormInput,
   SignUpWithPasswordFormInput,
@@ -21,6 +21,38 @@ export async function getUserById(id: string): Promise<User | null> {
   } catch (error) {
     console.error(error);
     throw new Error("Error getting user by id");
+  }
+}
+
+export async function updateUserUsername(
+  id: string,
+  newUsername: string,
+): Promise<"not-found" | "success" | "duplicate" | null> {
+  noStore();
+  try {
+    //Check and find a user that matches id
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    if (!user) return "not-found";
+
+    //Check if the new username is already in use
+
+    const [dupeUsername] = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, newUsername));
+    if (dupeUsername) return "duplicate";
+
+    //Update the current user with their new username
+    const updatedUser = await db
+      .update(users)
+      .set({ username: newUsername })
+      .where(eq(users.id, id));
+
+    revalidatePath("/username");
+    return updatedUser ? "success" : null;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error updating username");
   }
 }
 

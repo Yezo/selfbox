@@ -6,9 +6,11 @@ import { OrSeparator } from "@/components/layout/OrSeparator";
 import { SignInButtonWithProvider } from "@/components/layout/SignInButtonProvider";
 import { Main } from "@/components/layout/Main";
 import { CaretLeftIcon } from "@radix-ui/react-icons";
+import { auth } from "@/lib/auth";
 import Link from "next/link";
 
 export default async function LoginPage() {
+  const session = await auth();
   return (
     <Main className="grid min-h-screen place-items-center pb-40">
       <section className="w-[450px]">
@@ -34,8 +36,14 @@ export default async function LoginPage() {
         <OrSeparator />
 
         <div className="flex items-center gap-2">
-          <SignInButtonWithProvider provider={"google"} />
-          <SignInButtonWithProvider provider={"github"} />
+          <SignInButtonWithProvider
+            provider={"google"}
+            username={session?.user.username}
+          />
+          <SignInButtonWithProvider
+            provider={"github"}
+            username={session?.user.username}
+          />
         </div>
       </section>
     </Main>

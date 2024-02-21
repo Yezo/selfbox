@@ -7,20 +7,24 @@ import { signIn } from "next-auth/react";
 
 type SignInButtonWithProviderProps = {
   provider: string;
+  username: string | undefined;
 };
 
 export function SignInButtonWithProvider({
   provider,
+  username,
 }: SignInButtonWithProviderProps) {
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   const handleClick = async () => {
+    const signInOptions = username
+      ? { callbackUrl: "/username" }
+      : { callbackUrl: "/username" };
+
     try {
-      await signIn(provider, {
-        callbackUrl: "/",
-      });
+      await signIn(provider, signInOptions);
     } catch (error) {
       generateToast({
         type: "error",
