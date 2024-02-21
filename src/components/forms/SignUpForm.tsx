@@ -29,6 +29,7 @@ export function SignUpWithPasswordForm() {
   const form = useForm<SignUpWithPasswordFormInput>({
     resolver: zodResolver(signUpWithPasswordSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
@@ -37,18 +38,25 @@ export function SignUpWithPasswordForm() {
   async function onSubmit(formData: SignUpWithPasswordFormInput) {
     try {
       const message = await signUpWithPassword({
+        username: formData.username,
         email: formData.email,
         password: formData.password,
       });
 
       switch (message) {
-        case "exists":
+        case "username-exists":
+          generateToast({
+            type: "warning",
+            value: "This username already exists.",
+            description: "Please try a different username.",
+          });
+          break;
+        case "email-exists":
           generateToast({
             type: "warning",
             value: "User with this email address already exists.",
             description: "If this is you, please sign in instead.",
           });
-          form.reset();
           break;
         case "success":
           generateToast({
@@ -79,6 +87,24 @@ export function SignUpWithPasswordForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="selfbox"
+                  {...field}
+                  className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm placeholder-gray transition-colors duration-300 placeholder:opacity-[0.5] hover:bg-[#ffffff14]"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="email"

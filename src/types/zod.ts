@@ -36,6 +36,9 @@ const passwordSchema = z
   });
 
 export const signUpWithPasswordSchema = z.object({
+  username: z.string().min(3, {
+    message: "Username must be at least 3 characters.",
+  }),
   email: emailSchema,
   password: passwordSchema.regex(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,

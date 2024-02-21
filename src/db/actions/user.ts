@@ -1,6 +1,6 @@
 "use server";
 
-import { db, eq } from "@/db";
+import { db, eq, ilike } from "@/db";
 import { User, users } from "@/db/schema/user";
 import bcryptjs from "bcryptjs";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
@@ -39,7 +39,7 @@ export async function updateUserUsername(
     const [dupeUsername] = await db
       .select()
       .from(users)
-      .where(eq(users.username, newUsername));
+      .where(ilike(users.username, newUsername));
     if (dupeUsername) return "duplicate";
 
     //Update the current user with their new username
@@ -67,9 +67,27 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   }
 }
 
+export async function getUserByUsername(
+  username: string,
+): Promise<User | null> {
+  noStore();
+  try {
+    //Check and find a user that matches emails
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(ilike(users.username, username));
+    return user || null;
+  } catch (error) {
+    throw new Error("Error getting user by username");
+  }
+}
+
 export async function signUpWithPassword(
   rawInput: SignUpWithPasswordFormInput,
-): Promise<"invalid-input" | "exists" | "success" | "error"> {
+): Promise<
+  "invalid-input" | "username-exists" | "email-exists" | "success" | "error"
+> {
   //Validate the user's input
   const validatedInput = signUpWithPasswordSchema.safeParse(rawInput);
 
@@ -77,9 +95,13 @@ export async function signUpWithPassword(
   if (!validatedInput.success) return "invalid-input";
 
   try {
+    //Check if the input's user exists in the database
+    const username = await getUserByUsername(validatedInput.data.username);
+    if (username) return "username-exists";
+
     //Check if the input's email exists in the database
     const user = await getUserByEmail(validatedInput.data.email);
-    if (user) return "exists";
+    if (user) return "email-exists";
 
     //Encrypt the password
     const password = await bcryptjs.hash(validatedInput.data.password, 10);
@@ -88,6 +110,7 @@ export async function signUpWithPassword(
     const newUserResponse = await db.insert(users).values({
       id: crypto.randomUUID(),
       email: validatedInput.data.email,
+      username: validatedInput.data.username,
       password,
     });
 
