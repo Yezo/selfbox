@@ -49,7 +49,7 @@ export const authConfig = {
   ],
 
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id);
@@ -63,13 +63,19 @@ export const authConfig = {
       if (!existingUser) return token;
 
       token.role = existingUser.role;
+      token.username = existingUser.username;
       return token;
+    },
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
     },
 
     session({ session, token }) {
       if (session.user && token.sub) session.user.id = token.sub;
       if (session.user && token.role)
         session.user.role = token.role as UserRole;
+      if (session.user && token.username)
+        session.user.username = token.username as UserRole;
       return session;
     },
   },

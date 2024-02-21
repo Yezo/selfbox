@@ -61,6 +61,12 @@ export const bioSchema = z.object({
   }),
 });
 
+export const updateUsernameSchema = z.object({
+  username: z.string().min(3, {
+    message: "Username must be at least 3 characters.",
+  }),
+});
+
 export const deleteSongSchema = z.object({
   id: z.number().int({
     message: "ID must be an integer.",
