@@ -7,7 +7,6 @@ import Link from "next/link";
 
 export const Navbar = async () => {
   const session = await auth();
-  const linkCSS = `transition-colors duration-300 hover:cursor-pointer hover:text-white`;
 
   return (
     <header className="container flex h-16 items-center px-24 py-12">
@@ -17,12 +16,12 @@ export const Navbar = async () => {
             selfbox.
           </Link>
 
-          <ul className="flex gap-10 text-[0.825rem] text-gray">
+          <ul className="flex gap-10 text-sm text-gray">
             {MainNav.map((link) => (
               <li key={link.name}>
                 <Link
                   href={link.url}
-                  className="transition-colors duration-300 hover:cursor-pointer hover:text-white"
+                  className="font-bricolage transition-colors duration-300 hover:cursor-pointer hover:text-white"
                 >
                   {link.name}
                 </Link>
