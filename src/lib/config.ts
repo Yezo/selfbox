@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "INSERTNAME",
+  name: "Selfbox",
   creator: "Kevin Vo",
-  url: "https://INSERTNAME.com",
-  ogImage: "https://INSERTNAME/og.jpg",
-  description: "INSERTDESCRIPTION",
+  url: "https://selfbox.net",
+  ogImage: "https://selfbox/og.jpg",
+  description: "Selfbox",
   links: {
     portfolio: "https://kevinvo.me",
     twitter: "https://twitter.com/???",
