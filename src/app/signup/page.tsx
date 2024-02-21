@@ -19,7 +19,7 @@ export default async function SignUpPage() {
           Back to website
         </Link>
 
-        <H1>Create your Facebook account,</H1>
+        <H1>Create your Selfbox account,</H1>
 
         <H2 className="mb-8">
           Already have an account?
