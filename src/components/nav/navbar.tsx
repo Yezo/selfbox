@@ -4,10 +4,14 @@ import { SignUpButton } from "@/components/layout/SignUpButton";
 import { auth, signOut } from "@/lib/auth";
 import { MainNav } from "@/lib/nav";
 import Link from "next/link";
+import { UserMenuDropdown } from "@/components/nav/UserMenuDropdown";
 
 export const Navbar = async () => {
   const session = await auth();
 
+  //This navbar component does not refresh with the new session data
+  //when a user signs in so long as this component exists in the root layout for whatever reason
+  //Temporary fix: put the navbar in every page until bug is fixed
   return (
     <header className="container flex h-16 items-center px-24 py-12">
       <nav className="flex min-w-full items-center justify-between">
@@ -32,11 +36,11 @@ export const Navbar = async () => {
 
         <div className="flex gap-2">
           {session && session.user ? (
-            <SignOutButton
-              signOut={async () => {
-                "use server";
-                await signOut({ redirectTo: "/" });
-              }}
+            <UserMenuDropdown
+              name={session.user.name}
+              username={session.user.username}
+              image={session.user.image}
+              email={session.user.email}
             />
           ) : (
             <>

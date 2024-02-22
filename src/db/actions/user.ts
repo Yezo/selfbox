@@ -11,7 +11,7 @@ import {
   signUpWithPasswordSchema,
 } from "@/types/zod";
 import { AuthError } from "next-auth";
-import { signIn } from "@/lib/auth";
+import { signIn, update } from "@/lib/auth";
 
 export async function getUserById(id: string): Promise<User | null> {
   noStore();
@@ -107,7 +107,7 @@ export async function signUpWithPassword(
     const password = await bcryptjs.hash(validatedInput.data.password, 10);
 
     //Insert a new user into the database
-    const newUserResponse = await db.insert(users).values({
+    const newUserResponse: any = await db.insert(users).values({
       id: crypto.randomUUID(),
       email: validatedInput.data.email,
       username: validatedInput.data.username,
@@ -116,7 +116,7 @@ export async function signUpWithPassword(
 
     //If inserting a user failed, return an error
     if (!newUserResponse) return "error";
-
+    revalidatePath("/");
     return newUserResponse ? "success" : "error";
   } catch (error) {
     console.error(error);
@@ -150,6 +150,7 @@ export async function signInWithPassword(
       password: validatedInput.data.password,
       redirect: false,
     });
+    revalidatePath("/");
 
     return "success";
   } catch (error) {
@@ -164,5 +165,7 @@ export async function signInWithPassword(
     } else {
       throw error;
     }
+  } finally {
+    revalidatePath("/");
   }
 }

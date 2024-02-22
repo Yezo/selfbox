@@ -4,8 +4,6 @@ import { ThemeProvider } from "@/lib/providers/next-theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/config";
 import "../styles/globals.css";
-import { Navbar } from "@/components/nav/navbar";
-import { UsernameRedirect } from "@/components/layout/UsernameRedirect";
 
 export const metadata: Metadata = {
   title: {
@@ -66,7 +64,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {/* <UsernameRedirect /> */}
-          <Navbar />
+
           {children}
           <Toaster richColors />
         </ThemeProvider>

@@ -21,10 +21,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { revalidatePath } from "next/cache";
 
 export function SignInWithPasswordForm(): JSX.Element {
   const router = useRouter();
   const [passwordVisiblity, setPasswordVisiblity] = React.useState(false);
+  const [isPending, startTransition] = React.useTransition();
 
   const form = useForm<SignInWithPasswordFormInput>({
     resolver: zodResolver(signInWithPasswordSchema),
@@ -35,67 +37,70 @@ export function SignInWithPasswordForm(): JSX.Element {
   });
 
   async function onSubmit(formData: SignInWithPasswordFormInput) {
-    try {
-      const message = await signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
+    startTransition(async () => {
+      try {
+        const message = await signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        });
 
-      switch (message) {
-        case "success":
-          generateToast({
-            type: "success",
-            value: "Login successful!",
-          });
-          router.push("/");
-          break;
-        case "not-registered":
-          generateToast({
-            type: "warning",
-            value: "There are no accounts with this email.",
-            description: "Please create an account first.",
-          });
+        switch (message) {
+          case "success":
+            generateToast({
+              type: "success",
+              value: "Login successful!",
+            });
 
-          break;
-        case "incorrect-provider":
-          generateToast({
-            type: "error",
-            value: "Email is already in use.",
-            description: "Try logging in with a different method.",
-          });
+            router.push("/");
+            break;
+          case "not-registered":
+            generateToast({
+              type: "warning",
+              value: "There are no accounts with this email.",
+              description: "Please create an account first.",
+            });
 
-          break;
-        // case "unverified-email":
-        //   generateToast({
-        //     type: "warning",
-        //     value: "Unverified email.",
-        //     description: "Please verify your email.",
-        //   });
-        //   break;
-        case "invalid-credentials":
-          generateToast({
-            type: "error",
-            value: "Invalid email or password.",
-          });
-          break;
+            break;
+          case "incorrect-provider":
+            generateToast({
+              type: "error",
+              value: "Email is already in use.",
+              description: "Try logging in with a different method.",
+            });
 
-        default:
-          generateToast({
-            type: "error",
-            value: "Error while signing in.",
-            description: "Please try again.",
-          });
+            break;
+          // case "unverified-email":
+          //   generateToast({
+          //     type: "warning",
+          //     value: "Unverified email.",
+          //     description: "Please verify your email.",
+          //   });
+          //   break;
+          case "invalid-credentials":
+            generateToast({
+              type: "error",
+              value: "Invalid email or password.",
+            });
+            break;
+
+          default:
+            generateToast({
+              type: "error",
+              value: "Error while signing in.",
+              description: "Please try again.",
+            });
+        }
+
+        router.push("/");
+      } catch (error) {
+        console.error(error);
+        generateToast({
+          type: "error",
+          value: "Something strange happened.",
+          description: "Please try again.",
+        });
       }
-
-      router.push("/");
-    } catch (error) {
-      console.error(error);
-      generateToast({
-        type: "error",
-        value: "Something strange happened.",
-        description: "Please try again.",
-      });
-    }
+    });
   }
 
   return (
