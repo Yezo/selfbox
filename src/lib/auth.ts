@@ -49,7 +49,7 @@ export const authConfig = {
   ],
 
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
 
       const existingUser = await getUserById(user.id);
@@ -64,9 +64,12 @@ export const authConfig = {
 
       token.role = existingUser.role;
       token.username = existingUser.username;
+      token.name = existingUser.name;
+      token.email = existingUser.email;
       return token;
     },
-    async redirect({ url, baseUrl }) {
+
+    async redirect({ baseUrl }) {
       return baseUrl;
     },
 
@@ -76,6 +79,10 @@ export const authConfig = {
         session.user.role = token.role as UserRole;
       if (session.user && token.username)
         session.user.username = token.username as UserRole;
+      if (session.user && token.name)
+        session.user.name = token.name as UserRole;
+      if (session.user && token.email)
+        session.user.email = token.email as UserRole;
       return session;
     },
   },
