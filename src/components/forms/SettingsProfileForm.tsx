@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { generateToast } from "@/lib/utils";
+import { FormInputTextCSS, generateToast } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
+import { FormFieldItem } from "@/components/forms/FormFieldItem";
 
 type SettingsFormProps = {
   oldUsername: string;
@@ -72,18 +73,13 @@ export const SettingsProfileForm = ({
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={oldUsername}
-                  {...field}
-                  className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm transition-colors duration-300 placeholder:text-gray  hover:bg-[#ffffff14]"
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
+            <FormFieldItem label="Username">
+              <Input
+                placeholder={oldUsername}
+                {...field}
+                className={`${FormInputTextCSS}`}
+              />
+            </FormFieldItem>
           )}
         />
 
@@ -91,21 +87,17 @@ export const SettingsProfileForm = ({
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={oldName || "Enter your name"}
-                  {...field}
-                  className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm transition-colors duration-300 placeholder:text-gray  hover:bg-[#ffffff14]"
-                />
-              </FormControl>
-              <FormDescription>
-                Your name appears throughout Selfbox and can be removed at any
-                time.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+            <FormFieldItem
+              label="Name"
+              description="Your name appears throughout Selfbox and can be removed at any
+                        time."
+            >
+              <Input
+                placeholder={oldName || "John Doe"}
+                {...field}
+                className={`${FormInputTextCSS}`}
+              />
+            </FormFieldItem>
           )}
         />
 
@@ -113,19 +105,13 @@ export const SettingsProfileForm = ({
           control={form.control}
           name="bio"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <>
-                  <Textarea
-                    placeholder="Tell us a little bit about yourself"
-                    className="resize-none bg-[#ffffff0f] text-sm placeholder:text-sm placeholder:text-gray hover:bg-[#ffffff14] "
-                    {...field}
-                  />
-                </>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <FormFieldItem label="Bio">
+              <Textarea
+                placeholder="Tell us a little bit about yourself"
+                className="resize-none bg-[#ffffff0f] text-sm placeholder:text-sm placeholder:text-gray hover:bg-[#ffffff14]"
+                {...field}
+              />
+            </FormFieldItem>
           )}
         />
 
@@ -133,8 +119,7 @@ export const SettingsProfileForm = ({
           control={form.control}
           name="pronouns"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Pronouns</FormLabel>
+            <FormFieldItem label="Pronouns">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
@@ -148,18 +133,7 @@ export const SettingsProfileForm = ({
                   <SelectItem value="She/her">She/her</SelectItem>
                 </SelectContent>
               </Select>
-              <FormDescription>
-                Don't see yor pronoun here? Suggest a new one{" "}
-                <Link
-                  href="/"
-                  className="underline transition-colors duration-300 hover:text-white"
-                >
-                  here
-                </Link>{" "}
-                and we'll get it added.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+            </FormFieldItem>
           )}
         />
 
@@ -167,21 +141,16 @@ export const SettingsProfileForm = ({
           control={form.control}
           name="website"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Website</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={"https://selfbox.com"}
-                  {...field}
-                  className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm transition-colors duration-300 placeholder:text-gray  hover:bg-[#ffffff14]"
-                />
-              </FormControl>
-              <FormDescription>
-                This can be your own Selfbox, portfolio website, or your main
-                social media site.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+            <FormFieldItem
+              label="Website"
+              description="This can be your own Selfbox, portfolio website, or your main social website links."
+            >
+              <Input
+                placeholder={"https://selfbox.com"}
+                {...field}
+                className={`${FormInputTextCSS}`}
+              />
+            </FormFieldItem>
           )}
         />
 
