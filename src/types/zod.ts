@@ -157,8 +157,11 @@ export const settingsProfileSchema = z.object({
   pronouns: z.optional(
     z.enum(["Don't specify", "They/them", "He/him", "She/her"]),
   ),
-
-  website: z.optional(z.string().url()),
+  website: z.optional(
+    z.string().max(500, {
+      message: "Website cannot have more than 500 characters.",
+    }),
+  ),
 });
 
 export type settingsProfileSchemaType = z.infer<typeof settingsProfileSchema>;
