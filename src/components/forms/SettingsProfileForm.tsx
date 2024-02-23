@@ -6,17 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { settingsProfileSchema, settingsProfileSchemaType } from "@/types/zod";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Form,
-  FormDescription,
-} from "@/components/ui/form";
+import { FormFieldItem } from "@/components/forms/FormFieldItem";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { FormField, FormControl, Form } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -24,17 +17,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
-import { FormFieldItem } from "@/components/forms/FormFieldItem";
+import { updateUserProfileSettings } from "@/db/actions/settings";
 
 type SettingsFormProps = {
   oldUsername: string;
   oldName: string | undefined | null;
+  userId: string;
 };
 
 export const SettingsProfileForm = ({
   oldUsername,
   oldName,
+  userId,
 }: SettingsFormProps) => {
   const router = useRouter();
 
@@ -52,11 +46,33 @@ export const SettingsProfileForm = ({
   async function onSubmit(formData: settingsProfileSchemaType) {
     const { username, bio, pronouns, name, website } = formData;
     try {
-      generateToast({
-        type: "success",
-        value: `Username: ${username}`,
-        description: `Bio: ${bio} | Pronouns: ${pronouns} | Name: ${name} | Website: ${website}`,
-      });
+      const message = await updateUserProfileSettings(formData, userId);
+
+      switch (message) {
+        case "success":
+          generateToast({
+            type: "success",
+            value: "Success!",
+            description: "Your profile was successfuly updated.",
+          });
+          form.reset();
+          form.clearErrors();
+          break;
+        case "username-exists":
+          generateToast({
+            type: "warning",
+            value: "This username already exists.",
+            description: "Please try a different username.",
+          });
+          break;
+        default:
+          generateToast({
+            type: "error",
+            value: "Something went wrong!",
+            description: "Please try again.",
+          });
+          console.error(message);
+      }
     } catch (error) {
       generateToast({
         type: "error",

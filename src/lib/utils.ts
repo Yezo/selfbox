@@ -13,8 +13,8 @@ export function getFirstTwoLettersOfUser(
   name: string | null | undefined,
   username: string | null | undefined,
 ) {
-  if (name) return name.slice(0, 2);
-  if (!name && username) return username.slice(0, 2);
+  if (username) return username.slice(0, 2);
+  if (!username && name) return name.slice(0, 2);
   return "??";
 }
 

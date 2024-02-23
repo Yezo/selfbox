@@ -1,4 +1,3 @@
-import { SettingsForm } from "@/components/forms/SettingsForm";
 import { SettingsProfileForm } from "@/components/forms/SettingsProfileForm";
 import { H1 } from "@/components/layout/H1";
 import { Main } from "@/components/layout/Main";
@@ -12,7 +11,7 @@ import { redirect } from "next/navigation";
 export default async function SettingsProfilePage() {
   const session = await auth();
   if (!session?.user) redirect("/signup");
-
+  console.log(session);
   return (
     <>
       <Navbar />
@@ -26,8 +25,9 @@ export default async function SettingsProfilePage() {
           />
           <div>
             <H1>Settings</H1>
+
             <p className="font-bricolage text-sm text-gray">
-              {session.user.name || session.user.username}
+              {session.user.username} • {session.user.name}
             </p>
           </div>
         </header>
@@ -42,6 +42,7 @@ export default async function SettingsProfilePage() {
             <SettingsProfileForm
               oldUsername={session.user.username}
               oldName={session.user.name}
+              userId={session.user.id}
             />
           </div>
         </div>

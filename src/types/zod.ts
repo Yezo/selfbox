@@ -139,16 +139,28 @@ export const settingsSchema = z.object({
 export type settingsSchemaType = z.infer<typeof settingsSchema>;
 
 export const settingsProfileSchema = z.object({
-  username: z.optional(
-    z.string().max(25, {
-      message: "Username cannot have more than 25 characters.",
-    }),
-  ),
-  name: z.optional(
-    z.string().max(25, {
-      message: "Name cannot have more than 25 characters.",
-    }),
-  ),
+  username: z.union([
+    z
+      .string()
+      .min(3, {
+        message: "Username must be at least 3 characters.",
+      })
+      .max(25, {
+        message: "Username cannot have more than 25 characters.",
+      }),
+    z.literal(""),
+  ]),
+  name: z.union([
+    z
+      .string()
+      .min(2, {
+        message: "Username must be at least 2 characters.",
+      })
+      .max(25, {
+        message: "Username cannot have more than 25 characters.",
+      }),
+    z.literal(""),
+  ]),
   bio: z.optional(
     z.string().max(500, {
       message: "Bio cannot have more than 500 characters.",

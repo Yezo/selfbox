@@ -13,6 +13,18 @@ import {
 import { AuthError } from "next-auth";
 import { signIn, update } from "@/lib/auth";
 
+export async function checkUserExistsById(userId: string): Promise<boolean> {
+  noStore();
+  try {
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    const userExists = user ? true : false;
+    return userExists;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error getting user by id");
+  }
+}
+
 export async function getUserById(id: string): Promise<User | null> {
   noStore();
   try {
@@ -53,6 +65,30 @@ export async function updateUserUsername(
   } catch (error) {
     console.error(error);
     throw new Error("Error updating username");
+  }
+}
+
+export async function updateUserFullName(
+  id: string,
+  newFullName: string,
+): Promise<"not-found" | "success" | null> {
+  noStore();
+  try {
+    //Check and find a user that matches id
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    if (!user) return "not-found";
+
+    //Update the current user with their new full name
+    const updatedUser = await db
+      .update(users)
+      .set({ name: newFullName })
+      .where(eq(users.id, id));
+
+    revalidatePath("/username");
+    return updatedUser ? "success" : null;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error updating name");
   }
 }
 
