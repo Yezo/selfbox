@@ -109,3 +109,56 @@ export type SignUpWithPasswordFormInput = z.infer<
 export type SignInWithPasswordFormInput = z.infer<
   typeof signInWithPasswordSchema
 >;
+
+export const settingsSchema = z.object({
+  username: z.optional(
+    z.string().max(25, {
+      message: "Username cannot have more than 25 characters.",
+    }),
+  ),
+  oldPassword: z.optional(
+    passwordSchema.regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      {
+        message:
+          "Password must contain at least 8 characters, including one uppercase, one lowercase, one number and one special character",
+      },
+    ),
+  ),
+  newPassword: z.optional(
+    passwordSchema.regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      {
+        message:
+          "Password must contain at least 8 characters, including one uppercase, one lowercase, one number and one special character",
+      },
+    ),
+  ),
+});
+
+export type settingsSchemaType = z.infer<typeof settingsSchema>;
+
+export const settingsProfileSchema = z.object({
+  username: z.optional(
+    z.string().max(25, {
+      message: "Username cannot have more than 25 characters.",
+    }),
+  ),
+  name: z.optional(
+    z.string().max(25, {
+      message: "Name cannot have more than 25 characters.",
+    }),
+  ),
+  bio: z.optional(
+    z.string().max(500, {
+      message: "Bio cannot have more than 500 characters.",
+    }),
+  ),
+  pronouns: z.optional(
+    z.enum(["Don't specify", "They/them", "He/him", "She/her"]),
+  ),
+
+  website: z.optional(z.string().url()),
+});
+
+export type settingsProfileSchemaType = z.infer<typeof settingsProfileSchema>;

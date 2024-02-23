@@ -6,6 +6,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function getFirstTwoLettersOfUser(
+  name: string | null | undefined,
+  username: string | null | undefined,
+) {
+  if (name) return name.slice(0, 2);
+  if (!name && username) return username.slice(0, 2);
+  return "??";
+}
+
 export function generateToast({
   type,
   value,

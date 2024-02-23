@@ -1,4 +1,5 @@
 import { SettingsForm } from "@/components/forms/SettingsForm";
+import { SettingsProfileForm } from "@/components/forms/SettingsProfileForm";
 import { H1 } from "@/components/layout/H1";
 import { Main } from "@/components/layout/Main";
 import { SettingsAsideNav } from "@/components/nav/SettingsAsideNav";
@@ -6,18 +7,12 @@ import { UserAvatar } from "@/components/nav/UserAvatar";
 import { Navbar } from "@/components/nav/navbar";
 import { Separator } from "@/components/ui/separator";
 import { auth } from "@/lib/auth";
-import { SettingsFirstNav, SettingsSecondNav } from "@/lib/nav";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function SettingsPage() {
+export default async function SettingsProfilePage() {
   const session = await auth();
+  if (!session?.user) redirect("/signup");
 
-  if (!session?.user) redirect("/api/auth/signin?callbackUrl=/");
-
-  //In settings page
-  //Users can change their username (unique)
-  //Change their password provided they reconfirm it (unique)
   return (
     <>
       <Navbar />
@@ -40,7 +35,14 @@ export default async function SettingsPage() {
         <div className="flex">
           <SettingsAsideNav />
           <div className="basis-4/5">
-            <SettingsForm username={session.user.username} />
+            <h2 className="font-bricolage text-xl font-semibold">
+              Public profile
+            </h2>
+            <Separator className="my-4" />
+            <SettingsProfileForm
+              oldUsername={session.user.username}
+              oldName={session.user.name}
+            />
           </div>
         </div>
       </Main>

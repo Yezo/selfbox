@@ -1,5 +1,6 @@
 "use client";
 
+import { UserAvatar } from "@/components/nav/UserAvatar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -7,17 +8,12 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getFirstTwoLettersOfUser } from "@/lib/utils";
 import {
-  ArchiveIcon,
   ChevronDownIcon,
   ExitIcon,
   FileTextIcon,
@@ -26,7 +22,6 @@ import {
   HeartFilledIcon,
   LayersIcon,
   PersonIcon,
-  StarFilledIcon,
   StarIcon,
 } from "@radix-ui/react-icons";
 import { signOut } from "next-auth/react";
@@ -45,12 +40,6 @@ export const UserMenuDropdown = ({
   image,
   email,
 }: UserMenuDropdownProps) => {
-  function getFirstTwoLettersOfUser() {
-    if (name) return name.slice(0, 2);
-    if (!name && username) return username.slice(0, 2);
-    return "??";
-  }
-
   return (
     <>
       <div className="flex items-center justify-between gap-2 text-sm">
@@ -58,15 +47,7 @@ export const UserMenuDropdown = ({
           <DropdownMenuTrigger asChild>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <Avatar className="h-8 w-8">
-                  {image && <AvatarImage src={image} />}
-
-                  <AvatarFallback>
-                    <AvatarFallback className="flex h-full w-full items-center justify-center bg-sky-300 font-bricolage font-semibold uppercase tracking-tighter text-black/90">
-                      {getFirstTwoLettersOfUser()}
-                    </AvatarFallback>
-                  </AvatarFallback>
-                </Avatar>
+                <UserAvatar image={image} name={name} username={username} />
                 <div>
                   {username ? (
                     <span className="font-bricolage font-medium capitalize">
@@ -119,7 +100,7 @@ export const UserMenuDropdown = ({
               <HeartFilledIcon />
             </MenuItem>
             <DropdownMenuSeparator />
-            <MenuItem url="/settings" title="Settings" external={true}>
+            <MenuItem url="/settings" title="Settings">
               <GearIcon />
             </MenuItem>
 
