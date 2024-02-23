@@ -20,7 +20,7 @@ export const Navbar = async () => {
             selfbox.
           </Link>
 
-          <ul className="flex gap-10 text-sm text-gray">
+          <ul className="flex gap-10 text-sm  text-gray">
             {MainNav.map((link) => (
               <li key={link.name}>
                 <Link

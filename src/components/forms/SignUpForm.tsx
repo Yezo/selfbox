@@ -22,14 +22,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export function SignUpWithPasswordForm() {
+type SignUpWithPasswordFormProps = {
+  tempUsername: string | undefined;
+};
+
+export function SignUpWithPasswordForm({
+  tempUsername,
+}: SignUpWithPasswordFormProps) {
   const router = useRouter();
   const [passwordVisiblity, setPasswordVisiblity] = React.useState(false);
 
   const form = useForm<SignUpWithPasswordFormInput>({
     resolver: zodResolver(signUpWithPasswordSchema),
     defaultValues: {
-      username: "",
+      username: tempUsername || "",
       email: "",
       password: "",
     },
@@ -95,9 +101,9 @@ export function SignUpWithPasswordForm() {
               <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="selfbox"
+                  placeholder="Selfbox"
                   {...field}
-                  className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm placeholder-gray transition-colors duration-300 placeholder:opacity-[0.5] hover:bg-[#ffffff14]"
+                  className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm transition-colors duration-300 placeholder:text-gray placeholder:opacity-[0.5] hover:bg-[#ffffff14]"
                 />
               </FormControl>
               <FormMessage />
@@ -115,7 +121,7 @@ export function SignUpWithPasswordForm() {
                 <Input
                   placeholder="acme@example.com"
                   {...field}
-                  className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm placeholder-gray transition-colors duration-300 placeholder:opacity-[0.5] hover:bg-[#ffffff14]"
+                  className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm transition-colors duration-300 placeholder:text-gray placeholder:opacity-[0.5] hover:bg-[#ffffff14]"
                 />
               </FormControl>
               <FormMessage />
@@ -134,7 +140,7 @@ export function SignUpWithPasswordForm() {
                   <Input
                     placeholder="**********"
                     type={passwordVisiblity ? "text" : "password"}
-                    className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm placeholder-gray transition-colors duration-300 placeholder:opacity-[0.5] hover:bg-[#ffffff14]"
+                    className="flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm transition-colors duration-300 placeholder:text-gray placeholder:opacity-[0.5] hover:bg-[#ffffff14]"
                     {...field}
                   />
                   {passwordVisiblity ? (

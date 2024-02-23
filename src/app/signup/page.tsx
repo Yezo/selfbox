@@ -8,8 +8,16 @@ import { CaretLeftIcon } from "@radix-ui/react-icons";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 
-export default async function SignUpPage() {
+type SearchQueryPageProps = {
+  searchParams: { username: string };
+};
+
+export default async function SignUpPage({
+  searchParams,
+}: SearchQueryPageProps) {
   const session = await auth();
+  const tempUsername = searchParams.username;
+
   return (
     <Main className="grid min-h-screen place-items-center pb-40">
       <section className="w-[450px]">
@@ -21,7 +29,7 @@ export default async function SignUpPage() {
           Back to website
         </Link>
 
-        <H1>Create your Selfbox account,</H1>
+        <H1>Sign up</H1>
 
         <H2 className="mb-8">
           Already have an account?
@@ -30,7 +38,7 @@ export default async function SignUpPage() {
           </Link>
         </H2>
 
-        <SignUpWithPasswordForm />
+        <SignUpWithPasswordForm tempUsername={tempUsername} />
 
         <OrSeparator />
 

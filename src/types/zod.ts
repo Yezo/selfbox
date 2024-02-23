@@ -94,6 +94,14 @@ export const songSchema = z.object({
   }),
 });
 
+export const heroInputSchema = z.object({
+  username: z.string().max(25, {
+    message: "Username cannot have more than 25 characters.",
+  }),
+});
+
+export type heroInputSchemaInput = z.infer<typeof heroInputSchema>;
+
 export type SignUpWithPasswordFormInput = z.infer<
   typeof signUpWithPasswordSchema
 >;
