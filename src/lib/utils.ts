@@ -6,6 +6,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const FormInputTextCSS =
+  "flex h-11 items-center justify-center border bg-[#ffffff0f] p-4 font-bricolage text-sm transition-colors duration-300 placeholder:text-gray  hover:bg-[#ffffff14]";
+
 export function getFirstTwoLettersOfUser(
   name: string | null | undefined,
   username: string | null | undefined,
