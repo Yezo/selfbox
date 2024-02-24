@@ -12,6 +12,9 @@ import { redirect } from "next/navigation";
 export default async function SettingsProfilePage() {
   const session = await auth();
   if (!session?.user) redirect("/signup");
+  const {
+    user: { username, name, image, id },
+  } = session;
 
   return (
     <>
@@ -19,9 +22,9 @@ export default async function SettingsProfilePage() {
       <Main className="space-y-12 p-24">
         <header className="flex items-center gap-2">
           <UserAvatar
-            image={session.user.image}
-            name={session.user.name}
-            username={session.user.username}
+            image={image}
+            name={name}
+            username={username}
             size={"large"}
           />
           <div>
@@ -29,8 +32,7 @@ export default async function SettingsProfilePage() {
 
             <p className="font-bricolage text-sm text-gray">
               {}
-              {session.user.username}{" "}
-              {session.user.name && ` • ${session.user.name}`}
+              {username} {name && ` • ${name}`}
             </p>
           </div>
         </header>
@@ -43,9 +45,9 @@ export default async function SettingsProfilePage() {
             </h2>
             <Separator className="my-4" />
             <SettingsProfileForm
-              oldUsername={session.user.username}
-              oldName={session.user.name}
-              userId={session.user.id}
+              oldUsername={username}
+              oldName={name}
+              userId={id}
             />
           </div>
         </div>

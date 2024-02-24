@@ -1,5 +1,4 @@
 import { SignInWithPasswordForm } from "@/components/forms/SignInForm";
-import { SignUpWithPasswordForm } from "@/components/forms/SignUpForm";
 import { H1 } from "@/components/layout/H1";
 import { H2 } from "@/components/layout/H2";
 import { OrSeparator } from "@/components/layout/OrSeparator";
@@ -11,6 +10,7 @@ import Link from "next/link";
 
 export default async function LoginPage() {
   const session = await auth();
+
   return (
     <Main className="grid min-h-screen place-items-center pb-40">
       <section className="w-[450px]">

@@ -4,35 +4,31 @@ import { Main } from "@/components/layout/Main";
 import { SettingsAsideNav } from "@/components/nav/SettingsAsideNav";
 import { UserAvatar } from "@/components/nav/UserAvatar";
 import { Navbar } from "@/components/nav/navbar";
-import { Separator } from "@/components/ui/separator";
 import { auth } from "@/lib/auth";
-import { SettingsFirstNav, SettingsSecondNav } from "@/lib/nav";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function SettingsPage() {
   const session = await auth();
+  if (!session?.user) redirect("/signup");
+  const {
+    user: { username, name, image },
+  } = session;
 
-  if (!session?.user) redirect("/api/auth/signin?callbackUrl=/");
-
-  //In settings page
-  //Users can change their username (unique)
-  //Change their password provided they reconfirm it (unique)
   return (
     <>
       <Navbar />
       <Main className="space-y-12 p-24">
         <header className="flex items-center gap-2">
           <UserAvatar
-            image={session.user.image}
-            name={session.user.name}
-            username={session.user.username}
+            image={image}
+            name={name}
+            username={username}
             size={"large"}
           />
           <div>
             <H1>Settings</H1>
             <p className="font-bricolage text-sm text-gray">
-              {session.user.name || session.user.username}
+              {name || username}
             </p>
           </div>
         </header>
@@ -40,7 +36,7 @@ export default async function SettingsPage() {
         <div className="flex">
           <SettingsAsideNav />
           <div className="basis-4/5">
-            <SettingsForm username={session.user.username} />
+            <SettingsForm username={username} />
           </div>
         </div>
       </Main>
