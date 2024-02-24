@@ -55,7 +55,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "autoprefixer": "^10.0.1",
-    "drizzle-kit": "^0.20.13",
+    "drizzle-kit": "^0.20.14",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "postcss": "^8",

@@ -162,16 +162,16 @@ export const settingsProfileSchema = z.object({
     z.literal(""),
   ]),
   bio: z.optional(
-    z.string().max(500, {
-      message: "Bio cannot have more than 500 characters.",
+    z.string().max(256, {
+      message: "Bio cannot have more than 256 characters.",
     }),
   ),
   pronouns: z.optional(
     z.enum(["Don't specify", "They/them", "He/him", "She/her"]),
   ),
   website: z.optional(
-    z.string().max(500, {
-      message: "Website cannot have more than 500 characters.",
+    z.string().max(50, {
+      message: "Website cannot have more than 50 characters.",
     }),
   ),
 });

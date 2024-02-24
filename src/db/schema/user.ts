@@ -12,6 +12,12 @@ import type { AdapterAccount } from "@auth/core/adapters";
 import { relations } from "drizzle-orm";
 
 export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
+export const userPronounsEnum = pgEnum("user_pronouns", [
+  "Do not specify",
+  "They/them",
+  "He/him",
+  "She/her",
+]);
 
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
@@ -26,9 +32,9 @@ export const users = pgTable("user", {
 });
 
 export const userRelations = relations(users, ({ one, many }) => ({
-  profile: one(profiles, {
+  userProfile: one(userProfile, {
     fields: [users.id],
-    references: [profiles.userId],
+    references: [userProfile.userId],
   }),
   bio: one(bios, {
     fields: [users.id],
@@ -36,15 +42,17 @@ export const userRelations = relations(users, ({ one, many }) => ({
   }),
 }));
 
-export const profiles = pgTable("profiles", {
-  id: text("id").primaryKey(),
-  bio: varchar("bio", { length: 256 }),
-  userId: text("user_id")
+export const userProfile = pgTable("userProfile", {
+  id: serial("id").primaryKey(),
+  userId: text("userId")
     .notNull()
     .references(() => users.id),
+  description: varchar("description", { length: 256 }),
+  pronouns: userPronounsEnum("pronouns").default("Do not specify"),
+  website: varchar("website", { length: 50 }),
 });
 
-export const songs = pgTable("Songs", {
+export const songs = pgTable("songs", {
   id: serial("id").primaryKey(),
   title: varchar("title"),
   artist: varchar("artist"),
