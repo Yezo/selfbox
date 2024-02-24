@@ -16,8 +16,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useState } from "react";
 
 export function SongForm() {
+  const [isPending, setIsPending] = useState(false);
+
   // Zod schema
   const form = useForm<z.infer<typeof songSchema>>({
     resolver: zodResolver(songSchema),
@@ -32,6 +35,7 @@ export function SongForm() {
   // Takes the form values and executes a server action for inserting
   // a song into the database and resets the form if successful
   async function onSubmit(values: z.infer<typeof songSchema>) {
+    setIsPending(true);
     try {
       await createSongAction(values);
       generateToast({
@@ -45,6 +49,7 @@ export function SongForm() {
         type: "error",
         value: "There was an error adding a song.",
       });
+      setIsPending(false);
     }
   }
 
@@ -106,7 +111,7 @@ export function SongForm() {
             </FormItem>
           )}
         />
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton pending={isPending}>Submit</SubmitButton>
       </form>
     </Form>
   );

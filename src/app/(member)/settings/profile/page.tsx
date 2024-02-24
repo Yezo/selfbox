@@ -6,12 +6,13 @@ import { UserAvatar } from "@/components/nav/UserAvatar";
 import { Navbar } from "@/components/nav/navbar";
 import { Separator } from "@/components/ui/separator";
 import { auth } from "@/lib/auth";
+
 import { redirect } from "next/navigation";
 
 export default async function SettingsProfilePage() {
   const session = await auth();
   if (!session?.user) redirect("/signup");
-  console.log(session);
+
   return (
     <>
       <Navbar />
@@ -27,7 +28,9 @@ export default async function SettingsProfilePage() {
             <H1>Settings</H1>
 
             <p className="font-bricolage text-sm text-gray">
-              {session.user.username} • {session.user.name}
+              {}
+              {session.user.username}{" "}
+              {session.user.name && ` • ${session.user.name}`}
             </p>
           </div>
         </header>

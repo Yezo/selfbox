@@ -1,12 +1,14 @@
 "use client";
 
-import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/forms/FormSubmitButton";
 import { updateUsernameSchema } from "@/types/zod";
 import { generateToast } from "@/lib/utils";
+import { updateUserUsername } from "@/db/actions/user";
+import { useState } from "react";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -15,10 +17,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { updateUserUsername } from "@/db/actions/user";
-import router from "next/router";
 
 export function UpdateUsernameForm({ id }: { id: string | undefined }) {
+  const [isPending, setIsPending] = useState(false);
+
   // Zod schema
   const form = useForm<z.infer<typeof updateUsernameSchema>>({
     resolver: zodResolver(updateUsernameSchema),
@@ -30,6 +32,8 @@ export function UpdateUsernameForm({ id }: { id: string | undefined }) {
   // Takes the form values and executes a server action for inserting
   // a bio into the database and resets the form if successful
   async function onSubmit(values: z.infer<typeof updateUsernameSchema>) {
+    setIsPending(true);
+
     try {
       if (id) {
         const message = await updateUserUsername(id, values.username);
@@ -40,16 +44,17 @@ export function UpdateUsernameForm({ id }: { id: string | undefined }) {
               type: "success",
               value: "Username successfully updated.",
             });
-            form.reset({});
+            form.reset();
             form.clearErrors();
             break;
+
           case "duplicate":
             generateToast({
               type: "warning",
               value: "This username is already in use.",
               description: "Please choose a different username.",
             });
-
+            setIsPending(false);
             break;
 
           case "not-found":
@@ -57,6 +62,7 @@ export function UpdateUsernameForm({ id }: { id: string | undefined }) {
               type: "error",
               value: "This user does not exist.",
             });
+            setIsPending(false);
             break;
 
           default:
@@ -65,6 +71,7 @@ export function UpdateUsernameForm({ id }: { id: string | undefined }) {
               value: "Error while updating username.",
               description: "Please try again.",
             });
+            setIsPending(false);
         }
       }
     } catch (error) {
@@ -89,7 +96,7 @@ export function UpdateUsernameForm({ id }: { id: string | undefined }) {
           )}
         />
 
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton pending={isPending}>Submit</SubmitButton>
       </form>
     </Form>
   );

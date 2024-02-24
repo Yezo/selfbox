@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -30,7 +30,8 @@ export function SignUpWithPasswordForm({
   tempUsername,
 }: SignUpWithPasswordFormProps) {
   const router = useRouter();
-  const [passwordVisiblity, setPasswordVisiblity] = React.useState(false);
+  const [passwordVisiblity, setPasswordVisiblity] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<SignUpWithPasswordFormInput>({
     resolver: zodResolver(signUpWithPasswordSchema),
@@ -42,6 +43,8 @@ export function SignUpWithPasswordForm({
   });
 
   async function onSubmit(formData: SignUpWithPasswordFormInput) {
+    setIsPending(true);
+
     try {
       const message = await signUpWithPassword({
         username: formData.username,
@@ -50,35 +53,42 @@ export function SignUpWithPasswordForm({
       });
 
       switch (message) {
-        case "username-exists":
-          generateToast({
-            type: "warning",
-            value: "This username already exists.",
-            description: "Please try a different username.",
-          });
-          break;
-        case "email-exists":
-          generateToast({
-            type: "warning",
-            value: "User with this email address already exists.",
-            description: "If this is you, please sign in instead.",
-          });
-          break;
         case "success":
           generateToast({
             type: "success",
             value: "Success!",
             description: "Your account was successfully created.",
           });
+          form.reset();
+          form.clearErrors();
           router.push("/login");
           break;
+
+        case "username-exists":
+          generateToast({
+            type: "warning",
+            value: "This username already exists.",
+            description: "Please try a different username.",
+          });
+          setIsPending(false);
+          break;
+
+        case "email-exists":
+          generateToast({
+            type: "warning",
+            value: "User with this email address already exists.",
+            description: "If this is you, please sign in instead.",
+          });
+          setIsPending(false);
+          break;
+
         default:
           generateToast({
             type: "error",
             value: "Something went wrong!",
             description: "Please try again.",
           });
-          console.error(message);
+          setIsPending(false);
       }
     } catch (error) {
       generateToast({
@@ -86,7 +96,7 @@ export function SignUpWithPasswordForm({
         value: "Something went wrong!",
         description: "Please try again.",
       });
-      console.error(error);
+      setIsPending(false);
     }
   }
 
@@ -161,7 +171,7 @@ export function SignUpWithPasswordForm({
           )}
         />
 
-        <SubmitButton>Create account</SubmitButton>
+        <SubmitButton pending={isPending}>Create account</SubmitButton>
       </form>
     </Form>
   );

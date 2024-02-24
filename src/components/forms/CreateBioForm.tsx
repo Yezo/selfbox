@@ -16,8 +16,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useState } from "react";
 
 export function BioForm() {
+  const [isPending, setIsPending] = useState(false);
+
   // Zod schema
   const form = useForm<z.infer<typeof bioSchema>>({
     resolver: zodResolver(bioSchema),
@@ -29,6 +32,7 @@ export function BioForm() {
   // Takes the form values and executes a server action for inserting
   // a bio into the database and resets the form if successful
   async function onSubmit(values: z.infer<typeof bioSchema>) {
+    setIsPending(true);
     try {
       await createBioAction(values);
       generateToast({
@@ -42,6 +46,7 @@ export function BioForm() {
         type: "error",
         value: "There was an error adding a bio.",
       });
+      setIsPending(false);
     }
   }
 
@@ -62,7 +67,7 @@ export function BioForm() {
           )}
         />
 
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton pending={isPending}>Submit</SubmitButton>
       </form>
     </Form>
   );

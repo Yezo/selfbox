@@ -1,14 +1,17 @@
 "use client";
 
 import { twMerge } from "tailwind-merge";
-
 import { Button } from "@/components/ui/button";
-import { useFormStatus } from "react-dom";
 import { UpdateIcon } from "@radix-ui/react-icons";
 import { ReactNode } from "react";
 
-export const SubmitButton = ({ children }: { children: ReactNode }) => {
-  const { pending } = useFormStatus();
+export const SubmitButton = ({
+  children,
+  pending,
+}: {
+  children: ReactNode;
+  pending: boolean;
+}) => {
   return (
     <Button
       type="submit"
@@ -19,8 +22,14 @@ export const SubmitButton = ({ children }: { children: ReactNode }) => {
       disabled={pending}
       aria-disabled={pending}
     >
-      {pending && <UpdateIcon className="animate-spin" />}
-      {children}
+      {pending ? (
+        <>
+          <UpdateIcon className="animate-spin" />
+          {children}
+        </>
+      ) : (
+        children
+      )}
     </Button>
   );
 };

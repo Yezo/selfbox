@@ -25,6 +25,7 @@ type SettingsFormProps = {
 export const SettingsForm = ({ username }: SettingsFormProps) => {
   const router = useRouter();
   const [passwordVisiblity, setPasswordVisiblity] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<settingsSchemaType>({
     resolver: zodResolver(settingsSchema),
@@ -36,6 +37,8 @@ export const SettingsForm = ({ username }: SettingsFormProps) => {
   });
 
   async function onSubmit(formData: settingsSchemaType) {
+    setIsPending(true);
+
     try {
       //   const message = await signUpWithPassword({
       //     username: formData.username,
@@ -139,7 +142,7 @@ export const SettingsForm = ({ username }: SettingsFormProps) => {
           )}
         />
 
-        <SubmitButton>Create account</SubmitButton>
+        <SubmitButton pending={isPending}>Create account</SubmitButton>
       </form>
     </Form>
   );

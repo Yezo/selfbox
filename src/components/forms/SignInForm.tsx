@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInWithPassword } from "@/db/actions/user";
@@ -21,12 +21,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { revalidatePath } from "next/cache";
 
 export function SignInWithPasswordForm(): JSX.Element {
   const router = useRouter();
-  const [passwordVisiblity, setPasswordVisiblity] = React.useState(false);
-  const [isPending, startTransition] = React.useTransition();
+  const [passwordVisiblity, setPasswordVisiblity] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<SignInWithPasswordFormInput>({
     resolver: zodResolver(signInWithPasswordSchema),
@@ -37,70 +36,67 @@ export function SignInWithPasswordForm(): JSX.Element {
   });
 
   async function onSubmit(formData: SignInWithPasswordFormInput) {
-    startTransition(async () => {
-      try {
-        const message = await signInWithPassword({
-          email: formData.email,
-          password: formData.password,
-        });
+    setIsPending(true);
 
-        switch (message) {
-          case "success":
-            generateToast({
-              type: "success",
-              value: "Login successful!",
-            });
+    try {
+      const message = await signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
 
-            router.push("/");
-            break;
-          case "not-registered":
-            generateToast({
-              type: "warning",
-              value: "There are no accounts with this email.",
-              description: "Please create an account first.",
-            });
+      switch (message) {
+        case "success":
+          generateToast({
+            type: "success",
+            value: "Login successful!",
+          });
+          form.reset();
+          form.clearErrors();
+          router.push("/");
+          break;
 
-            break;
-          case "incorrect-provider":
-            generateToast({
-              type: "error",
-              value: "Email is already in use.",
-              description: "Try logging in with a different method.",
-            });
+        case "not-registered":
+          generateToast({
+            type: "warning",
+            value: "There are no accounts with this email.",
+            description: "Please create an account first.",
+          });
+          setIsPending(false);
+          break;
 
-            break;
-          // case "unverified-email":
-          //   generateToast({
-          //     type: "warning",
-          //     value: "Unverified email.",
-          //     description: "Please verify your email.",
-          //   });
-          //   break;
-          case "invalid-credentials":
-            generateToast({
-              type: "error",
-              value: "Invalid email or password.",
-            });
-            break;
+        case "incorrect-provider":
+          generateToast({
+            type: "error",
+            value: "Email is already in use.",
+            description: "Try logging in with a different method.",
+          });
+          setIsPending(false);
+          break;
 
-          default:
-            generateToast({
-              type: "error",
-              value: "Error while signing in.",
-              description: "Please try again.",
-            });
-        }
+        case "invalid-credentials":
+          generateToast({
+            type: "error",
+            value: "Invalid email or password.",
+          });
+          setIsPending(false);
+          break;
 
-        router.push("/");
-      } catch (error) {
-        console.error(error);
-        generateToast({
-          type: "error",
-          value: "Something strange happened.",
-          description: "Please try again.",
-        });
+        default:
+          generateToast({
+            type: "error",
+            value: "Error while signing in.",
+            description: "Please try again.",
+          });
+          setIsPending(false);
       }
-    });
+    } catch (error) {
+      generateToast({
+        type: "error",
+        value: "Something strange happened.",
+        description: "Please try again.",
+      });
+      setIsPending(false);
+    }
   }
 
   return (
@@ -156,7 +152,7 @@ export function SignInWithPasswordForm(): JSX.Element {
           )}
         />
 
-        <SubmitButton>Log in</SubmitButton>
+        <SubmitButton pending={isPending}>Log in</SubmitButton>
       </form>
     </Form>
   );

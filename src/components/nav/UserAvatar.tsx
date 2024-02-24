@@ -1,5 +1,5 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getFirstTwoLettersOfUser } from "@/lib/utils";
 
 type UserAvatarProps = {
@@ -20,7 +20,9 @@ export const UserAvatar = ({
       {image && <AvatarImage src={image} />}
 
       <AvatarFallback>
-        <AvatarFallback className="flex h-full w-full items-center justify-center bg-sky-300 font-bricolage font-semibold uppercase tracking-tighter text-black/90">
+        <AvatarFallback
+          className={`flex h-full w-full items-center justify-center bg-white font-bricolage font-semibold uppercase tracking-tighter text-black/90`}
+        >
           {getFirstTwoLettersOfUser(name, username)}
         </AvatarFallback>
       </AvatarFallback>
