@@ -1,10 +1,9 @@
 "use server";
 
-import { db, eq, ilike } from "@/db";
-import { User, userProfile, users } from "@/db/schema/user";
+import { db, eq } from "@/db";
+import { UserProfileType, userProfile } from "@/db/schema/user";
+import { DatabaseError } from "@/types/types";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
-import { signIn } from "@/lib/auth";
-import bcryptjs from "bcryptjs";
 import { settingsProfileSchema, settingsProfileSchemaType } from "@/types/zod";
 import {
   checkUserExistsById,
@@ -12,13 +11,21 @@ import {
   updateUserFullName,
   updateUserUsername,
 } from "@/db/actions/user";
-import { DatabaseError } from "@/types/types";
 
-export async function getUserBio(id: string): Promise<User | null> {
+export async function getUserProfileById(
+  userId: string | undefined,
+): Promise<UserProfileType | null> {
   noStore();
   try {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || null;
+    if (userId) {
+      const [profile] = await db
+        .select()
+        .from(userProfile)
+        .where(eq(userProfile.userId, userId));
+      revalidatePath("/settings/profile");
+      return profile || null;
+    }
+    return null;
   } catch (error) {
     console.error(error);
     throw new Error("Error getting user by id");
@@ -30,7 +37,6 @@ export async function insertUserBio(
   newBio: string,
 ): Promise<DatabaseError> {
   noStore();
-
   try {
     // Check if the user already has an existing bio
     const [existingBio] = await db
@@ -60,8 +66,6 @@ export async function updateUserProfile(
   newPronouns?: "Do not specify" | "They/them" | "He/him" | "She/her",
   newWebsite?: string,
 ): Promise<DatabaseError> {
-  noStore();
-
   try {
     //Check if the user has an existing userProfile
     const [existingUserProfile] = await db
@@ -101,7 +105,6 @@ export async function updateUserProfile(
         .where(eq(userProfile.userId, userId));
     }
 
-    revalidatePath("/settings/profile");
     return "success";
   } catch (error) {
     console.error(error);

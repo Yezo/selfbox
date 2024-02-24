@@ -106,3 +106,4 @@ export const verificationTokens = pgTable(
 );
 
 export type User = typeof users.$inferSelect;
+export type UserProfileType = typeof userProfile.$inferSelect;

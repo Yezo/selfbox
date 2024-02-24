@@ -5,12 +5,14 @@ import { SettingsAsideNav } from "@/components/nav/SettingsAsideNav";
 import { UserAvatar } from "@/components/nav/UserAvatar";
 import { Navbar } from "@/components/nav/navbar";
 import { Separator } from "@/components/ui/separator";
+import { getUserProfileById } from "@/db/actions/settings";
 import { auth } from "@/lib/auth";
-
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export default async function SettingsProfilePage() {
   const session = await auth();
+  const userProfile = await getUserProfileById(session?.user.id);
   if (!session?.user) redirect("/signup");
   const {
     user: { username, name, image, id },
@@ -44,10 +46,12 @@ export default async function SettingsProfilePage() {
               Public profile
             </h2>
             <Separator className="my-4" />
+            {userProfile?.bio}
             <SettingsProfileForm
               oldUsername={username}
               oldName={name}
               userId={id}
+              oldUserProfile={userProfile}
             />
           </div>
         </div>

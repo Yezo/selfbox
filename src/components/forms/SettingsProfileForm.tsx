@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { FormInputTextCSS, generateToast } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { updateUserProfileSettings } from "@/db/actions/settings";
 import { useForm } from "react-hook-form";
 import { settingsProfileSchema, settingsProfileSchemaType } from "@/types/zod";
 import { FormFieldItem } from "@/components/forms/FormFieldItem";
@@ -17,11 +17,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { updateUserProfileSettings } from "@/db/actions/settings";
 
 type SettingsFormProps = {
   oldUsername: string;
   oldName: string | undefined | null;
+  oldUserProfile: {
+    userId: string;
+    id: number;
+    bio: string | null;
+    pronouns: "Do not specify" | "They/them" | "He/him" | "She/her" | null;
+    website: string | null;
+  } | null;
   userId: string;
 };
 
@@ -29,22 +35,20 @@ export const SettingsProfileForm = ({
   oldUsername,
   oldName,
   userId,
+  oldUserProfile,
 }: SettingsFormProps) => {
-  const router = useRouter();
-
   const form = useForm<settingsProfileSchemaType>({
     resolver: zodResolver(settingsProfileSchema),
     defaultValues: {
       username: "",
-      bio: "",
+      bio: oldUserProfile?.bio || "",
       name: "",
-      pronouns: "Do not specify",
-      website: "",
+      pronouns: oldUserProfile?.pronouns || "Do not specify",
+      website: oldUserProfile?.website || "",
     },
   });
 
   async function onSubmit(formData: settingsProfileSchemaType) {
-    const { username, bio, pronouns, name, website } = formData;
     try {
       const message = await updateUserProfileSettings(formData, userId);
 
@@ -55,9 +59,10 @@ export const SettingsProfileForm = ({
             value: "Success!",
             description: "Your profile was successfuly updated.",
           });
-          form.reset();
+          form.reset(undefined, { keepDirtyValues: true });
           form.clearErrors();
           break;
+
         case "username-exists":
           generateToast({
             type: "warning",
@@ -65,6 +70,7 @@ export const SettingsProfileForm = ({
             description: "Please try a different username.",
           });
           break;
+
         case "wtf":
           generateToast({
             type: "warning",
@@ -72,6 +78,7 @@ export const SettingsProfileForm = ({
             description: "WTF",
           });
           break;
+
         default:
           generateToast({
             type: "error",
@@ -97,11 +104,14 @@ export const SettingsProfileForm = ({
           name="username"
           render={({ field }) => (
             <FormFieldItem label="Username">
-              <Input
-                placeholder={oldUsername}
-                {...field}
-                className={`${FormInputTextCSS}`}
-              />
+              <>
+                <Input
+                  placeholder={oldUsername}
+                  {...field}
+                  className={`${FormInputTextCSS}`}
+                />
+                {oldUserProfile?.bio}
+              </>
             </FormFieldItem>
           )}
         />
