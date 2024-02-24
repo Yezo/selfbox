@@ -38,7 +38,7 @@ export const SettingsProfileForm = ({
       username: "",
       bio: "",
       name: "",
-      pronouns: "Don't specify",
+      pronouns: "Do not specify",
       website: "",
     },
   });
@@ -63,6 +63,13 @@ export const SettingsProfileForm = ({
             type: "warning",
             value: "This username already exists.",
             description: "Please try a different username.",
+          });
+          break;
+        case "wtf":
+          generateToast({
+            type: "warning",
+            value: "WTF",
+            description: "WTF",
           });
           break;
         default:
@@ -139,11 +146,11 @@ export const SettingsProfileForm = ({
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Don't specify" />
+                    <SelectValue placeholder="Do not specify" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Don't specify">Don't specify</SelectItem>
+                  <SelectItem value="Do not specify">Do not specify</SelectItem>
                   <SelectItem value="They/them">They/them</SelectItem>
                   <SelectItem value="He/him">He/him</SelectItem>
                   <SelectItem value="She/her">She/her</SelectItem>

@@ -197,6 +197,13 @@
       "when": 1708804198420,
       "tag": "0027_dazzling_gladiator",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "5",
+      "when": 1708804802294,
+      "tag": "0028_workable_the_executioner",
+      "breakpoints": true
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { db, eq } from "@/db";
-import { profiles, users } from "@/db/schema/user";
+import { userProfile, users } from "@/db/schema/user";
 
 export const profileQuery = db
   .select({
@@ -7,9 +7,8 @@ export const profileQuery = db
     name: users.name,
     avatar: users.image,
     profile: {
-      id: profiles.userId,
-      bio: profiles.bio,
+      id: userProfile.userId,
     },
   })
   .from(users)
-  .innerJoin(profiles, eq(users.id, profiles.userId));
+  .innerJoin(userProfile, eq(users.id, userProfile.userId));

@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 export default async function SettingsPage() {
   const session = await auth();
   if (!session?.user) redirect("/signup");
+  if (session.user) redirect("/settings/profile");
   const {
     user: { username, name, image },
   } = session;

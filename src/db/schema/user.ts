@@ -6,18 +6,10 @@ import {
   integer,
   serial,
   varchar,
-  pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { relations } from "drizzle-orm";
-
-export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
-export const userPronounsEnum = pgEnum("user_pronouns", [
-  "Do not specify",
-  "They/them",
-  "He/him",
-  "She/her",
-]);
+import { userRoleEnum, userPronounsEnum } from "@/db/schema/enum";
 
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
@@ -47,7 +39,7 @@ export const userProfile = pgTable("userProfile", {
   userId: text("userId")
     .notNull()
     .references(() => users.id),
-  description: varchar("description", { length: 256 }),
+  bio: varchar("bio", { length: 256 }),
   pronouns: userPronounsEnum("pronouns").default("Do not specify"),
   website: varchar("website", { length: 50 }),
 });

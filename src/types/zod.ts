@@ -167,7 +167,7 @@ export const settingsProfileSchema = z.object({
     }),
   ),
   pronouns: z.optional(
-    z.enum(["Don't specify", "They/them", "He/him", "She/her"]),
+    z.enum(["Do not specify", "They/them", "He/him", "She/her"]),
   ),
   website: z.optional(
     z.string().max(50, {
