@@ -97,6 +97,8 @@ export function SignUpWithPasswordForm({
         description: "Please try again.",
       });
       setIsPending(false);
+    } finally {
+      setIsPending(false);
     }
   }
 

@@ -40,15 +40,18 @@ export function SongForm() {
       await createSongAction(values);
       generateToast({
         type: "success",
-        value: "You successfully added a song.",
+        value: "You've successfully added a song.",
       });
       form.reset();
       form.clearErrors();
     } catch (error) {
       generateToast({
         type: "error",
-        value: "There was an error adding a song.",
+        value: "Something went wrong!",
+        description: "Please try again.",
       });
+      setIsPending(false);
+    } finally {
       setIsPending(false);
     }
   }

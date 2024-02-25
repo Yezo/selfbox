@@ -33,19 +33,23 @@ export function BioForm() {
   // a bio into the database and resets the form if successful
   async function onSubmit(values: z.infer<typeof bioSchema>) {
     setIsPending(true);
+
     try {
       await createBioAction(values);
       generateToast({
         type: "success",
-        value: "You successfully added a bio.",
+        value: "You've successfully added a bio.",
       });
       form.reset({});
       form.clearErrors();
     } catch (error) {
       generateToast({
         type: "error",
-        value: "There was an error adding a bio.",
+        value: "Something went wrong!",
+        description: "Please try again.",
       });
+      setIsPending(false);
+    } finally {
       setIsPending(false);
     }
   }

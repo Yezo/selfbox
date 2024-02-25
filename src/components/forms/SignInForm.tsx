@@ -96,6 +96,8 @@ export function SignInWithPasswordForm(): JSX.Element {
         description: "Please try again.",
       });
       setIsPending(false);
+    } finally {
+      setIsPending(false);
     }
   }
 

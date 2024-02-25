@@ -75,7 +75,14 @@ export function UpdateUsernameForm({ id }: { id: string | undefined }) {
         }
       }
     } catch (error) {
-      console.log(error);
+      generateToast({
+        type: "error",
+        value: "Something went wrong!",
+        description: "Please try again.",
+      });
+      setIsPending(false);
+    } finally {
+      setIsPending(false);
     }
   }
 

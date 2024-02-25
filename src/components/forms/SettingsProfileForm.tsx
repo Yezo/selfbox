@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { FormInputTextCSS, generateToast } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SubmitButton } from "@/components/forms/FormSubmitButton";
 
 type SettingsFormProps = {
   oldUsername: string;
@@ -37,6 +39,8 @@ export const SettingsProfileForm = ({
   userId,
   oldUserProfile,
 }: SettingsFormProps) => {
+  const [isPending, setIsPending] = useState(false);
+
   const form = useForm<settingsProfileSchemaType>({
     resolver: zodResolver(settingsProfileSchema),
     defaultValues: {
@@ -49,6 +53,8 @@ export const SettingsProfileForm = ({
   });
 
   async function onSubmit(formData: settingsProfileSchemaType) {
+    setIsPending(true);
+
     try {
       const message = await updateUserProfileSettings(formData, userId);
 
@@ -57,7 +63,7 @@ export const SettingsProfileForm = ({
           generateToast({
             type: "success",
             value: "Success!",
-            description: "Your profile was successfuly updated.",
+            description: "Your profile was successfully updated.",
           });
           form.reset(undefined, { keepDirtyValues: true });
           form.clearErrors();
@@ -69,6 +75,7 @@ export const SettingsProfileForm = ({
             value: "This username already exists.",
             description: "Please try a different username.",
           });
+          setIsPending(false);
           break;
 
         case "wtf":
@@ -77,6 +84,7 @@ export const SettingsProfileForm = ({
             value: "WTF",
             description: "WTF",
           });
+          setIsPending(false);
           break;
 
         default:
@@ -85,6 +93,7 @@ export const SettingsProfileForm = ({
             value: "Something went wrong!",
             description: "Please try again.",
           });
+          setIsPending(false);
           console.error(message);
       }
     } catch (error) {
@@ -93,6 +102,9 @@ export const SettingsProfileForm = ({
         value: "Something went wrong!",
         description: "Please try again.",
       });
+      setIsPending(false);
+    } finally {
+      setIsPending(false);
     }
   }
 
@@ -187,14 +199,7 @@ export const SettingsProfileForm = ({
           )}
         />
 
-        <Button
-          type="submit"
-          className={
-            "disabled my-2 flex h-11 max-w-fit items-center justify-center gap-2 border p-5 font-bricolage text-sm transition-colors duration-300 placeholder:opacity-[0.5]"
-          }
-        >
-          Update profile
-        </Button>
+        <SubmitButton pending={isPending}>Update profile</SubmitButton>
       </form>
     </Form>
   );
