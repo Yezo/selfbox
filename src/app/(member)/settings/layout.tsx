@@ -22,7 +22,7 @@ export default async function DashboardLayout({
     <>
       <Navbar />
       <Main className="space-y-12 p-24">
-        <header className="flex items-center gap-2">
+        <header className="flex items-center gap-4">
           <UserAvatar
             image={image}
             name={name}
@@ -41,7 +41,7 @@ export default async function DashboardLayout({
 
         <div className="flex">
           <SettingsAsideNav />
-          <div className="basis-4/5">{children}</div>
+          <section className="basis-4/5">{children}</section>
         </div>
       </Main>
     </>
