@@ -46,7 +46,7 @@ export default async function SettingsProfilePage() {
               Public profile
             </h2>
             <Separator className="my-4" />
-            {userProfile?.bio}
+
             <SettingsProfileForm
               oldUsername={username}
               oldName={name}

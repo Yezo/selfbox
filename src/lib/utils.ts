@@ -13,9 +13,31 @@ export function getFirstTwoLettersOfUser(
   name: string | null | undefined,
   username: string | null | undefined,
 ) {
+  //Check if the username exists,
   if (username) return username.slice(0, 2);
   if (!username && name) return name.slice(0, 2);
   return "??";
+}
+
+export function capitalizeEveryWord(str: string | null | undefined) {
+  // This function is needed for capitalizing placeholder text on forms
+  // Check if str is null or undefined
+  if (str === null || str === undefined) {
+    return str;
+  }
+
+  // Split the string into an array of words
+  const words = str.split(" ");
+
+  // Capitalize the first letter of each word
+  const capitalizedWords = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+
+  // Join the capitalized words back into a string
+  const result = capitalizedWords.join(" ");
+
+  return result;
 }
 
 export function generateToast({

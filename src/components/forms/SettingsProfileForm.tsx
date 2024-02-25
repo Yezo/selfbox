@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { FormInputTextCSS, generateToast } from "@/lib/utils";
+import {
+  FormInputTextCSS,
+  capitalizeEveryWord,
+  generateToast,
+} from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateUserProfileSettings } from "@/db/actions/settings";
 import { useForm } from "react-hook-form";
@@ -116,14 +120,11 @@ export const SettingsProfileForm = ({
           name="username"
           render={({ field }) => (
             <FormFieldItem label="Username">
-              <>
-                <Input
-                  placeholder={oldUsername}
-                  {...field}
-                  className={`${FormInputTextCSS}`}
-                />
-                {oldUserProfile?.bio}
-              </>
+              <Input
+                placeholder={capitalizeEveryWord(oldUsername) || ""}
+                {...field}
+                className={`${FormInputTextCSS}`}
+              />
             </FormFieldItem>
           )}
         />
@@ -138,7 +139,7 @@ export const SettingsProfileForm = ({
                         time."
             >
               <Input
-                placeholder={oldName || "John Doe"}
+                placeholder={capitalizeEveryWord(oldName) || "John Doe"}
                 {...field}
                 className={`${FormInputTextCSS}`}
               />
