@@ -7,6 +7,7 @@ import { Navbar } from "@/components/nav/navbar";
 import { Separator } from "@/components/ui/separator";
 import { getUserProfileById } from "@/db/actions/settings";
 import { auth } from "@/lib/auth";
+import { capitalizeEveryWord } from "@/lib/utils";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -33,8 +34,8 @@ export default async function SettingsProfilePage() {
             <H1>Settings</H1>
 
             <p className="font-bricolage text-sm text-gray">
-              {}
-              {username} {name && ` • ${name}`}
+              {capitalizeEveryWord(username)}
+              {name && ` • ${capitalizeEveryWord(name)}`}
             </p>
           </div>
         </header>

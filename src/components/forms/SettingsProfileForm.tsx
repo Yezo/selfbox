@@ -154,7 +154,7 @@ export const SettingsProfileForm = ({
             <FormFieldItem label="Bio">
               <Textarea
                 placeholder="Tell us a little bit about yourself"
-                className="resize-none bg-[#ffffff0f] text-sm placeholder:text-sm placeholder:text-gray hover:bg-[#ffffff14]"
+                className={`${FormInputTextCSS} resize-none`}
                 {...field}
               />
             </FormFieldItem>
