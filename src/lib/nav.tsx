@@ -31,12 +31,12 @@ export const SettingsFirstNav = [
   },
   {
     name: "Account",
-    url: "/",
+    url: "/settings/account",
     icon: <GearIcon />,
   },
   {
     name: "Change password",
-    url: "/",
+    url: "/settings/password",
     icon: <LockClosedIcon />,
   },
 ];
@@ -44,17 +44,17 @@ export const SettingsFirstNav = [
 export const SettingsSecondNav = [
   {
     name: "Billings and plans",
-    url: "/",
+    url: "/settings/billing",
     icon: <IdCardIcon />,
   },
   {
     name: "Emails",
-    url: "/",
+    url: "/settings/email",
     icon: <EnvelopeClosedIcon />,
   },
   {
     name: "Notifications",
-    url: "/",
+    url: "/settings/notifications",
     icon: <BellIcon />,
   },
 ];
