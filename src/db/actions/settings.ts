@@ -84,7 +84,7 @@ export async function updateUserProfile(
     }
 
     //If userProfile already exists, update fields
-    if (newBio !== undefined && newBio.length > 0) {
+    if (newBio !== undefined) {
       await db
         .update(userProfile)
         .set({ bio: newBio })
@@ -98,7 +98,7 @@ export async function updateUserProfile(
         .where(eq(userProfile.userId, userId));
     }
 
-    if (newWebsite !== undefined && newWebsite.length > 0) {
+    if (newWebsite !== undefined) {
       await db
         .update(userProfile)
         .set({ website: newWebsite })
