@@ -50,8 +50,6 @@ export function SignInWithPasswordForm(): JSX.Element {
             type: "success",
             value: "Login successful!",
           });
-          form.reset();
-          form.clearErrors();
           router.push("/");
           break;
 

@@ -59,8 +59,6 @@ export function SignUpWithPasswordForm({
             value: "Success!",
             description: "Your account was successfully created.",
           });
-          form.reset();
-          form.clearErrors();
           router.push("/login");
           break;
 
