@@ -42,7 +42,7 @@ export const UserMenuDropdown = ({
 }: UserMenuDropdownProps) => {
   return (
     <>
-      <div className="flex items-center justify-between gap-2 text-sm">
+      <div className="flex cursor-pointer items-center justify-between gap-2 text-sm">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="flex items-center gap-4">
@@ -69,7 +69,10 @@ export const UserMenuDropdown = ({
 
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <MenuItem url="/profile" title="profile">
+              <MenuItem
+                url={`/profile/${username?.toLowerCase()}`}
+                title="profile"
+              >
                 <PersonIcon />
               </MenuItem>
               <MenuItem url="/pricing" title="pricing">
