@@ -9,8 +9,8 @@ export const socialMediaListTwo = [
   "Facebook",
   "Tumblr",
   "GitHub",
-  "Tumblr",
-  "GitHub",
+  "Tumblrz",
+  "GitHubz",
 ];
 
 export const tvShowsList = [
