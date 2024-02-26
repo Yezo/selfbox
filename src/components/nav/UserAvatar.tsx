@@ -1,6 +1,7 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { getFirstTwoLettersOfUser } from "@/lib/utils";
+import Image from "next/image";
 
 type UserAvatarProps = {
   image: string | null | undefined;
@@ -16,16 +17,23 @@ export const UserAvatar = ({
   size,
 }: UserAvatarProps) => {
   return (
-    <Avatar className={`${size === "large" ? "h-12 w-12" : "h-8 w-8"}`}>
-      {image && <AvatarImage src={image} />}
-
-      <AvatarFallback>
-        <AvatarFallback
-          className={`flex h-full w-full items-center justify-center bg-white font-bricolage font-semibold uppercase tracking-tighter text-black/90`}
+    <>
+      {image ? (
+        <Image
+          src={image}
+          alt={`${username ? `${username}'s avatar` : `${name}'s avatar`}`}
+          width="72"
+          height="72"
+          className={`relative flex aspect-square   shrink-0 overflow-hidden rounded border object-cover ${size === "large" ? "max-h-[72px] min-h-[72px]" : "max-h-[36px] min-h-[36px]"} `}
+          quality={100}
+        />
+      ) : (
+        <div
+          className={`flex aspect-square  items-center justify-center rounded bg-white font-bricolage font-semibold uppercase tracking-tighter text-black/90 ${size === "large" ? "max-h-[72px] min-h-[72px]" : "max-h-[36px] min-h-[36px]"} `}
         >
           {getFirstTwoLettersOfUser(name, username)}
-        </AvatarFallback>
-      </AvatarFallback>
-    </Avatar>
+        </div>
+      )}
+    </>
   );
 };

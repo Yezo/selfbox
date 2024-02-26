@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SubmitButton } from "@/components/forms/FormSubmitButton";
+import { toast } from "sonner";
 
 type SettingsFormProps = {
   oldUsername: string;
@@ -154,7 +155,7 @@ export const SettingsProfileForm = ({
             <FormFieldItem label="Bio">
               <Textarea
                 placeholder="Tell us a little bit about yourself"
-                className={`${FormInputTextCSS} resize-none`}
+                className={`${FormInputTextCSS} min-h-28 resize-none`}
                 {...field}
               />
             </FormFieldItem>

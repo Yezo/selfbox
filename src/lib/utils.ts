@@ -65,10 +65,10 @@ export function generateToast({
   }
 }
 
-const IS_SERVER = typeof window === "undefined";
-export default function getURL(path: string) {
-  const baseURL = IS_SERVER
-    ? process.env.NEXT_PUBLIC_SITE_URL!
-    : window.location.origin;
-  return new URL(path, baseURL).toString();
+export function removeURLPrefixes(inputString: string | null | undefined) {
+  if (inputString == null) {
+    return inputString; // Return null or undefined as is
+  }
+
+  return inputString.replace(/^(https?:\/\/|www\.)+/i, "");
 }
