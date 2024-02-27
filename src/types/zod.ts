@@ -201,6 +201,12 @@ export const editProfileSocialMediaSchema = z.object({
   twitter: socialMediaSchema,
   instagram: socialMediaSchema,
   linkedin: socialMediaSchema,
+  github: socialMediaSchema,
+  youtube: socialMediaSchema,
+  twitch: socialMediaSchema,
+  tiktok: socialMediaSchema,
+  patreon: socialMediaSchema,
+  behance: socialMediaSchema,
 });
 
 export type editProfileSocialMediaSchemaType = z.infer<

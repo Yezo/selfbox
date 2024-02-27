@@ -19,10 +19,10 @@ export type OldSocialMediaType = {
   twitter: string | null;
   instagram: string | null;
   linkedin: string | null;
-  // github: string | null;
-  // youtube: string | null;
-  // twitch: string | null;
-  // tiktok: string | null;
-  // patreon: string | null;
-  // behance: string | null;
+  github: string | null;
+  youtube: string | null;
+  twitch: string | null;
+  tiktok: string | null;
+  patreon: string | null;
+  behance: string | null;
 };

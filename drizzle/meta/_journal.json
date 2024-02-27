@@ -225,6 +225,20 @@
       "when": 1709065678566,
       "tag": "0031_dizzy_mysterio",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "5",
+      "when": 1709068669120,
+      "tag": "0032_bumpy_captain_britain",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1709069493193,
+      "tag": "0033_zippy_hellcat",
+      "breakpoints": true
     }
   ]
 }

@@ -9,7 +9,17 @@ import { FormField, Form } from "@/components/ui/form";
 import { SubmitButton } from "@/components/forms/FormSubmitButton";
 import { useRouter } from "next/navigation";
 import { updateSocialMediaLinks } from "@/db/actions/user";
-import { InstagramIcon, LinkedInIcon, TwitterIcon } from "@/styles/icons";
+import {
+  BehanceIcon,
+  GitHubLogoIcon,
+  InstagramIcon,
+  LinkedInIcon,
+  PatreonIcon,
+  TikTokIcon,
+  TwitchIcon,
+  TwitterIcon,
+  YoutubeIcon,
+} from "@/styles/icons";
 import { TooltipItem } from "@/components/profile/TooltipItem";
 import { OldSocialMediaType } from "@/types/types";
 import {
@@ -44,6 +54,12 @@ export const EditProfileSocialMediaForm = ({
       twitter: oldSocialMedia?.twitter || "",
       instagram: oldSocialMedia?.instagram || "",
       linkedin: oldSocialMedia?.linkedin || "",
+      github: oldSocialMedia?.github || "",
+      youtube: oldSocialMedia?.youtube || "",
+      twitch: oldSocialMedia?.twitch || "",
+      tiktok: oldSocialMedia?.tiktok || "",
+      patreon: oldSocialMedia?.patreon || "",
+      behance: oldSocialMedia?.behance || "",
     },
   });
 
@@ -171,7 +187,141 @@ export const EditProfileSocialMediaForm = ({
           )}
         />
 
-        <SubmitButton pending={isPending}>Update</SubmitButton>
+        <FormField
+          control={form.control}
+          name="github"
+          render={({ field }) => (
+            <FormFieldItem>
+              <div className="flex gap-2">
+                <TooltipItem label="GitHub">
+                  <GitHubLogoIcon />
+                </TooltipItem>
+
+                <Input
+                  placeholder={
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                  }
+                  {...field}
+                  className={`${FormInputTextCSS}`}
+                />
+              </div>
+            </FormFieldItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="youtube"
+          render={({ field }) => (
+            <FormFieldItem>
+              <div className="flex gap-2">
+                <TooltipItem label="Youtube">
+                  <YoutubeIcon />
+                </TooltipItem>
+
+                <Input
+                  placeholder={
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                  }
+                  {...field}
+                  className={`${FormInputTextCSS}`}
+                />
+              </div>
+            </FormFieldItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="twitch"
+          render={({ field }) => (
+            <FormFieldItem>
+              <div className="flex gap-2">
+                <TooltipItem label="Twitch">
+                  <TwitchIcon />
+                </TooltipItem>
+
+                <Input
+                  placeholder={
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                  }
+                  {...field}
+                  className={`${FormInputTextCSS}`}
+                />
+              </div>
+            </FormFieldItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="tiktok"
+          render={({ field }) => (
+            <FormFieldItem>
+              <div className="flex gap-2">
+                <TooltipItem label="TikTok">
+                  <TikTokIcon />
+                </TooltipItem>
+
+                <Input
+                  placeholder={
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                  }
+                  {...field}
+                  className={`${FormInputTextCSS}`}
+                />
+              </div>
+            </FormFieldItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="patreon"
+          render={({ field }) => (
+            <FormFieldItem>
+              <div className="flex gap-2">
+                <TooltipItem label="Patreon">
+                  <PatreonIcon />
+                </TooltipItem>
+
+                <Input
+                  placeholder={
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                  }
+                  {...field}
+                  className={`${FormInputTextCSS}`}
+                />
+              </div>
+            </FormFieldItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="behance"
+          render={({ field }) => (
+            <FormFieldItem>
+              <div className="flex gap-2">
+                <TooltipItem label="Behance">
+                  <BehanceIcon />
+                </TooltipItem>
+
+                <Input
+                  placeholder={
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                  }
+                  {...field}
+                  className={`${FormInputTextCSS}`}
+                />
+              </div>
+            </FormFieldItem>
+          )}
+        />
+
+        <SubmitButton pending={isPending}>
+          {oldSocialMedia ? "Update" : "Add social platforms"}
+        </SubmitButton>
       </form>
     </Form>
   );

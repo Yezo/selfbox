@@ -51,6 +51,12 @@ export const userSocialMedia = pgTable("userSocialMedia", {
   twitter: varchar("twitter", { length: 30 }),
   instagram: varchar("instagram", { length: 30 }),
   linkedin: varchar("linkedin", { length: 30 }),
+  github: varchar("github", { length: 30 }),
+  youtube: varchar("youtube", { length: 30 }),
+  twitch: varchar("twitch", { length: 30 }),
+  tiktok: varchar("tiktok", { length: 30 }),
+  patreon: varchar("patreon", { length: 30 }),
+  behance: varchar("behance", { length: 30 }),
 });
 
 export const songs = pgTable("songs", {

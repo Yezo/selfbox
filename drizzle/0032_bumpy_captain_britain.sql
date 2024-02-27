@@ -1,0 +1,1 @@
+ALTER TABLE "userSocialMedia" ADD COLUMN "github" varchar(30);

@@ -18,7 +18,7 @@ import {
 } from "@/types/zod";
 import { AuthError } from "next-auth";
 import { signIn, update } from "@/lib/auth";
-import { DatabaseError } from "@/types/types";
+import { DatabaseError, OldSocialMediaType } from "@/types/types";
 
 export async function checkUserExistsById(userId: string): Promise<boolean> {
   noStore();
@@ -235,13 +235,30 @@ export async function insertSocialMedia(
   //Validate form data
   const validatedInput = editProfileSocialMediaSchema.safeParse(rawInput);
   if (!validatedInput.success) return "invalid-input";
+  const {
+    twitter,
+    instagram,
+    linkedin,
+    github,
+    youtube,
+    twitch,
+    tiktok,
+    patreon,
+    behance,
+  } = validatedInput.data;
 
   try {
     const test = await db.insert(userSocialMedia).values({
       userId: userId,
-      twitter: validatedInput?.data?.twitter || "",
-      instagram: validatedInput?.data?.instagram || "",
-      linkedin: validatedInput?.data?.linkedin || "",
+      twitter: twitter || "",
+      instagram: instagram || "",
+      linkedin: linkedin || "",
+      github: github || "",
+      youtube: youtube || "",
+      twitch: twitch || "",
+      tiktok: tiktok || "",
+      patreon: patreon || "",
+      behance: behance || "",
     });
     return "success" || null;
   } catch (error) {
@@ -251,12 +268,7 @@ export async function insertSocialMedia(
 
 export async function updateSocialMediaLinks(
   rawInput: editProfileSocialMediaSchemaType,
-  oldSocialMedia: {
-    userId: string;
-    twitter: string | null;
-    instagram: string | null;
-    linkedin: string | null;
-  },
+  oldSocialMedia: OldSocialMediaType,
   userId: string,
   username: string,
 ): Promise<DatabaseError> {
@@ -264,7 +276,17 @@ export async function updateSocialMediaLinks(
     //Validate form data
     const validatedInput = editProfileSocialMediaSchema.safeParse(rawInput);
     if (!validatedInput.success) return "invalid-input";
-    const { twitter, instagram, linkedin } = validatedInput.data;
+    const {
+      twitter,
+      instagram,
+      linkedin,
+      github,
+      youtube,
+      twitch,
+      tiktok,
+      patreon,
+      behance,
+    } = validatedInput.data;
 
     // Check if the user already has an existing social media profile
     const userHasSocials = await getUserSocialMedia(userId);
@@ -278,11 +300,22 @@ export async function updateSocialMediaLinks(
       twitter: oldSocialMedia?.twitter || "",
       instagram: oldSocialMedia?.instagram || "",
       linkedin: oldSocialMedia?.linkedin || "",
+      github: oldSocialMedia?.github || "",
+      youtube: oldSocialMedia?.youtube || "",
+      twitch: oldSocialMedia?.twitch || "",
+      tiktok: oldSocialMedia?.tiktok || "",
+      patreon: oldSocialMedia?.patreon || "",
+      behance: oldSocialMedia?.behance || "",
     };
     if (twitter !== undefined) updateData.twitter = twitter;
     if (instagram !== undefined) updateData.instagram = instagram;
     if (linkedin !== undefined) updateData.linkedin = linkedin;
-
+    if (github !== undefined) updateData.github = github;
+    if (youtube !== undefined) updateData.youtube = youtube;
+    if (twitch !== undefined) updateData.twitch = twitch;
+    if (tiktok !== undefined) updateData.tiktok = tiktok;
+    if (patreon !== undefined) updateData.patreon = patreon;
+    if (behance !== undefined) updateData.behance = behance;
     // If the user doesn't have social media links, insert the new one
     if (!userHasSocials) {
       const test = await insertSocialMedia(
@@ -290,6 +323,12 @@ export async function updateSocialMediaLinks(
           twitter: twitter,
           instagram: instagram,
           linkedin: linkedin,
+          github: github,
+          youtube: youtube,
+          twitch: twitch,
+          tiktok: tiktok,
+          patreon: patreon,
+          behance: behance,
         },
         userId,
       );
