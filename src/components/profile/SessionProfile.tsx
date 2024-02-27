@@ -3,7 +3,11 @@ import { auth } from "@/lib/auth";
 import { UserAvatar } from "@/components/nav/UserAvatar";
 import { SectionBlock } from "@/components/profile/SectionBlock";
 import { H1 } from "@/components/layout/H1";
-import { capitalizeEveryWord, removeURLPrefixes } from "@/lib/utils";
+import {
+  capitalizeEveryWord,
+  handleSocialMediaSuffix,
+  removeURLPrefixes,
+} from "@/lib/utils";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Url } from "next/dist/shared/lib/router/router";
 import { EditProfileForm } from "@/components/forms/EditProfile";
@@ -17,16 +21,51 @@ import {
   moviesList,
   booksList,
 } from "@/lib/temp";
+import { getUserSocialMedia } from "@/db/actions/user";
+import {
+  InstagramIcon,
+  LinkedInIcon,
+  TwitterIcon,
+  YoutubeIcon,
+  GitHubLogoIcon,
+  TwitchIcon,
+  TikTokIcon,
+  PatreonIcon,
+  BehanceIcon,
+} from "@/styles/icons";
 
 type SessionProfileProps = {
   oldSocialMedia: OldSocialMediaType;
 };
+export function generateSocialMediaIcon(website: string) {
+  if (website === "twitter") return <TwitterIcon size="small" />;
+  if (website === "instagram") return <InstagramIcon size="small" />;
+  if (website === "linkedin") return <LinkedInIcon size="small" />;
+  if (website === "github") return <GitHubLogoIcon size="small" />;
+  if (website === "youtube") return <YoutubeIcon size="small" />;
+  if (website === "twitch") return <TwitchIcon size="small" />;
+  if (website === "tiktok") return <TikTokIcon size="small" />;
+  if (website === "patreon") return <PatreonIcon size="small" />;
+  if (website === "behance") return <BehanceIcon size="small" />;
+}
 
 export const SessionProfile = async ({
   oldSocialMedia,
 }: SessionProfileProps) => {
   const session = await auth();
   const userProfile = await getUserProfileById(session?.user.id);
+  const userSocialMedia = await getUserSocialMedia(session?.user.id!);
+  const arrWithObjs =
+    userSocialMedia &&
+    Object.entries(userSocialMedia)
+      .filter(
+        ([key, value]) =>
+          value !== "" &&
+          value !== undefined &&
+          value !== null &&
+          key !== "userId",
+      )
+      .map(([key, value]) => ({ [key]: value }));
 
   return (
     <>
@@ -42,10 +81,6 @@ export const SessionProfile = async ({
             />
             <div className="text-center">
               <H1> {capitalizeEveryWord(session?.user.name)}</H1>
-
-              <p className="font-bricolage text-sm text-gray">
-                Full Stack Developer
-              </p>
 
               {userProfile?.website && (
                 <div className="space-x-2">
@@ -85,39 +120,31 @@ export const SessionProfile = async ({
         <div className="space-y-12 py-8">
           <SectionBlock title="About Me">{userProfile?.bio}</SectionBlock>
 
-          <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
-            <h2 className="font-semibold">Socials 1</h2>
-            <div className="grid grid-cols-2 gap-4 text-sm text-gray">
-              {socialMediaListOne.map((item) => (
-                <Link
-                  key={item}
-                  href={item}
-                  className="flex items-center gap-2 rounded border bg-neutral-900 p-2 font-semibold transition-colors duration-300 hover:bg-neutral-800 hover:font-bold hover:text-white"
-                >
-                  {item} <ArrowTopRightIcon />
-                </Link>
-              ))}
+          {arrWithObjs && (
+            <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
+              <h2 className="font-semibold">Socials</h2>
+              <div className="grid grid-cols-2 gap-2 text-sm text-gray">
+                {arrWithObjs.map((item) => {
+                  const [key, value] = Object.entries(item)[0];
+                  return (
+                    <Link
+                      key={key}
+                      href={handleSocialMediaSuffix(key, value!)}
+                      className="flex items-center gap-2 rounded border bg-neutral-900 p-2 font-semibold capitalize transition-colors duration-300 hover:bg-neutral-800  hover:text-white"
+                      target="_blank"
+                    >
+                      <div className="">{generateSocialMediaIcon(key)}</div>
+                      {key}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-
-          <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
-            <h2 className="font-semibold">Socials 2</h2>
-            <div className="grid grid-cols-2 gap-4 text-sm text-gray">
-              {socialMediaListTwo.map((item) => (
-                <Link
-                  key={item}
-                  href={item}
-                  className="flex items-center gap-2 rounded border bg-neutral-900 p-2 font-semibold transition-colors duration-300 hover:bg-neutral-800 hover:font-bold hover:text-white"
-                >
-                  {item} <ArrowTopRightIcon />
-                </Link>
-              ))}
-            </div>
-          </div>
+          )}
 
           <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
             <h2 className="font-semibold">Favorite TV shows</h2>
-            <div className="grid grid-cols-5 gap-4 text-sm text-gray">
+            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
               {tvShowsList.map((item) => (
                 <Image
                   key={item}
@@ -133,7 +160,7 @@ export const SessionProfile = async ({
 
           <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
             <h2 className="font-semibold">Favorite movies</h2>
-            <div className="grid grid-cols-5 gap-4 text-sm text-gray">
+            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
               {moviesList.map((item) => (
                 <Image
                   key={item}
@@ -149,7 +176,7 @@ export const SessionProfile = async ({
 
           <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
             <h2 className="font-semibold">Favorite books</h2>
-            <div className="grid grid-cols-5 gap-4 text-sm text-gray">
+            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
               {booksList.map((item) => (
                 <Image
                   key={item}

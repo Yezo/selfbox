@@ -1,8 +1,12 @@
 import { H1 } from "@/components/layout/H1";
 import { UserAvatar } from "@/components/nav/UserAvatar";
 import { getUserProfileById } from "@/db/actions/settings";
-import { getUserByUsername } from "@/db/actions/user";
-import { capitalizeEveryWord, removeURLPrefixes } from "@/lib/utils";
+import { getUserByUsername, getUserSocialMedia } from "@/db/actions/user";
+import {
+  capitalizeEveryWord,
+  handleSocialMediaSuffix,
+  removeURLPrefixes,
+} from "@/lib/utils";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Url } from "next/dist/shared/lib/router/router";
 import { notFound } from "next/navigation";
@@ -16,6 +20,7 @@ import {
   moviesList,
   booksList,
 } from "@/lib/temp";
+import { generateSocialMediaIcon } from "@/components/profile/SessionProfile";
 
 type DatabaseProfileProps = {
   pathnameUsername: string;
@@ -27,6 +32,19 @@ export const DatabaseProfile = async ({
   const databaseUser = await getUserByUsername(pathnameUsername);
   const databaseUserProfile = await getUserProfileById(databaseUser?.id);
   if (!databaseUser) notFound();
+  const userSocialMedia = await getUserSocialMedia(databaseUser.id);
+  const arrWithObjs =
+    userSocialMedia &&
+    Object.entries(userSocialMedia)
+      .filter(
+        ([key, value]) =>
+          value !== "" &&
+          value !== undefined &&
+          value !== null &&
+          key !== "userId",
+      )
+      .map(([key, value]) => ({ [key]: value }));
+
   return (
     <>
       <header className="flex min-w-full flex-col items-center justify-center gap-2">
@@ -38,10 +56,6 @@ export const DatabaseProfile = async ({
         />
         <div className="text-center">
           <H1> {capitalizeEveryWord(databaseUser?.name)}</H1>
-
-          <p className="font-bricolage text-sm text-gray">
-            Full Stack Developer
-          </p>
 
           <div className="space-x-2">
             {databaseUser && (
@@ -76,39 +90,31 @@ export const DatabaseProfile = async ({
             </SectionBlock>
           )}
 
-          <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
-            <h2 className="font-semibold">Socials 1</h2>
-            <div className="grid grid-cols-2 gap-4 text-sm text-gray">
-              {socialMediaListOne.map((item) => (
-                <Link
-                  key={item}
-                  href={item}
-                  className="flex items-center gap-2 rounded border bg-neutral-900 p-2 font-semibold transition-colors duration-300 hover:bg-neutral-800 hover:font-bold hover:text-white"
-                >
-                  {item} <ArrowTopRightIcon />
-                </Link>
-              ))}
+          {arrWithObjs && (
+            <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
+              <h2 className="font-semibold">Socials</h2>
+              <div className="grid grid-cols-2 gap-2 text-sm text-gray">
+                {arrWithObjs.map((item) => {
+                  const [key, value] = Object.entries(item)[0];
+                  return (
+                    <Link
+                      key={key}
+                      href={handleSocialMediaSuffix(key, value!)}
+                      className="flex items-center gap-2 rounded border bg-neutral-900 p-2 font-semibold capitalize transition-colors duration-300 hover:bg-neutral-800  hover:text-white"
+                      target="_blank"
+                    >
+                      <div className="">{generateSocialMediaIcon(key)}</div>
+                      {key}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-
-          <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
-            <h2 className="font-semibold">Socials 2</h2>
-            <div className="grid grid-cols-2 gap-4 text-sm text-gray">
-              {socialMediaListTwo.map((item) => (
-                <Link
-                  key={item}
-                  href={item}
-                  className="flex items-center gap-2 rounded border bg-neutral-900 p-2 font-semibold transition-colors duration-300 hover:bg-neutral-800 hover:font-bold hover:text-white"
-                >
-                  {item} <ArrowTopRightIcon />
-                </Link>
-              ))}
-            </div>
-          </div>
+          )}
 
           <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
             <h2 className="font-semibold">Favorite TV shows</h2>
-            <div className="grid grid-cols-5 gap-4 text-sm text-gray">
+            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
               {tvShowsList.map((item) => (
                 <Image
                   key={item}
@@ -124,7 +130,7 @@ export const DatabaseProfile = async ({
 
           <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
             <h2 className="font-semibold">Favorite movies</h2>
-            <div className="grid grid-cols-5 gap-4 text-sm text-gray">
+            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
               {moviesList.map((item) => (
                 <Image
                   key={item}
@@ -140,7 +146,7 @@ export const DatabaseProfile = async ({
 
           <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
             <h2 className="font-semibold">Favorite books</h2>
-            <div className="grid grid-cols-5 gap-4 text-sm text-gray">
+            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
               {booksList.map((item) => (
                 <Image
                   key={item}

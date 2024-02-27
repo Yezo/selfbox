@@ -169,75 +169,83 @@ export const SocialMediaContainer = ({
   );
 };
 
-export const TwitterIcon = () => {
+export const TwitterIcon = ({ size }: { size?: string }) => {
   return (
-    <SocialMediaContainer className="bg-black">
+    <SocialMediaContainer
+      className={`bg-black ${size === "small" && "min-h-6 min-w-6"}`}
+    >
       <Image
         src="/images/logo/twitter.png"
         alt="Twitter's logo"
-        width={24}
-        height={24}
-        className="max-h-[24px] max-w-[24px]"
+        width={size === "small" ? 12 : 24}
+        height={size === "small" ? 12 : 24}
+        className={`${size === "small" ? "max-h-[12px] max-w-[12px]" : "max-h-[24px] max-w-[24px]"}`}
         quality={100}
       />
     </SocialMediaContainer>
   );
 };
 
-export const InstagramIcon = () => {
+export const InstagramIcon = ({ size }: { size?: string }) => {
   return (
-    <SocialMediaContainer className=" bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]">
+    <SocialMediaContainer
+      className={`bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] ${size === "small" && "min-h-6 min-w-6"}`}
+    >
       <Image
         src="/images/logo/instagram.png"
         alt="Instagram's logo"
-        width={28}
-        height={28}
-        className="max-h-[28x] max-w-[28px]"
+        width={size === "small" ? 14 : 28}
+        height={size === "small" ? 14 : 28}
+        className={`${size === "small" ? "max-h-[14px] max-w-[14px]" : "max-h-[28x] max-w-[28px]"}`}
         quality={100}
       />
     </SocialMediaContainer>
   );
 };
 
-export const LinkedInIcon = () => {
+export const LinkedInIcon = ({ size }: { size?: string }) => {
   return (
     <Image
       src="/images/logo/linkedin.png"
       alt="LinkedIn's logo"
-      width={44}
-      height={44}
-      className="max-h-[44x] max-w-[44px] rounded-md object-cover shadow-sm"
+      width={size === "small" ? 24 : 44}
+      height={size === "small" ? 24 : 44}
+      className={`rounded-md object-cover shadow-sm ${size === "small" ? "max-h-[24px] max-w-[24px]" : "max-h-[44x] max-w-[44px]"}`}
       quality={100}
     />
   );
 };
 
-export const GitHubLogoIcon = () => {
+export const GitHubLogoIcon = ({ size }: { size?: string }) => {
   return (
-    <SocialMediaContainer className="bg-slate-700">
+    <SocialMediaContainer
+      className={`bg-slate-700 ${size === "small" && "min-h-6 min-w-6"}`}
+    >
       <Image
         src="/images/logo/github.png"
         alt="GitHub's logo"
-        width={28}
-        height={28}
-        className="max-h-[28x] max-w-[28px] rounded-md object-cover shadow-sm"
+        width={size === "small" ? 14 : 28}
+        height={size === "small" ? 14 : 28}
+        className={`rounded-md object-cover shadow-sm ${size === "small" ? "max-h-[14px] max-w-[14px]" : "max-h-[28x] max-w-[28px]"}`}
         quality={100}
       />
     </SocialMediaContainer>
   );
 };
 
-export const YoutubeIcon = () => {
+export const YoutubeIcon = ({ size }: { size?: string }) => {
   return (
-    <SocialMediaContainer className="bg-[#FF0000]">
+    <SocialMediaContainer
+      className={`bg-[#FF0000] ${size === "small" && "min-h-6 min-w-6"} text-white`}
+    >
       <svg
-        width="36"
-        height="36"
+        width={size === "small" ? 16 : 36}
+        height={size === "small" ? 16 : 36}
         viewBox="0 0 40 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <rect width="40" height="40" rx="10" fill="#FF0000"></rect>
+        <rect width="40" height="40" rx="10" fill="#FFFFFFF"></rect>
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -249,13 +257,15 @@ export const YoutubeIcon = () => {
   );
 };
 
-export const TwitchIcon = () => {
+export const TwitchIcon = ({ size }: { size?: string }) => {
   return (
-    <SocialMediaContainer className="bg-[#6441a5]">
+    <SocialMediaContainer
+      className={`bg-[#6441a5] ${size === "small" && "min-h-6 min-w-6 text-white"}`}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width={size === "small" ? 12 : 24}
+        height={size === "small" ? 12 : 24}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -269,39 +279,41 @@ export const TwitchIcon = () => {
   );
 };
 
-export const TikTokIcon = () => {
+export const TikTokIcon = ({ size }: { size?: string }) => {
   return (
     <Image
       src="/images/logo/tiktok.png"
       alt="TikTok's logo"
-      width={44}
-      height={44}
-      className="max-h-[44x] max-w-[44px] rounded-md object-cover shadow-sm"
+      width={size === "small" ? 24 : 44}
+      height={size === "small" ? 24 : 44}
+      className={`rounded-md object-cover shadow-sm ${size === "small" ? "max-h-[24px] max-w-[24px]" : "max-h-[44x] max-w-[44px]"}`}
       quality={100}
     />
   );
 };
 
-export const PatreonIcon = () => {
+export const PatreonIcon = ({ size }: { size?: string }) => {
   return (
-    <SocialMediaContainer className="bg-white">
+    <SocialMediaContainer
+      className={`bg-white ${size === "small" && "min-h-6 min-w-6"}`}
+    >
       <Image
         src="/images/logo/patreon.png"
         alt="Patreon's logo"
-        width={28}
-        height={28}
-        className="max-h-[28x] max-w-[28px] rounded-md object-cover shadow-sm"
+        width={size === "small" ? 14 : 28}
+        height={size === "small" ? 14 : 28}
+        className={`rounded-md object-cover shadow-sm ${size === "small" ? "max-h-[14px] max-w-[14px]" : "max-h-[28x] max-w-[28px]"}`}
         quality={100}
       />
     </SocialMediaContainer>
   );
 };
 
-export const BehanceIcon = () => {
+export const BehanceIcon = ({ size }: { size?: string }) => {
   return (
     <svg
-      width="44"
-      height="44"
+      width={size === "small" ? 24 : 44}
+      height={size === "small" ? 24 : 44}
       viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

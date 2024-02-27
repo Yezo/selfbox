@@ -72,3 +72,13 @@ export function removeURLPrefixes(inputString: string | null | undefined) {
 
   return inputString.replace(/^(https?:\/\/|www\.)+/i, "");
 }
+
+export function handleSocialMediaSuffix(website: string, username: string) {
+  //.tv
+  if (website === "twitch") return `https://${website}.tv/${username}`;
+
+  //.net
+  if (website === "behance") return `https://${website}.net/${username}`;
+
+  return `https://${website}.com/${username}`;
+}
