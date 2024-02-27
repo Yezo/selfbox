@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { OldSocialMediaType, UserProfileType } from "@/types/types";
 
 const searchParamsSchema = z.object({
   edit: z.optional(z.enum(["true", "false"])),
@@ -31,20 +32,9 @@ type SearchParams = z.TypeOf<typeof searchParamsSchema>;
 type EditProfileFormsProps = {
   username: string | undefined;
   name: string | null | undefined;
-  userProfile: {
-    id: number;
-    userId: string;
-    bio: string | null;
-    pronouns: "Do not specify" | "They/them" | "He/him" | "She/her" | null;
-    website: string | null;
-  } | null;
+  userProfile: UserProfileType;
   userId: string | undefined;
-  oldSocialMedia: {
-    userId: string;
-    twitter: string | null;
-    instagram: string | null;
-    linkedin: string | null;
-  };
+  oldSocialMedia: OldSocialMediaType;
 };
 
 export function EditProfileForm({

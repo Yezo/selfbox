@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { updateSocialMediaLinks } from "@/db/actions/user";
 import { InstagramIcon, LinkedInIcon, TwitterIcon } from "@/styles/icons";
 import { TooltipItem } from "@/components/profile/TooltipItem";
+import { OldSocialMediaType } from "@/types/types";
 import {
   editProfileSocialMediaSchema,
   editProfileSocialMediaSchemaType,
@@ -23,12 +24,7 @@ import {
 
 type EditProfileSocialMediaProps = {
   username: string;
-  oldSocialMedia: {
-    userId: string;
-    twitter: string | null;
-    instagram: string | null;
-    linkedin: string | null;
-  };
+  oldSocialMedia: OldSocialMediaType;
   userId: string | undefined;
   setOpen?: Dispatch<SetStateAction<boolean>>;
 };
