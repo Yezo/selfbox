@@ -290,32 +290,7 @@ export async function updateSocialMediaLinks(
 
     // Check if the user already has an existing social media profile
     const userHasSocials = await getUserSocialMedia(userId);
-    // const [userHasSocialMediaLinks] = await db
-    //   .select()
-    //   .from(userSocialMedia)
-    //   .where(eq(userSocialMedia.userId, userId));
 
-    const updateData = {
-      userId: userId,
-      twitter: oldSocialMedia?.twitter || "",
-      instagram: oldSocialMedia?.instagram || "",
-      linkedin: oldSocialMedia?.linkedin || "",
-      github: oldSocialMedia?.github || "",
-      youtube: oldSocialMedia?.youtube || "",
-      twitch: oldSocialMedia?.twitch || "",
-      tiktok: oldSocialMedia?.tiktok || "",
-      patreon: oldSocialMedia?.patreon || "",
-      behance: oldSocialMedia?.behance || "",
-    };
-    if (twitter !== undefined) updateData.twitter = twitter;
-    if (instagram !== undefined) updateData.instagram = instagram;
-    if (linkedin !== undefined) updateData.linkedin = linkedin;
-    if (github !== undefined) updateData.github = github;
-    if (youtube !== undefined) updateData.youtube = youtube;
-    if (twitch !== undefined) updateData.twitch = twitch;
-    if (tiktok !== undefined) updateData.tiktok = tiktok;
-    if (patreon !== undefined) updateData.patreon = patreon;
-    if (behance !== undefined) updateData.behance = behance;
     // If the user doesn't have social media links, insert the new one
     if (!userHasSocials) {
       const test = await insertSocialMedia(
@@ -338,7 +313,17 @@ export async function updateSocialMediaLinks(
     //If the user already has social media links, update with new ones
     await db
       .update(userSocialMedia)
-      .set(updateData)
+      .set({
+        twitter: twitter || "",
+        instagram: instagram || "",
+        linkedin: linkedin || "",
+        github: github || "",
+        youtube: youtube || "",
+        twitch: twitch || "",
+        tiktok: tiktok || "",
+        patreon: patreon || "",
+        behance: behance || "",
+      })
       .where(eq(userSocialMedia.userId, userId));
 
     // Return "success" after successful insertion
