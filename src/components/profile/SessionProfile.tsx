@@ -7,6 +7,7 @@ import { capitalizeEveryWord, removeURLPrefixes } from "@/lib/utils";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Url } from "next/dist/shared/lib/router/router";
 import { EditProfileForm } from "@/components/forms/EditProfile";
+import { OldSocialMediaType } from "@/types/types";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -18,12 +19,7 @@ import {
 } from "@/lib/temp";
 
 type SessionProfileProps = {
-  oldSocialMedia: {
-    userId: string;
-    twitter: string | null;
-    instagram: string | null;
-    linkedin: string | null;
-  };
+  oldSocialMedia: OldSocialMediaType;
 };
 
 export const SessionProfile = async ({
