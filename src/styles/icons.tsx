@@ -1,3 +1,6 @@
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+
 export const HomeIcon = () => {
   return (
     <svg
@@ -144,5 +147,67 @@ export const WrenchIcon = () => {
     >
       <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
     </svg>
+  );
+};
+
+export const SocialMediaContainer = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div
+      className={cn(
+        "grid min-h-11 min-w-11 place-items-center rounded-md bg-sky-800 p-1 shadow-sm",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+
+export const TwitterIcon = () => {
+  return (
+    <SocialMediaContainer className="bg-black">
+      <Image
+        src="/images/logo/twitter.png"
+        alt="Twitter's logo"
+        width={28}
+        height={28}
+        className="max-h-[28px] max-w-[28px]"
+        quality={100}
+      />
+    </SocialMediaContainer>
+  );
+};
+
+export const InstagramIcon = () => {
+  return (
+    <SocialMediaContainer className=" bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]">
+      <Image
+        src="/images/logo/instagram.png"
+        alt="Instagram's logo"
+        width={28}
+        height={28}
+        className="max-h-[28x] max-w-[28px]"
+        quality={100}
+      />
+    </SocialMediaContainer>
+  );
+};
+
+export const LinkedInIcon = () => {
+  return (
+    <Image
+      src="/images/logo/linkedin.png"
+      alt="LinkedIn's logo"
+      width={44}
+      height={44}
+      className="max-h-[44x] max-w-[44px] rounded-md object-cover shadow-sm"
+      quality={100}
+    />
   );
 };

@@ -213,48 +213,37 @@ export async function signInWithPassword(
   }
 }
 
-export async function insertSocialMediaLinks(
-  rawInput: editProfileSocialMediaSchemaType,
-  userId: string,
-): Promise<DatabaseError> {
-  noStore();
-  try {
-    const validatedInput = editProfileSocialMediaSchema.safeParse(rawInput);
-    if (!validatedInput.success) return "invalid-input";
-
-    // Check if the user already has an existing bio
-    const [existingSocialMedia] = await db
-      .select()
-      .from(userSocialMedia)
-      .where(eq(userSocialMedia.userId, userId));
-
-    // If the user already has a bio, return "exists"
-    if (existingSocialMedia) return "exists";
-
-    // If the user doesn't have an existing bio, insert the new one
-    await db.insert(userSocialMedia).values({
-      userId: userId,
-      twitter: validatedInput.data.twitter,
-      instagram: validatedInput.data.instagram,
-      linkedin: validatedInput.data.linkedin,
-    });
-
-    // Return "success" after successful insertion
-    return "success";
-  } catch (error) {
-    throw new Error("Error inserting user bio");
-  }
-}
-
 export async function getUserSocialMedia(userId: string) {
   noStore();
   try {
-    //Check and find a user that matches emails
-    const [userSocials] = await db
+    const [userHasSocialMediaLinks] = await db
       .select()
       .from(userSocialMedia)
       .where(eq(userSocialMedia.userId, userId));
-    return userSocials || null;
+
+    return userHasSocialMediaLinks || null;
+  } catch (error) {
+    throw new Error("Error getting user's social media links");
+  }
+}
+
+export async function insertSocialMedia(
+  rawInput: editProfileSocialMediaSchemaType,
+  userId: string,
+) {
+  noStore();
+  //Validate form data
+  const validatedInput = editProfileSocialMediaSchema.safeParse(rawInput);
+  if (!validatedInput.success) return "invalid-input";
+
+  try {
+    const test = await db.insert(userSocialMedia).values({
+      userId: userId,
+      twitter: validatedInput?.data?.twitter || "",
+      instagram: validatedInput?.data?.instagram || "",
+      linkedin: validatedInput?.data?.linkedin || "",
+    });
+    return "success" || null;
   } catch (error) {
     throw new Error("Error getting user's social media links");
   }
@@ -263,10 +252,10 @@ export async function getUserSocialMedia(userId: string) {
 export async function updateSocialMediaLinks(
   rawInput: editProfileSocialMediaSchemaType,
   oldSocialMedia: {
+    userId: string;
     twitter: string | null;
     instagram: string | null;
     linkedin: string | null;
-    userId: string;
   },
   userId: string,
   username: string,
@@ -278,29 +267,33 @@ export async function updateSocialMediaLinks(
     const { twitter, instagram, linkedin } = validatedInput.data;
 
     // Check if the user already has an existing social media profile
-    const [userHasSocialMediaLinks] = await db
-      .select()
-      .from(userSocialMedia)
-      .where(eq(userSocialMedia.userId, userId));
+    const userHasSocials = await getUserSocialMedia(userId);
+    // const [userHasSocialMediaLinks] = await db
+    //   .select()
+    //   .from(userSocialMedia)
+    //   .where(eq(userSocialMedia.userId, userId));
 
     const updateData = {
       userId: userId,
-      twitter: oldSocialMedia.twitter || "",
-      instagram: oldSocialMedia.instagram || "",
-      linkedin: oldSocialMedia.linkedin || "",
+      twitter: oldSocialMedia?.twitter || "",
+      instagram: oldSocialMedia?.instagram || "",
+      linkedin: oldSocialMedia?.linkedin || "",
     };
     if (twitter !== undefined) updateData.twitter = twitter;
     if (instagram !== undefined) updateData.instagram = instagram;
     if (linkedin !== undefined) updateData.linkedin = linkedin;
 
     // If the user doesn't have social media links, insert the new one
-    if (!userHasSocialMediaLinks) {
-      await db.insert(userSocialMedia).values({
-        userId: userId,
-        twitter: twitter,
-        instagram: instagram,
-        linkedin: linkedin,
-      });
+    if (!userHasSocials) {
+      const test = await insertSocialMedia(
+        {
+          twitter: twitter,
+          instagram: instagram,
+          linkedin: linkedin,
+        },
+        userId,
+      );
+      if (!test) return "not-found";
     }
 
     //If the user already has social media links, update with new ones
@@ -313,6 +306,6 @@ export async function updateSocialMediaLinks(
     revalidatePath(`/${username}`);
     return "success";
   } catch (error) {
-    throw new Error("Error inserting user bio");
+    throw new Error("Error updating user social media links");
   }
 }

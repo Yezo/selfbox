@@ -211,6 +211,20 @@
       "when": 1709007635428,
       "tag": "0029_wide_turbo",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "5",
+      "when": 1709063430293,
+      "tag": "0030_pale_chameleon",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "5",
+      "when": 1709065678566,
+      "tag": "0031_dizzy_mysterio",
+      "breakpoints": true
     }
   ]
 }

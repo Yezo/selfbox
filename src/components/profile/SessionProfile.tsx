@@ -51,21 +51,23 @@ export const SessionProfile = async ({
                 Full Stack Developer
               </p>
 
-              <div className="space-x-2">
-                <Link
-                  href={userProfile?.website as Url}
-                  className="inline-flex items-center rounded-md border bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-gray transition-colors hover:bg-neutral-800 hover:text-white focus:border-2 focus:outline-none"
-                >
-                  @{session?.user.username.toLowerCase()}
-                </Link>
+              {userProfile?.website && (
+                <div className="space-x-2">
+                  <Link
+                    href={userProfile.website as Url}
+                    className="inline-flex items-center rounded-md border bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-gray transition-colors hover:bg-neutral-800 hover:text-white focus:border-2 focus:outline-none"
+                  >
+                    @{session?.user.username.toLowerCase()}
+                  </Link>
 
-                <Link
-                  href={userProfile?.website as Url}
-                  className="inline-flex items-center rounded-md border bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-gray transition-colors hover:bg-neutral-800 hover:text-white focus:border-2 focus:outline-none"
-                >
-                  {removeURLPrefixes(userProfile?.website)}
-                </Link>
-              </div>
+                  <Link
+                    href={userProfile.website as Url}
+                    className="inline-flex items-center rounded-md border bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-gray transition-colors hover:bg-neutral-800 hover:text-white focus:border-2 focus:outline-none"
+                  >
+                    {removeURLPrefixes(userProfile.website)}
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
