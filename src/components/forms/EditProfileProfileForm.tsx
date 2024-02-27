@@ -2,6 +2,11 @@
 
 import { Dispatch, SetStateAction, useState } from "react";
 import { Input } from "@/components/ui/input";
+import {
+  FormInputTextCSS,
+  capitalizeEveryWord,
+  generateToast,
+} from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateUserProfileSettings } from "@/db/actions/settings";
 import { useForm } from "react-hook-form";
@@ -10,11 +15,6 @@ import { FormFieldItem } from "@/components/forms/FormFieldItem";
 import { Textarea } from "@/components/ui/textarea";
 import { FormField, FormControl, Form } from "@/components/ui/form";
 import {
-  FormInputTextCSS,
-  capitalizeEveryWord,
-  generateToast,
-} from "@/lib/utils";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -22,8 +22,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SubmitButton } from "@/components/forms/FormSubmitButton";
+import { useRouter } from "next/navigation";
 
-type SettingsFormProps = {
+type EditProfileProfileFormProps = {
   oldUsername: string;
   oldName: string | undefined | null;
   oldUserProfile: {
@@ -37,13 +38,14 @@ type SettingsFormProps = {
   setOpen?: Dispatch<SetStateAction<boolean>>;
 };
 
-export const SettingsProfileForm = ({
+export const EditProfileProfileForm = ({
   oldUsername,
   oldName,
   userId,
   oldUserProfile,
   setOpen,
-}: SettingsFormProps) => {
+}: EditProfileProfileFormProps) => {
+  const router = useRouter();
   const [isPending, setIsPending] = useState(false);
 
   const form = useForm<settingsProfileSchemaType>({
@@ -73,6 +75,9 @@ export const SettingsProfileForm = ({
           form.reset(undefined, { keepDirtyValues: true });
           form.clearErrors();
           setOpen && setOpen(false);
+          router.replace(
+            `/${formData.username.toLowerCase() || oldUsername.toLowerCase()}`,
+          );
           break;
 
         case "username-exists":
@@ -116,7 +121,7 @@ export const SettingsProfileForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="username"
@@ -135,11 +140,7 @@ export const SettingsProfileForm = ({
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormFieldItem
-              label="Name"
-              description="Your name appears throughout Selfbox and can be removed at any
-                        time."
-            >
+            <FormFieldItem label="Name">
               <Input
                 placeholder={capitalizeEveryWord(oldName) || "John Doe"}
                 {...field}
@@ -189,10 +190,7 @@ export const SettingsProfileForm = ({
           control={form.control}
           name="website"
           render={({ field }) => (
-            <FormFieldItem
-              label="Website"
-              description="This can be your own Selfbox, portfolio website, or your main social website links."
-            >
+            <FormFieldItem label="Website">
               <Input
                 placeholder={"https://selfbox.com"}
                 {...field}

@@ -184,3 +184,25 @@ export const settingsProfileSchema = z.object({
 });
 
 export type settingsProfileSchemaType = z.infer<typeof settingsProfileSchema>;
+
+export const socialMediaSchema = z.union([
+  z
+    .string()
+    .min(1, {
+      message: "Username must be at least 1 character(s).",
+    })
+    .max(30, {
+      message: "Username cannot have more than 30 characters.",
+    }),
+  z.literal(""),
+]);
+
+export const editProfileSocialMediaSchema = z.object({
+  twitter: socialMediaSchema,
+  instagram: socialMediaSchema,
+  linkedin: socialMediaSchema,
+});
+
+export type editProfileSocialMediaSchemaType = z.infer<
+  typeof editProfileSocialMediaSchema
+>;

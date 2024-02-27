@@ -17,9 +17,18 @@ import {
   booksList,
 } from "@/lib/temp";
 
-type SessionProfileProps = {};
+type SessionProfileProps = {
+  oldSocialMedia: {
+    userId: string;
+    twitter: string | null;
+    instagram: string | null;
+    linkedin: string | null;
+  };
+};
 
-export const SessionProfile = async ({}: SessionProfileProps) => {
+export const SessionProfile = async ({
+  oldSocialMedia,
+}: SessionProfileProps) => {
   const session = await auth();
   const userProfile = await getUserProfileById(session?.user.id);
 
@@ -63,7 +72,13 @@ export const SessionProfile = async ({}: SessionProfileProps) => {
 
         <div className="basis-1/5 items-end">
           <div className="flex justify-end">
-            <EditProfileForm username={session?.user.username} />
+            <EditProfileForm
+              username={session?.user.username}
+              name={session?.user.name}
+              userProfile={userProfile}
+              userId={session?.user.id}
+              oldSocialMedia={oldSocialMedia}
+            />
           </div>
         </div>
       </div>

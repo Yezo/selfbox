@@ -1,17 +1,24 @@
 "use server";
 
+// CREATE AN ARRAY THAT HAS ALL THE ROUTES ON THE WEBSITE
+// MAKE SURE USERS CANNOT MAKE USERNAMES WITH SAME NAME AS ROUTES
+// OR ELSE IT WILL CAUSE A ROUTING CONFLICT
+
 import { db, eq, ilike } from "@/db";
-import { User, users } from "@/db/schema/user";
+import { User, userSocialMedia, users } from "@/db/schema/user";
 import bcryptjs from "bcryptjs";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import {
   SignInWithPasswordFormInput,
   SignUpWithPasswordFormInput,
+  editProfileSocialMediaSchema,
+  editProfileSocialMediaSchemaType,
   signInWithPasswordSchema,
   signUpWithPasswordSchema,
 } from "@/types/zod";
 import { AuthError } from "next-auth";
 import { signIn, update } from "@/lib/auth";
+import { DatabaseError } from "@/types/types";
 
 export async function checkUserExistsById(userId: string): Promise<boolean> {
   noStore();
@@ -203,5 +210,109 @@ export async function signInWithPassword(
     }
   } finally {
     revalidatePath("/");
+  }
+}
+
+export async function insertSocialMediaLinks(
+  rawInput: editProfileSocialMediaSchemaType,
+  userId: string,
+): Promise<DatabaseError> {
+  noStore();
+  try {
+    const validatedInput = editProfileSocialMediaSchema.safeParse(rawInput);
+    if (!validatedInput.success) return "invalid-input";
+
+    // Check if the user already has an existing bio
+    const [existingSocialMedia] = await db
+      .select()
+      .from(userSocialMedia)
+      .where(eq(userSocialMedia.userId, userId));
+
+    // If the user already has a bio, return "exists"
+    if (existingSocialMedia) return "exists";
+
+    // If the user doesn't have an existing bio, insert the new one
+    await db.insert(userSocialMedia).values({
+      userId: userId,
+      twitter: validatedInput.data.twitter,
+      instagram: validatedInput.data.instagram,
+      linkedin: validatedInput.data.linkedin,
+    });
+
+    // Return "success" after successful insertion
+    return "success";
+  } catch (error) {
+    throw new Error("Error inserting user bio");
+  }
+}
+
+export async function getUserSocialMedia(userId: string) {
+  noStore();
+  try {
+    //Check and find a user that matches emails
+    const [userSocials] = await db
+      .select()
+      .from(userSocialMedia)
+      .where(eq(userSocialMedia.userId, userId));
+    return userSocials || null;
+  } catch (error) {
+    throw new Error("Error getting user's social media links");
+  }
+}
+
+export async function updateSocialMediaLinks(
+  rawInput: editProfileSocialMediaSchemaType,
+  oldSocialMedia: {
+    twitter: string | null;
+    instagram: string | null;
+    linkedin: string | null;
+    userId: string;
+  },
+  userId: string,
+  username: string,
+): Promise<DatabaseError> {
+  try {
+    //Validate form data
+    const validatedInput = editProfileSocialMediaSchema.safeParse(rawInput);
+    if (!validatedInput.success) return "invalid-input";
+    const { twitter, instagram, linkedin } = validatedInput.data;
+
+    // Check if the user already has an existing social media profile
+    const [userHasSocialMediaLinks] = await db
+      .select()
+      .from(userSocialMedia)
+      .where(eq(userSocialMedia.userId, userId));
+
+    const updateData = {
+      userId: userId,
+      twitter: oldSocialMedia.twitter || "",
+      instagram: oldSocialMedia.instagram || "",
+      linkedin: oldSocialMedia.linkedin || "",
+    };
+    if (twitter !== undefined) updateData.twitter = twitter;
+    if (instagram !== undefined) updateData.instagram = instagram;
+    if (linkedin !== undefined) updateData.linkedin = linkedin;
+
+    // If the user doesn't have social media links, insert the new one
+    if (!userHasSocialMediaLinks) {
+      await db.insert(userSocialMedia).values({
+        userId: userId,
+        twitter: twitter,
+        instagram: instagram,
+        linkedin: linkedin,
+      });
+    }
+
+    //If the user already has social media links, update with new ones
+    await db
+      .update(userSocialMedia)
+      .set(updateData)
+      .where(eq(userSocialMedia.userId, userId));
+
+    // Return "success" after successful insertion
+    revalidatePath(`/${username}`);
+    return "success";
+  } catch (error) {
+    throw new Error("Error inserting user bio");
   }
 }

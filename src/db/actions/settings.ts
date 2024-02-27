@@ -32,6 +32,7 @@ export async function getUserProfileById(
   }
 }
 
+//NOTHING USES THIS FUNCTION
 export async function insertUserBio(
   userId: string,
   newBio: string,

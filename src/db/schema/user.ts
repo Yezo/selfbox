@@ -44,6 +44,15 @@ export const userProfile = pgTable("userProfile", {
   website: varchar("website", { length: 50 }),
 });
 
+export const userSocialMedia = pgTable("userSocialMedia", {
+  userId: text("userId")
+    .primaryKey()
+    .references(() => users.id),
+  twitter: varchar("twitter", { length: 30 }),
+  instagram: varchar("instagram", { length: 30 }),
+  linkedin: varchar("linkedin", { length: 30 }),
+});
+
 export const songs = pgTable("songs", {
   id: serial("id").primaryKey(),
   title: varchar("title"),

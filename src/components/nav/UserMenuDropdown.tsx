@@ -69,10 +69,7 @@ export const UserMenuDropdown = ({
 
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <MenuItem
-                url={`/profile/${username?.toLowerCase()}`}
-                title="profile"
-              >
+              <MenuItem url={`/${username?.toLowerCase()}`} title="profile">
                 <PersonIcon />
               </MenuItem>
               <MenuItem url="/pricing" title="pricing">
