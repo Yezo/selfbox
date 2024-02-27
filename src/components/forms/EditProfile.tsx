@@ -155,7 +155,7 @@ export function UserProfileNavigation({
     TABS.find((t) => t.route.includes(pathname.split("/").at(-1) || "")) ||
     TABS[0];
 
-  const handleCock = (str: string) => {
+  const replaceRoute = (str: string) => {
     router.replace(str);
   };
 
@@ -166,7 +166,7 @@ export function UserProfileNavigation({
           {TABS.map((tab) => (
             <div
               onClick={() =>
-                handleCock(`${username.toLowerCase()}${tab.route}`)
+                replaceRoute(`${username.toLowerCase()}${tab.route}`)
               }
               key={tab.route}
             >
