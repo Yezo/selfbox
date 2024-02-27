@@ -130,12 +130,13 @@ export const EditProfileSocialMediaForm = ({
                   <TwitterIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.twitter) || "@username"
+                    capitalizeEveryWord(oldSocialMedia?.twitter) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -152,13 +153,13 @@ export const EditProfileSocialMediaForm = ({
                   <InstagramIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.instagram) ||
-                    "@username"
+                    capitalizeEveryWord(oldSocialMedia?.instagram) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -175,12 +176,13 @@ export const EditProfileSocialMediaForm = ({
                   <LinkedInIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -197,12 +199,13 @@ export const EditProfileSocialMediaForm = ({
                   <GitHubLogoIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -219,12 +222,13 @@ export const EditProfileSocialMediaForm = ({
                   <YoutubeIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -241,12 +245,13 @@ export const EditProfileSocialMediaForm = ({
                   <TwitchIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -263,12 +268,13 @@ export const EditProfileSocialMediaForm = ({
                   <TikTokIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -285,12 +291,13 @@ export const EditProfileSocialMediaForm = ({
                   <PatreonIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -307,12 +314,13 @@ export const EditProfileSocialMediaForm = ({
                   <BehanceIcon />
                 </TooltipItem>
 
+                <AtSymbol />
                 <Input
                   placeholder={
-                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "@username"
+                    capitalizeEveryWord(oldSocialMedia?.linkedin) || "username"
                   }
                   {...field}
-                  className={`${FormInputTextCSS}`}
+                  className={`${FormInputTextCSS} pl-[22px]`}
                 />
               </div>
             </FormFieldItem>
@@ -324,5 +332,13 @@ export const EditProfileSocialMediaForm = ({
         </SubmitButton>
       </form>
     </Form>
+  );
+};
+
+export const AtSymbol = () => {
+  return (
+    <p className="-mr-7 flex h-12 items-center justify-center pb-1.5 pl-2 font-inter text-sm text-white">
+      @
+    </p>
   );
 };
