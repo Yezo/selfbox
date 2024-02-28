@@ -44,7 +44,7 @@ export function Cobe() {
         if (!pointerInteracting.current) {
           // Called on every animation frame.
           // `state` will be an empty object, return updated params.
-          phi += 0.0001;
+          phi += 0.001;
         }
         state.phi = phi + r.get();
         state.width = width * 2;
