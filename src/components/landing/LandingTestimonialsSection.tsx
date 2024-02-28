@@ -16,13 +16,13 @@ export const LandingTestimonialsSection = () => {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-4">
-            <blockquote>
+            <blockquote className="min-h-[125px]">
               <p className="text-sm leading-6 ">
                 “Selfbox completely changed my life and increased my online
                 presence by over 9000%. Millions of users were clicking on my
-                selfbox and checking out my other social media. After my selfbox
-                got viral, I ended up on national TV and even took a selfie with
-                Taylor Swift at the Superbowl.”
+                Selfbox and checking out all of my other social media. After my
+                Selfbox got viral, I ended up on national TV and even took a
+                selfie with Taylor Swift at the Superbowl.”
               </p>
             </blockquote>
             <cite className="flex flex-col font-bricolage text-sm not-italic text-gray">
@@ -38,9 +38,9 @@ export const LandingTestimonialsSection = () => {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-4">
-            <blockquote>
+            <blockquote className="min-h-[125px]">
               <p className="text-sm leading-6 ">
-                “After creating my account with Selfbox, I subsequently got a
+                “Not longer after creating my account, I subsequently got a
                 girlfriend, won the Lotto MAX, and now drive around LA in a
                 sportscar whose name I can't even pronounce. Selfbox? For the
                 blind, they are the vision. For the hungry, they are the chef.
