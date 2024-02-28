@@ -16,7 +16,6 @@ export const UserAvatar = ({
   username,
   size,
 }: UserAvatarProps) => {
-  //I'm a design-focused Full Stack Developer and I primarily build out responsive web applications using the Javascript ecosystem (React, Next.js & Typescript).
   return (
     <>
       {image ? (
