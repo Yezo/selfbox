@@ -17,13 +17,9 @@ export default async function UserProfilePage({
   const currentPathnameUsername = pathnameUsername.toLowerCase();
   const checkIfUsersMatch = currentSessionUsername === currentPathnameUsername;
   const oldSocialMedia = await getUserSocialMedia(session?.user.id!);
-  //Either the current user is logged in or logged out
-  //If they are logged out, they have no session, and can view any profile
-  //If they are logged in, they have a session, and can view any profile
-  //ifLoggedIn, ifHasSession, showEditProfileButton
-  //ifLoggedIn, ifHasSession, ifViewOtherProfile, hideEditProfileButton
+
   return (
-    <Main className="grid place-items-center py-8">
+    <Main className="min-h-[600px] py-8 lg:min-h-[850px]">
       {checkIfUsersMatch ? (
         <Suspense fallback=<LoadingIcon />>
           <SessionProfile oldSocialMedia={oldSocialMedia} />

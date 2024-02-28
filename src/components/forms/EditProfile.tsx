@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { GearIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { EditProfileProfileForm } from "@/components/forms/EditProfileProfileForm";
 import { EditProfileSocialMediaForm } from "@/components/forms/EditProfileSocialMediaForm";
 import { z } from "zod";
@@ -19,6 +19,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { OldSocialMediaType, UserProfileType } from "@/types/types";
+import { LoadingIcon } from "@/components/layout/LoadingIcon";
 
 const searchParamsSchema = z.object({
   edit: z.optional(z.enum(["true", "false"])),
@@ -64,7 +65,11 @@ export function EditProfileForm({
     if (profile) return "Edit profile";
     if (socials) return "Edit social media and links";
     if (favorites) return "Edit your favorites";
-    return "Edit deez";
+    return (
+      <div className="grid min-h-[400px] place-items-center">
+        <LoadingIcon />
+      </div>
+    );
   };
 
   return (
@@ -85,21 +90,25 @@ export function EditProfileForm({
           </DialogHeader>
 
           {profile && (
-            <EditProfileProfileForm
-              oldUsername={username!}
-              oldName={name}
-              oldUserProfile={userProfile}
-              userId={userId!}
-              setOpen={setOpen}
-            />
+            <Suspense fallback={<LoadingIcon />}>
+              <EditProfileProfileForm
+                oldUsername={username!}
+                oldName={name}
+                oldUserProfile={userProfile}
+                userId={userId!}
+                setOpen={setOpen}
+              />
+            </Suspense>
           )}
           {socials && (
-            <EditProfileSocialMediaForm
-              username={username!}
-              oldSocialMedia={oldSocialMedia}
-              userId={userId}
-              setOpen={setOpen}
-            />
+            <Suspense fallback={<LoadingIcon />}>
+              <EditProfileSocialMediaForm
+                username={username!}
+                oldSocialMedia={oldSocialMedia}
+                userId={userId}
+                setOpen={setOpen}
+              />
+            </Suspense>
           )}
           {favorites && (
             <>

@@ -44,7 +44,8 @@ export const DatabaseProfile = async ({
           key !== "userId",
       )
       .map(([key, value]) => ({ [key]: value }));
-
+  console.log(databaseUserProfile);
+  console.log(arrWithObjs);
   return (
     <>
       <header className="flex min-w-full flex-col items-center justify-center gap-2">
@@ -82,7 +83,7 @@ export const DatabaseProfile = async ({
         </div>
       </header>
 
-      <section className="">
+      <section className="grid place-items-center">
         <div className="space-y-12 py-8">
           {databaseUserProfile?.bio && (
             <SectionBlock title="About Me">
@@ -111,54 +112,6 @@ export const DatabaseProfile = async ({
               </div>
             </div>
           )}
-
-          <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
-            <h2 className="font-semibold">Favorite TV shows</h2>
-            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
-              {tvShowsList.map((item) => (
-                <Image
-                  key={item}
-                  src={item}
-                  alt="ye"
-                  width="125"
-                  height="350"
-                  className="max-h-[125px] min-h-[125px] rounded border"
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
-            <h2 className="font-semibold">Favorite movies</h2>
-            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
-              {moviesList.map((item) => (
-                <Image
-                  key={item}
-                  src={item}
-                  alt="ye"
-                  width="125"
-                  height="350"
-                  className="max-h-[125px] min-h-[125px] rounded border"
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
-            <h2 className="font-semibold">Favorite books</h2>
-            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
-              {booksList.map((item) => (
-                <Image
-                  key={item}
-                  src={item}
-                  alt="ye"
-                  width="125"
-                  height="350"
-                  className="max-h-[125px] min-h-[125px] rounded border"
-                />
-              ))}
-            </div>
-          </div>
         </div>
       </section>
     </>
