@@ -9,6 +9,7 @@ import { LandingPricingSection } from "@/components/landing/LandingPricingSectio
 import { LandingTestimonialsSection } from "@/components/landing/LandingTestimonialsSection";
 import { LandingCTASection } from "@/components/landing/LandingCTASection";
 import { Footer } from "@/components/layout/Footer";
+import { Cobe } from "@/components/layout/Cobe";
 
 export default async function Home() {
   const session = await auth();
@@ -18,9 +19,12 @@ export default async function Home() {
     <>
       <Navbar />
       <Main className="space-y-52 p-24">
-        <section className="min-h-[450px]">
-          <HeroTitle />
-          <HeroInput />
+        <section className=" flex items-center">
+          <div>
+            <HeroTitle />
+            <HeroInput />
+          </div>
+          <Cobe />
         </section>
 
         <LandingPrimerSection />
