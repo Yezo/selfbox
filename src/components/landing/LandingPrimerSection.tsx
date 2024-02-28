@@ -13,13 +13,13 @@ import Image from "next/image";
 
 export const LandingPrimerSection = () => {
   return (
-    <section className="flex gap-20">
+    <section className="flex items-center gap-20">
       <Image
-        src={"/images/hero.webp"}
+        src={"/images/HeroImage.png"}
         alt="Picture of something"
-        className="flex-1 object-cover"
-        width={600}
-        height={600}
+        className="max-h-[701px] max-w-[715px] border-r object-cover shadow-md"
+        width={715}
+        height={701}
         quality={100}
         priority={true}
       />
@@ -30,13 +30,12 @@ export const LandingPrimerSection = () => {
 
         <Separator className="mb-8 mt-4 max-w-[55px]" />
         <p className="mb-4 max-w-[625px] leading-7 tracking-[-.011em] text-gray">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque,
-          tempora natus nemo, alias eveniet odio sint dolores modi veritatis
-          voluptate reprehenderit non rerum temporibus mollitia officia
-          molestias necessitatibus nam nihil quasi. Minima repellat deserunt,
-          pariatur magni unde quia at quibusdam fugiat magnam enim doloremque
-          praesentium recusandae, illo facilis laudantium distinctio quo
-          quisquam sequi blanditiis maxime vitae dolor quis esse.
+          Selfbox is the next generational link-in-bio platform for content
+          creators, professionals, and the average hobbyist.
+        </p>
+        <p className="mb-4 max-w-[625px] leading-7 tracking-[-.011em] text-gray">
+          Claim your handle, store and manage the links related to your brand,
+          and showcase your interests and hobbies for the world to see.
         </p>
 
         <Button asChild className="mb-24 mr-4 mt-4 h-10">
@@ -50,56 +49,6 @@ export const LandingPrimerSection = () => {
             Contact <CaretRightIcon className="text-sky-300" />
           </Link>
         </Button>
-
-        <div className="grid grid-cols-2 gap-8">
-          <div>
-            <LinkIcon>
-              <PersonIcon />
-            </LinkIcon>
-
-            <h3 className="font-bricolage font-semibold">Personal profile</h3>
-            <p className="text-sm text-gray">
-              Curate everything and anything about yourself all in one place.
-            </p>
-          </div>
-
-          <div>
-            <LinkIcon>
-              <GlobeIcon />
-            </LinkIcon>
-            <h3 className="font-bricolage font-semibold">Links and media</h3>
-            <p className="text-sm text-gray">
-              Set your social media and personal links and watch the clicks roll
-              in.
-            </p>
-          </div>
-
-          <div>
-            <LinkIcon>
-              <StarIcon />
-            </LinkIcon>
-            <h3 className="font-bricolage font-semibold">
-              Interests and favorites
-            </h3>
-            <p className="text-sm text-gray">
-              Display your favorite activities for the world to see what's
-              piquing your interests these days.
-            </p>
-          </div>
-
-          <div>
-            <LinkIcon>
-              <BackpackIcon />
-            </LinkIcon>
-            <h3 className="font-bricolage font-semibold">
-              Professional? Hobbyist?
-            </h3>
-            <p className="text-sm text-gray">
-              Selfbox works both as a professional portfolio or an online
-              portfolio for social media phenoms.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );
