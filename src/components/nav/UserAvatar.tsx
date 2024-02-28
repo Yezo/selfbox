@@ -16,15 +16,16 @@ export const UserAvatar = ({
   username,
   size,
 }: UserAvatarProps) => {
+  //I'm a design-focused Full Stack Developer and I primarily build out responsive web applications using the Javascript ecosystem (React, Next.js & Typescript).
   return (
     <>
       {image ? (
         <Image
           src={image}
           alt={`${username ? `${username}'s avatar` : `${name}'s avatar`}`}
-          width="72"
-          height="72"
-          className={`relative flex aspect-square   shrink-0 overflow-hidden rounded border object-cover ${size === "large" ? "max-h-[72px] min-h-[72px]" : "max-h-[36px] min-h-[36px]"} `}
+          width={size === "large" ? "72" : "36"}
+          height={size === "large" ? "72" : "36"}
+          className={`relative flex aspect-square shrink-0 overflow-hidden rounded border object-cover ${size === "large" ? "max-h-[72px] min-h-[72px]" : "max-h-[36px] min-h-[36px]"} `}
           quality={100}
         />
       ) : (
