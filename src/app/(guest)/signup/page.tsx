@@ -29,10 +29,10 @@ export default async function SignUpPage({
           Back to website
         </Link>
 
-        <H1>Sign up</H1>
+        <H1 className="text-2xl">Sign up</H1>
 
-        <H2 className="mb-8">
-          Already have an account?
+        <H2 className="mb-8 text-base text-gray">
+          Already have an account?{" "}
           <Link href="/login" className="text-cyan-300">
             Log in.
           </Link>

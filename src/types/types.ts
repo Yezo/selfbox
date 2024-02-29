@@ -28,3 +28,13 @@ export type OldSocialMediaType = {
 };
 
 export type BadgeType = "release" | "update" | "improvement" | "bugfix";
+
+export const INVALID_USERNAMES = [
+  "login",
+  "signup",
+  "settings",
+  "username",
+  "changelog",
+  "pricing",
+  "contact",
+];

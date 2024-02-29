@@ -22,10 +22,10 @@ export default async function LoginPage() {
           Back to website
         </Link>
 
-        <H1>Welcome back,</H1>
+        <H1 className="text-2xl">Welcome back,</H1>
 
-        <H2 className="mb-8">
-          Don't have an account yet?
+        <H2 className="mb-8 text-base text-gray">
+          Don't have an account yet?{" "}
           <Link href="/signup" className="text-cyan-300">
             Sign up.
           </Link>

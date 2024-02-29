@@ -48,7 +48,7 @@ export const UserMenuDropdown = ({
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <UserAvatar image={image} name={name} username={username} />
-                <div>
+                <div className="hidden sm:block">
                   {username ? (
                     <span className="font-bricolage font-medium capitalize">
                       {username}
@@ -61,7 +61,7 @@ export const UserMenuDropdown = ({
               <ChevronDownIcon className="cursor-pointer" />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mt-4 w-40 font-bricolage">
+          <DropdownMenuContent className="mr-2 mt-4 w-40 font-bricolage ">
             <DropdownMenuLabel>
               <p className="font-bricolage">{name ? name : username}</p>
               <p className="text-xs text-gray">{email}</p>

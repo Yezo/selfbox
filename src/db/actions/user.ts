@@ -17,8 +17,12 @@ import {
   signUpWithPasswordSchema,
 } from "@/types/zod";
 import { AuthError } from "next-auth";
-import { signIn, update } from "@/lib/auth";
-import { DatabaseError, OldSocialMediaType } from "@/types/types";
+import { signIn } from "@/lib/auth";
+import {
+  DatabaseError,
+  INVALID_USERNAMES,
+  OldSocialMediaType,
+} from "@/types/types";
 
 export async function checkUserExistsById(userId: string): Promise<boolean> {
   noStore();
@@ -54,12 +58,17 @@ export async function updateUserUsername(
     if (!user) return "not-found";
 
     //Check if the new username is already in use
-
     const [dupeUsername] = await db
       .select()
       .from(users)
       .where(ilike(users.username, newUsername));
     if (dupeUsername) return "duplicate";
+
+    //Check if new username matches with an invalid username
+    const isInvalid = INVALID_USERNAMES.map((username) =>
+      username.toLowerCase(),
+    ).includes(newUsername.toLowerCase());
+    if (isInvalid) return "duplicate";
 
     //Update the current user with their new username
     const updatedUser = await db
@@ -141,6 +150,12 @@ export async function signUpWithPassword(
     //Check if the input's user exists in the database
     const username = await getUserByUsername(validatedInput.data.username);
     if (username) return "username-exists";
+
+    //Check if new username matches with an invalid username
+    const isInvalid = INVALID_USERNAMES.map((username) =>
+      username.toLowerCase(),
+    ).includes(validatedInput.data.username.toLowerCase());
+    if (isInvalid) return "username-exists";
 
     //Check if the input's email exists in the database
     const user = await getUserByEmail(validatedInput.data.email);

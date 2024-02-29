@@ -6,6 +6,8 @@ import { Navbar } from "@/components/nav/Navbar";
 import { auth } from "@/lib/auth";
 import { capitalizeEveryWord } from "@/lib/utils";
 import { redirect } from "next/navigation";
+import { Footer } from "@/components/layout/Footer";
+import { Paragraph } from "@/components/layout/Paragraph";
 
 export default async function DashboardLayout({
   children,
@@ -32,10 +34,10 @@ export default async function DashboardLayout({
           <div>
             <H1>Settings</H1>
 
-            <p className="font-bricolage text-sm text-gray">
+            <Paragraph className="font-bricolage text-sm">
               {capitalizeEveryWord(username)}
               {name && ` • ${capitalizeEveryWord(name)}`}
-            </p>
+            </Paragraph>
           </div>
         </header>
 
@@ -44,6 +46,7 @@ export default async function DashboardLayout({
           <section className="basis-4/5">{children}</section>
         </div>
       </Main>
+      <Footer />
     </>
   );
 }

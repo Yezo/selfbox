@@ -29,7 +29,7 @@ export const UserAvatar = ({
         />
       ) : (
         <div
-          className={`flex aspect-square  items-center justify-center rounded bg-white font-bricolage font-semibold uppercase tracking-tighter text-black/90 ${size === "large" ? "max-h-[72px] min-h-[72px]" : "max-h-[36px] min-h-[36px]"} `}
+          className={`flex aspect-square  items-center justify-center rounded bg-white font-bricolage font-semibold uppercase tracking-tighter text-black/90 ${size === "large" ? "max-h-[72px] min-h-[72px] text-2xl" : "max-h-[36px] min-h-[36px]"} `}
         >
           {getFirstTwoLettersOfUser(name, username)}
         </div>

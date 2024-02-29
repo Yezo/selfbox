@@ -11,6 +11,7 @@ import {
   updateUserFullName,
   updateUserUsername,
 } from "@/db/actions/user";
+import { update } from "react-spring";
 
 export async function getUserProfileById(
   userId: string | undefined,
@@ -29,35 +30,6 @@ export async function getUserProfileById(
   } catch (error) {
     console.error(error);
     throw new Error("Error getting user by id");
-  }
-}
-
-//NOTHING USES THIS FUNCTION
-export async function insertUserBio(
-  userId: string,
-  newBio: string,
-): Promise<DatabaseError> {
-  noStore();
-  try {
-    // Check if the user already has an existing bio
-    const [existingBio] = await db
-      .select()
-      .from(userProfile)
-      .where(eq(userProfile.userId, userId));
-
-    // If the user already has a bio, return "exists"
-    if (existingBio) return "exists";
-
-    // If the user doesn't have an existing bio, insert the new one
-    await db.insert(userProfile).values({
-      bio: newBio,
-      userId: userId,
-    });
-
-    // Return "success" after successful insertion
-    return "success";
-  } catch (error) {
-    throw new Error("Error inserting user bio");
   }
 }
 
@@ -141,7 +113,8 @@ export async function updateUserProfileSettings(
     if (username !== undefined && username.length > 0) {
       const newUsernameAlreadyExists = await getUserByUsername(username);
       if (newUsernameAlreadyExists) return "username-exists";
-      else await updateUserUsername(userId, username);
+      const updatedUsername = await updateUserUsername(userId, username);
+      if (updatedUsername === "duplicate") return "username-exists";
     }
 
     //Check if the user inputted a new name

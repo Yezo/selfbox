@@ -7,8 +7,6 @@ type H2Props = {
 
 export const H2 = ({ className, children }: H2Props) => {
   return (
-    <h2 className={cn("font-bricolage text-3xl font-medium", className)}>
-      {children}
-    </h2>
+    <h2 className={cn("font-bricolage text-3xl", className)}>{children}</h2>
   );
 };

@@ -21,11 +21,23 @@ export default async function UserProfilePage({
   return (
     <Main className="min-h-[600px] py-8 lg:min-h-[850px]">
       {checkIfUsersMatch ? (
-        <Suspense fallback=<LoadingIcon />>
+        <Suspense
+          fallback={
+            <div className="grid min-h-screen min-w-full place-items-center">
+              <LoadingIcon />
+            </div>
+          }
+        >
           <SessionProfile oldSocialMedia={oldSocialMedia} />
         </Suspense>
       ) : (
-        <Suspense fallback=<LoadingIcon />>
+        <Suspense
+          fallback={
+            <div className="grid min-h-screen min-w-full place-items-center">
+              <LoadingIcon />
+            </div>
+          }
+        >
           <DatabaseProfile pathnameUsername={pathnameUsername} />
         </Suspense>
       )}

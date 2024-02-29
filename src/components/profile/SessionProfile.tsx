@@ -35,6 +35,7 @@ import {
 } from "@/styles/icons";
 import { Suspense } from "react";
 import { LoadingIcon } from "@/components/layout/LoadingIcon";
+import { Badge } from "@/components/layout/Badge";
 
 type SessionProfileProps = {
   oldSocialMedia: OldSocialMediaType;
@@ -71,11 +72,11 @@ export const SessionProfile = async ({
 
   return (
     <>
-      <header className="grid place-items-center">
-        <header className="flex min-w-[500px] max-w-[500px] self-center">
+      <header className="grid place-items-center ">
+        <header className="flex min-w-full self-center pb-8 md:min-w-[500px] md:max-w-[500px]">
           <div className="basis-1/5"></div>
           <div className="basis-4/5">
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center gap-4">
               <UserAvatar
                 image={session?.user.image}
                 name={session?.user.name}
@@ -83,25 +84,23 @@ export const SessionProfile = async ({
                 size={"large"}
               />
               <div className="text-center">
-                <H1> {capitalizeEveryWord(session?.user.name)}</H1>
+                <H1 className="text-3xl">
+                  {capitalizeEveryWord(session?.user.name)}
+                </H1>
 
-                {userProfile?.website && (
-                  <div className="space-x-2">
-                    <Link
-                      href={userProfile.website as Url}
-                      className="inline-flex items-center rounded-md border bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-gray transition-colors hover:bg-neutral-800 hover:text-white focus:border-2 focus:outline-none"
-                    >
-                      @{session?.user.username.toLowerCase()}
+                <div className="flex items-center gap-2">
+                  {session?.user.username && (
+                    <Link href={`/${session?.user.username}`}>
+                      <Badge>@{session?.user.username.toLowerCase()}</Badge>
                     </Link>
+                  )}
 
-                    <Link
-                      href={userProfile.website as Url}
-                      className="inline-flex items-center rounded-md border bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-gray transition-colors hover:bg-neutral-800 hover:text-white focus:border-2 focus:outline-none"
-                    >
-                      {removeURLPrefixes(userProfile.website)}
+                  {userProfile?.website && (
+                    <Link href={userProfile.website as Url}>
+                      <Badge>{removeURLPrefixes(userProfile.website)}</Badge>
                     </Link>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -123,13 +122,13 @@ export const SessionProfile = async ({
       </header>
 
       <section className="grid place-items-center">
-        <div className="space-y-12 py-8">
+        <div className="flex min-w-full flex-col gap-12 self-center md:min-w-[500px] md:max-w-[500px]">
           <SectionBlock title="About Me">{userProfile?.bio}</SectionBlock>
 
           {arrWithObjs && (
-            <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
+            <div className="min-w-full space-y-2 font-bricolage md:min-w-[500px] md:max-w-[500px]">
               <h2 className="font-semibold">Socials</h2>
-              <div className="grid grid-cols-2 gap-2 text-sm text-gray">
+              <div className="grid grid-cols-1 gap-2 text-sm text-gray md:grid-cols-2">
                 {arrWithObjs.map((item) => {
                   const [key, value] = Object.entries(item)[0];
                   return (

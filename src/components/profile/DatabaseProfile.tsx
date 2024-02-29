@@ -7,20 +7,12 @@ import {
   handleSocialMediaSuffix,
   removeURLPrefixes,
 } from "@/lib/utils";
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Url } from "next/dist/shared/lib/router/router";
 import { notFound } from "next/navigation";
 import { SectionBlock } from "@/components/profile/SectionBlock";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  socialMediaListOne,
-  socialMediaListTwo,
-  tvShowsList,
-  moviesList,
-  booksList,
-} from "@/lib/temp";
 import { generateSocialMediaIcon } from "@/components/profile/SessionProfile";
+import { Badge } from "@/components/layout/Badge";
 
 type DatabaseProfileProps = {
   pathnameUsername: string;
@@ -44,11 +36,10 @@ export const DatabaseProfile = async ({
           key !== "userId",
       )
       .map(([key, value]) => ({ [key]: value }));
-  console.log(databaseUserProfile);
-  console.log(arrWithObjs);
+
   return (
     <>
-      <header className="flex min-w-full flex-col items-center justify-center gap-2">
+      <header className="flex min-w-full flex-col items-center justify-center gap-4">
         <UserAvatar
           image={databaseUser.image}
           name={databaseUser.name}
@@ -56,27 +47,25 @@ export const DatabaseProfile = async ({
           size={"large"}
         />
         <div className="text-center">
-          <H1> {capitalizeEveryWord(databaseUser?.name)}</H1>
+          <H1 className="text-3xl">
+            {capitalizeEveryWord(databaseUser?.name)}
+          </H1>
 
-          <div className="space-x-2">
-            {databaseUser && (
-              <Link
-                href={databaseUser.username as Url}
-                className="inline-flex items-center rounded-md border bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-gray transition-colors hover:bg-neutral-800 hover:text-white focus:border-2 focus:outline-none"
-              >
-                @
-                {databaseUser &&
-                  databaseUser.username &&
-                  databaseUser?.username.toLowerCase()}
+          <div className="flex items-center gap-2">
+            {databaseUser.username && (
+              <Link href={`/${databaseUser.username as Url}`}>
+                <Badge>
+                  @
+                  {databaseUser &&
+                    databaseUser.username &&
+                    databaseUser?.username.toLowerCase()}
+                </Badge>
               </Link>
             )}
 
             {databaseUserProfile?.website && (
-              <Link
-                href={databaseUserProfile?.website as Url}
-                className="inline-flex items-center rounded-md border bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-gray transition-colors hover:bg-neutral-800 hover:text-white focus:border-2 focus:outline-none"
-              >
-                {removeURLPrefixes(databaseUserProfile?.website)}
+              <Link href={databaseUserProfile?.website as Url}>
+                <Badge>{removeURLPrefixes(databaseUserProfile?.website)}</Badge>
               </Link>
             )}
           </div>
@@ -92,9 +81,9 @@ export const DatabaseProfile = async ({
           )}
 
           {arrWithObjs && (
-            <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
+            <div className="min-w-full space-y-2 font-bricolage md:min-w-[500px] md:max-w-[500px]">
               <h2 className="font-semibold">Socials</h2>
-              <div className="grid grid-cols-2 gap-2 text-sm text-gray">
+              <div className="grid grid-cols-1 gap-2 text-sm text-gray md:grid-cols-2">
                 {arrWithObjs.map((item) => {
                   const [key, value] = Object.entries(item)[0];
                   return (

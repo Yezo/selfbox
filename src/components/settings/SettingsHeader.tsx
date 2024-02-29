@@ -1,3 +1,4 @@
+import { H2 } from "@/components/layout/H2";
 import { Separator } from "@/components/ui/separator";
 
 type SettingsHeaderProps = {
@@ -7,7 +8,7 @@ type SettingsHeaderProps = {
 export const SettingsHeader = ({ title }: SettingsHeaderProps) => {
   return (
     <>
-      <h2 className="font-bricolage text-xl font-semibold">{title}</h2>
+      <H2>{title}</H2>
       <Separator className="my-4" />
     </>
   );

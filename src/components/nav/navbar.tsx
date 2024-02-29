@@ -5,6 +5,7 @@ import { MainNav } from "@/lib/nav";
 import { UserMenuDropdown } from "@/components/nav/UserMenuDropdown";
 import { SelfboxLogo } from "@/components/layout/SelfboxLogo";
 import Link from "next/link";
+import { MobileNavDropdown } from "@/components/nav/MobileNavDropdown";
 
 export const Navbar = async () => {
   const session = await auth();
@@ -42,8 +43,11 @@ export const Navbar = async () => {
             />
           ) : (
             <>
-              <LoginButton />
-              <SignUpButton />
+              <div className="hidden space-x-2 md:block">
+                <LoginButton />
+                <SignUpButton />
+              </div>
+              <MobileNavDropdown />
             </>
           )}
         </div>
