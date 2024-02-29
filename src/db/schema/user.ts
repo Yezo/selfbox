@@ -28,9 +28,9 @@ export const userRelations = relations(users, ({ one, many }) => ({
     fields: [users.id],
     references: [userProfile.userId],
   }),
-  bio: one(bios, {
+  userSocialMedia: one(userSocialMedia, {
     fields: [users.id],
-    references: [bios.userId],
+    references: [userSocialMedia.userId],
   }),
 }));
 
@@ -57,25 +57,6 @@ export const userSocialMedia = pgTable("userSocialMedia", {
   tiktok: varchar("tiktok", { length: 30 }),
   patreon: varchar("patreon", { length: 30 }),
   behance: varchar("behance", { length: 30 }),
-});
-
-export const songs = pgTable("songs", {
-  id: serial("id").primaryKey(),
-  title: varchar("title"),
-  artist: varchar("artist"),
-  album: varchar("album"),
-  duration: varchar("duration"),
-  userId: text("userId")
-    .notNull()
-    .references(() => users.id),
-});
-
-export const bios = pgTable("bios", {
-  id: serial("id").primaryKey(),
-  bio: varchar("bio", { length: 256 }),
-  userId: text("userId")
-    .notNull()
-    .references(() => users.id),
 });
 
 export const accounts = pgTable(
