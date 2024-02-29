@@ -2,7 +2,7 @@ import { H1 } from "@/components/layout/H1";
 import { Main } from "@/components/layout/Main";
 import { SettingsAsideNav } from "@/components/nav/SettingsAsideNav";
 import { UserAvatar } from "@/components/nav/UserAvatar";
-import { Navbar } from "@/components/nav/Navbar";
+import { Navbar } from "@/components/nav/MainNavbar";
 import { auth } from "@/lib/auth";
 import { capitalizeEveryWord } from "@/lib/utils";
 import { redirect } from "next/navigation";

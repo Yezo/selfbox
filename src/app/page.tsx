@@ -1,7 +1,7 @@
 import { Main } from "@/components/layout/Main";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Navbar } from "@/components/nav/Navbar";
+import { Navbar } from "@/components/nav/MainNavbar";
 import { HeroTitle } from "@/components/landing/HeroTitle";
 import { HeroInput } from "@/components/landing/HeroInput";
 import { LandingPrimerSection } from "@/components/landing/LandingPrimerSection";

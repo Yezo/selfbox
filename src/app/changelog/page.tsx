@@ -1,6 +1,6 @@
 import { H1 } from "@/components/layout/H1";
 import { Main } from "@/components/layout/Main";
-import { Navbar } from "@/components/nav/Navbar";
+import { Navbar } from "@/components/nav/MainNavbar";
 import { Separator } from "@/components/ui/separator";
 import { ChangelogSection } from "@/components/changelog/ChangelogSection";
 import { Footer } from "@/components/layout/Footer";

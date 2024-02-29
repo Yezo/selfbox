@@ -1,5 +1,5 @@
 import { Main } from "@/components/layout/Main";
-import { Navbar } from "@/components/nav/Navbar";
+import { Navbar } from "@/components/nav/MainNavbar";
 import Image from "next/image";
 
 export default async function PricingPage() {
