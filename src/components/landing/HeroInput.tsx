@@ -2,28 +2,19 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
-import { useRouter, useSearchParams } from "next/navigation";
-import {
-  ChevronRightIcon,
-  EyeNoneIcon,
-  EyeOpenIcon,
-} from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
+import { heroInputSchemaInput, heroInputSchema } from "@/types/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { generateToast } from "@/lib/utils";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SubmitButton } from "@/components/forms/FormSubmitButton";
-import { heroInputSchemaInput, heroInputSchema } from "@/types/zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { generateToast } from "@/lib/utils";
 
 export const HeroInput = () => {
   const router = useRouter();
@@ -53,7 +44,10 @@ export const HeroInput = () => {
   return (
     <div className="my-12">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-wrap gap-4"
+        >
           <FormField
             control={form.control}
             name="username"

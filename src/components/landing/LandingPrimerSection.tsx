@@ -1,42 +1,43 @@
 import { Button } from "@/components/ui/button";
-import { LinkIcon } from "@/components/layout/LinkIcon";
 import { Separator } from "@/components/ui/separator";
-import {
-  CaretRightIcon,
-  PersonIcon,
-  GlobeIcon,
-  StarIcon,
-  BackpackIcon,
-} from "@radix-ui/react-icons";
+import { CaretRightIcon, ComponentInstanceIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import Image from "next/image";
+import { Badge } from "@/components/layout/Badge";
+import { Paragraph } from "@/components/layout/Paragraph";
+import { LandingSeparator } from "@/components/landing/LandingSeparator";
+import { H2 } from "@/components/layout/H2";
 
 export const LandingPrimerSection = () => {
   return (
-    <section className="flex items-center gap-20">
+    <section className="flex flex-col-reverse gap-20 xl:flex-row xl:items-center">
       <Image
-        src={"/images/HeroImage.png"}
+        src={"/images/hero.png"}
         alt="Picture of something"
-        className="max-h-[701px] max-w-[715px] border-r object-cover shadow-md"
+        className="object-cover shadow-md xl:max-h-[701px] xl:max-w-[715px]"
         width={715}
         height={701}
         quality={100}
         priority={true}
       />
-      <div className="flex-1">
-        <h2 className="mb-4 font-bricolage text-3xl font-semibold">
-          What is Selfbox?
-        </h2>
+      <div className="flex-1 space-y-4">
+        <Badge className="bg-teal-500/10 text-teal-400">
+          <ComponentInstanceIcon className="h-3 w-3" /> Our Identity
+        </Badge>
 
-        <Separator className="mb-8 mt-4 max-w-[55px]" />
-        <p className="mb-4 max-w-[625px] leading-7 tracking-[-.011em] text-gray">
+        <H2>What is Selfbox?</H2>
+
+        <LandingSeparator />
+
+        <Paragraph className="max-w-[625px]">
           Selfbox is the next generational link-in-bio platform for content
           creators, professionals, and the average hobbyist.
-        </p>
-        <p className="mb-4 max-w-[625px] leading-7 tracking-[-.011em] text-gray">
+        </Paragraph>
+
+        <Paragraph className="max-w-[625px]">
           Claim your handle, store and manage the links related to your brand,
           and showcase your interests and hobbies for the world to see.
-        </p>
+        </Paragraph>
 
         <Button asChild className="mb-24 mr-4 mt-4 h-10">
           <Link href="/">
@@ -44,7 +45,11 @@ export const LandingPrimerSection = () => {
           </Link>
         </Button>
 
-        <Button asChild className="mb-24 mt-4 h-10" variant={"ghost"}>
+        <Button
+          asChild
+          className="mb-24 mt-4 h-10 hover:bg-transparent"
+          variant={"ghost"}
+        >
           <Link href="/">
             Contact <CaretRightIcon className="text-sky-300" />
           </Link>

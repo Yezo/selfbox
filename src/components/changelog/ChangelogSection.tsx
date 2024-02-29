@@ -43,7 +43,6 @@ export const ChangelogSection = ({
   const hasBugFixBadge = hasBadge("bugfix");
   const hasImprovementBadge = hasBadge("improvement");
 
-  console.log(hasBugFixBadge);
   return (
     <div
       className={cn(
@@ -55,7 +54,7 @@ export const ChangelogSection = ({
         <div className="h-[22px] w-[2px] bg-emerald-400" />
         <div className="font-bricolage">{date}</div>
       </div>
-      {hasBugFixBadge}
+
       <section className="flex max-w-[600px] flex-col gap-4">
         <div className="flex flex-wrap items-center gap-1">
           {hasReleaseBadge ? <ReleaseBadge /> : null}
@@ -63,7 +62,9 @@ export const ChangelogSection = ({
           {hasBugFixBadge ? <BugFixBadge /> : null}
           {hasImprovementBadge ? <ImprovementBadge /> : null}
         </div>
+
         <H2 className="font-bricolage">{mainTitle}</H2>
+
         {imageURL && imageAltDescription && (
           <Image
             src={imageURL}
@@ -74,6 +75,7 @@ export const ChangelogSection = ({
             quality={100}
           />
         )}
+
         <Paragraph>{mainDescription}</Paragraph>
 
         {subTitle && subDescription && (

@@ -1,14 +1,22 @@
+import { LandingSeparator } from "@/components/landing/LandingSeparator";
+import { Badge } from "@/components/layout/Badge";
 import { H2 } from "@/components/layout/H2";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { ComponentInstanceIcon } from "@radix-ui/react-icons";
 
 export const LandingTestimonialsSection = () => {
   return (
-    <section>
-      <H2 className="mb-4 font-medium">The impact of Selfbox</H2>
+    <section className="space-y-4">
+      <Badge className="bg-amber-500/10 text-amber-400">
+        <ComponentInstanceIcon className="h-3 w-3" /> Join the community
+      </Badge>
 
-      <Separator className="mb-8 mt-4 max-w-[55px]" />
-      <div className="grid grid-cols-2 gap-20">
+      <H2>The impact of Selfbox</H2>
+
+      <LandingSeparator />
+
+      <div className="grid gap-20 md:grid-cols-2">
         <div className="flex gap-4">
           <Avatar className="mt-2 rounded-sm">
             <AvatarImage src="https://github.com/shadcn.png" />

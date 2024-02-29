@@ -1,7 +1,7 @@
 import { Main } from "@/components/layout/Main";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Navbar } from "@/components/nav/navbar";
+import { Navbar } from "@/components/nav/Navbar";
 import { HeroTitle } from "@/components/landing/HeroTitle";
 import { HeroInput } from "@/components/landing/HeroInput";
 import { LandingPrimerSection } from "@/components/landing/LandingPrimerSection";
@@ -18,12 +18,13 @@ export default async function Home() {
   return (
     <>
       <Navbar />
-      <Main className="space-y-52 p-24">
-        <section className=" flex items-center">
+      <Main className="space-y-52 md:p-12 lg:p-24">
+        <section className="flex flex-col items-center md:flex-row">
           <div>
             <HeroTitle />
             <HeroInput />
           </div>
+
           <Cobe />
         </section>
 
@@ -31,8 +32,8 @@ export default async function Home() {
         <LandingPricingSection />
         <LandingTestimonialsSection />
         <LandingCTASection />
-        <Footer />
       </Main>
+      <Footer />
     </>
   );
 }

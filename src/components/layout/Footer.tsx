@@ -1,30 +1,21 @@
-import Image from "next/image";
+import { SelfboxLogo } from "@/components/layout/SelfboxLogo";
+import { FooterNav } from "@/lib/nav";
 import Link from "next/link";
 
 export const Footer = () => {
   return (
-    <footer className="flex items-center justify-between font-bricolage text-gray">
-      <Link href="/" className="flex items-center gap-2 ">
-        <Image
-          src="/images/logo/selfbox-light.png"
-          alt="Selfbox's logo"
-          width={18}
-          height={18}
-          className="text-black"
-        />
-        <span className="font-semibold transition-colors duration-300 hover:text-white">
-          selfbox.
-        </span>
-      </Link>
+    <footer className="py-12 font-bricolage text-gray ">
+      <div className="container flex flex-col items-center justify-between gap-8 md:flex-row md:gap-0 md:px-12 lg:px-24 ">
+        <SelfboxLogo type="dark" />
 
-      <ul className="flex gap-8 text-sm transition-colors duration-300">
-        <li className="hover:text-white">Home</li>
-        <li className="hover:text-white">Pricing</li>
-        <li className="hover:text-white">Changelog</li>
-        <li className="hover:text-white">Terms of Service</li>
-        <li className="hover:text-white">Privacy Policy</li>
-        <li className="hover:text-white">Contact</li>
-      </ul>
+        <ul className="flex gap-8 text-sm transition-colors duration-300">
+          {FooterNav.map((item) => (
+            <li key={item.name} className="hover:text-white">
+              <Link href={item.url}>{item.name}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </footer>
   );
 };

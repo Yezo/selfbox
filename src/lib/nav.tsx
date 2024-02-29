@@ -59,6 +59,26 @@ export const SettingsSecondNav = [
   },
 ];
 
+export const FooterNav = [
+  {
+    name: "Home",
+    url: "/",
+  },
+  {
+    name: "Pricing",
+    url: "/pricing",
+  },
+  {
+    name: "Changelog",
+    url: "/changelog",
+  },
+  {
+    name: "Contact",
+    url: "/contact",
+  },
+];
+
 export type SettingsFirstNavConfig = typeof SettingsFirstNav;
 export type SettingsSecondNavConfig = typeof SettingsSecondNav;
 export type MainNavConfig = typeof MainNav;
+export type FooterNavConfig = typeof FooterNav;

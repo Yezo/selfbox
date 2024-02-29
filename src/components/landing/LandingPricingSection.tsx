@@ -5,17 +5,26 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { CheckCircledIcon } from "@radix-ui/react-icons";
+import { CheckCircledIcon, ComponentInstanceIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/layout/Badge";
+import { LandingSeparator } from "@/components/landing/LandingSeparator";
+import { H2 } from "@/components/layout/H2";
 
 export const LandingPricingSection = () => {
   return (
-    <section>
-      <h2 className="mb-4 font-bricolage text-3xl font-semibold">
-        Selfbox Pricing
-      </h2>
-      <Separator className="mb-8 mt-4 max-w-[55px]" />
-      <div className="grid grid-cols-3 gap-8">
+    <section className="space-y-4">
+      <div className="mx-auto grid place-items-center gap-4">
+        <Badge className="bg-indigo-500/10 text-indigo-400">
+          <ComponentInstanceIcon className="h-3 w-3" /> Join the community
+        </Badge>
+
+        <H2>Selfbox Pricing</H2>
+
+        <LandingSeparator />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row justify-between">
             <div>
