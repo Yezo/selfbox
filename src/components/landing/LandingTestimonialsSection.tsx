@@ -1,12 +1,11 @@
+import { H2 } from "@/components/layout/H2";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
 export const LandingTestimonialsSection = () => {
   return (
     <section>
-      <h2 className="mb-4 font-bricolage text-3xl font-semibold">
-        The impact of Selfbox
-      </h2>
+      <H2 className="mb-4 font-medium">The impact of Selfbox</H2>
 
       <Separator className="mb-8 mt-4 max-w-[55px]" />
       <div className="grid grid-cols-2 gap-20">

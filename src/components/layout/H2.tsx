@@ -1,20 +1,12 @@
-import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export type H2Props = {
+type H2Props = {
   className?: string;
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 export const H2 = ({ className, children }: H2Props) => {
   return (
-    <h2
-      className={cn(
-        "flex gap-1 font-bricolage tracking-tight text-gray",
-        className,
-      )}
-    >
-      {children}
-    </h2>
+    <h2 className={cn("font-bricolage text-3xl", className)}>{children}</h2>
   );
 };

@@ -1,16 +1,17 @@
 import { H1 } from "@/components/layout/H1";
+import { Paragraph } from "@/components/layout/Paragraph";
 
 export const HeroTitle = () => {
   return (
     <div className="space-y-4">
-      <H1 className="text-5xl">
+      <H1>
         Be yourself,
         <br /> be with Selfbox.
       </H1>
-      <p className="max-w-[435px] leading-6 text-gray">
+      <Paragraph className="max-w-[435px]">
         Create your personal profile, express your interests, share your social
         links. It's your Selfbox.
-      </p>
+      </Paragraph>
     </div>
   );
 };
