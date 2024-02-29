@@ -2,14 +2,13 @@ import { LandingSeparator } from "@/components/landing/LandingSeparator";
 import { Badge } from "@/components/layout/Badge";
 import { H2 } from "@/components/layout/H2";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { ComponentInstanceIcon } from "@radix-ui/react-icons";
+import { GlobeIcon } from "@radix-ui/react-icons";
 
 export const LandingTestimonialsSection = () => {
   return (
     <section className="space-y-4">
-      <Badge className="bg-amber-500/10 text-amber-400">
-        <ComponentInstanceIcon className="h-3 w-3" /> Join the community
+      <Badge className="bg-sky-500/10 text-sky-400">
+        <GlobeIcon className="h-3 w-3" /> Join the community
       </Badge>
 
       <H2>The impact of Selfbox</H2>
@@ -19,7 +18,7 @@ export const LandingTestimonialsSection = () => {
       <div className="grid gap-20 md:grid-cols-2">
         <div className="flex gap-4">
           <Avatar className="mt-2 rounded-sm">
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src="/images/testimonial-avatar-1.jpg" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-4">
@@ -41,7 +40,7 @@ export const LandingTestimonialsSection = () => {
 
         <div className="flex gap-4">
           <Avatar className="mt-2 rounded-sm">
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src="/images/testimonial-avatar-2.jpg" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-4">

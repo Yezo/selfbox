@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { CheckCircledIcon, ComponentInstanceIcon } from "@radix-ui/react-icons";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/layout/Badge";
 import { LandingSeparator } from "@/components/landing/LandingSeparator";
@@ -16,10 +16,10 @@ export const LandingPricingSection = () => {
     <section className="space-y-4">
       <div className="mx-auto grid place-items-center gap-4">
         <Badge className="bg-indigo-500/10 text-indigo-400">
-          <ComponentInstanceIcon className="h-3 w-3" /> Join the community
+          $elfbox is free
         </Badge>
 
-        <H2>Selfbox Pricing</H2>
+        <H2>Pricing</H2>
 
         <LandingSeparator />
       </div>
