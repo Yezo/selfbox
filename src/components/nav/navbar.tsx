@@ -4,8 +4,8 @@ import { auth } from "@/lib/auth";
 import { MainNav } from "@/lib/nav";
 import { UserMenuDropdown } from "@/components/nav/UserMenuDropdown";
 import { SelfboxLogo } from "@/components/layout/SelfboxLogo";
-import Link from "next/link";
 import { MobileNavDropdown } from "@/components/nav/MobileNavDropdown";
+import Link from "next/link";
 
 export const Navbar = async () => {
   const session = await auth();
