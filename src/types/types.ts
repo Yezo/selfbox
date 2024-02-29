@@ -26,3 +26,5 @@ export type OldSocialMediaType = {
   patreon: string | null;
   behance: string | null;
 };
+
+export type BadgeType = "release" | "update" | "improvement" | "bugfix";

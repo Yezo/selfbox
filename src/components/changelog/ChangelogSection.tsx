@@ -7,12 +7,13 @@ import { ReleaseBadge } from "@/components/layout/ReleaseBadge";
 import { UL } from "@/components/layout/UL";
 import { UpdateBadge } from "@/components/layout/UpdateBadge";
 import { cn } from "@/lib/utils";
+import { BadgeType } from "@/types/types";
 import Image from "next/image";
 
 type ChangelogSectionProps = {
   className?: string;
   children?: React.ReactNode;
-  badgeTypes: ("release" | "update" | "improvement" | "bugfix")[];
+  badgeTypes: BadgeType[];
   date: string;
   mainTitle: string;
   mainDescription: string;
@@ -36,14 +37,13 @@ export const ChangelogSection = ({
   subDescription,
   bulletItems,
 }: ChangelogSectionProps) => {
-  const hasReleaseBadge = badgeTypes.filter((item) => item === "release");
-  const hasUpdateBadge = badgeTypes.filter((item) => item === "update");
-  const hasBugFixBadge = badgeTypes.filter((item) => item === "bugfix");
-  const hasImprovementBadge = badgeTypes.filter(
-    (item) => item === "improvement",
-  );
+  const hasBadge = (type: BadgeType) => badgeTypes.includes(type);
+  const hasReleaseBadge = hasBadge("release");
+  const hasUpdateBadge = hasBadge("update");
+  const hasBugFixBadge = hasBadge("bugfix");
+  const hasImprovementBadge = hasBadge("improvement");
 
-  console.log(badgeTypes);
+  console.log(hasBugFixBadge);
   return (
     <div
       className={cn(
@@ -58,10 +58,10 @@ export const ChangelogSection = ({
       {hasBugFixBadge}
       <section className="flex max-w-[600px] flex-col gap-4">
         <div className="flex flex-wrap items-center gap-1">
-          {hasReleaseBadge && <ReleaseBadge />}
-          {hasUpdateBadge && <UpdateBadge />}
-          {hasBugFixBadge && <BugFixBadge />}
-          {hasImprovementBadge && <ImprovementBadge />}
+          {hasReleaseBadge ? <ReleaseBadge /> : null}
+          {hasUpdateBadge ? <UpdateBadge /> : null}
+          {hasBugFixBadge ? <BugFixBadge /> : null}
+          {hasImprovementBadge ? <ImprovementBadge /> : null}
         </div>
         <H2 className="font-bricolage">{mainTitle}</H2>
         {imageURL && imageAltDescription && (
