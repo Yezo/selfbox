@@ -12,10 +12,6 @@ export const MainNav = [
     url: "/pricing",
   },
   {
-    name: "Blog",
-    url: "/blog",
-  },
-  {
     name: "Changelog",
     url: "/changelog",
   },

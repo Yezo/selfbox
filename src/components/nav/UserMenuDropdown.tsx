@@ -75,9 +75,7 @@ export const UserMenuDropdown = ({
               <MenuItem url="/pricing" title="pricing">
                 <StarIcon />
               </MenuItem>
-              <MenuItem url="/blog" title="blog">
-                <FileTextIcon />
-              </MenuItem>
+
               <MenuItem url="/changelog" title="changelog">
                 <LayersIcon />
               </MenuItem>
