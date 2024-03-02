@@ -1,10 +1,12 @@
 import { SettingsProfileForm } from "@/components/forms/SettingsProfileForm";
 import { LoadingIcon } from "@/components/layout/LoadingIcon";
-import { SettingsHeader } from "@/components/settings/SettingsHeader";
 import { getUserProfileById } from "@/db/actions/settings";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import { CustomUploadButton } from "@/components/ui/uploadthing/CustomUploadButton";
+import Image from "next/image";
+import { H2 } from "@/components/layout/H2";
+import { SettingsAsideNav } from "@/components/nav/SettingsAsideNav";
 
 export default async function SettingsProfilePage() {
   const session = await auth();
@@ -16,21 +18,47 @@ export default async function SettingsProfilePage() {
 
   return (
     <>
-      <SettingsHeader title="Public profile" />
-      <Suspense
-        fallback={
-          <div className="grid min-h-screen min-w-full place-items-center">
-            <LoadingIcon />
+      <div className="flex flex-col sm:flex-row">
+        <SettingsAsideNav />
+
+        <div className="basis-4/5">
+          <div className="flex flex-col-reverse md:flex-row">
+            {session && userProfile ? (
+              <div className="basis-3/5">
+                <H2 className="mb-4 tracking-tight">Public profile</H2>
+                <SettingsProfileForm
+                  oldUsername={username}
+                  oldName={name}
+                  userId={id}
+                  oldUserProfile={userProfile}
+                />
+              </div>
+            ) : (
+              <div className="grid h-[400px] min-w-full place-items-center">
+                <LoadingIcon />
+              </div>
+            )}
+            <div className="mb-8 flex basis-2/5 flex-col gap-4 md:items-center">
+              <div className="font-bricolage font-medium">User avatar</div>
+              {session?.user.image && (
+                <Image
+                  src={`${session?.user.image}` ?? ""}
+                  alt="ye"
+                  width={135}
+                  height={135}
+                  quality={100}
+                  className=" aspect-square rounded-md object-cover"
+                />
+              )}
+
+              <CustomUploadButton
+                userId={session?.user.id}
+                oldImageURL={session?.user.image}
+              />
+            </div>
           </div>
-        }
-      >
-        <SettingsProfileForm
-          oldUsername={username}
-          oldName={name}
-          userId={id}
-          oldUserProfile={userProfile}
-        />
-      </Suspense>
+        </div>
+      </div>
     </>
   );
 }

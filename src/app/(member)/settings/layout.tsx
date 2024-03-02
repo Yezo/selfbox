@@ -8,6 +8,10 @@ import { capitalizeEveryWord } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { Footer } from "@/components/layout/Footer";
 import { Paragraph } from "@/components/layout/Paragraph";
+import { LoadingIcon } from "@/components/layout/LoadingIcon";
+import { Suspense } from "react";
+import { H2 } from "@/components/layout/H2";
+import { Separator } from "@/components/ui/separator";
 
 export default async function DashboardLayout({
   children,
@@ -23,7 +27,7 @@ export default async function DashboardLayout({
   return (
     <>
       <Navbar />
-      <Main className="space-y-12 p-24">
+      <Main className="md:p-12 lg:p-24">
         <header className="flex items-center gap-4">
           <UserAvatar
             image={image}
@@ -31,20 +35,26 @@ export default async function DashboardLayout({
             username={username}
             size={"large"}
           />
-          <div>
-            <H1>Settings</H1>
 
-            <Paragraph className="font-bricolage text-sm">
-              {capitalizeEveryWord(username)}
-              {name && ` • ${capitalizeEveryWord(name)}`}
+          <div>
+            <H2 className="tracking-tight">Settings</H2>
+            <Paragraph className="text-sm font-medium tracking-tight">
+              Edit your Selfbox account
             </Paragraph>
           </div>
         </header>
 
-        <div className="flex">
-          <SettingsAsideNav />
-          <section className="basis-4/5">{children}</section>
-        </div>
+        <Separator className="my-4" />
+
+        <Suspense
+          fallback={
+            <div className="grid min-h-screen min-w-full place-items-center">
+              <LoadingIcon />
+            </div>
+          }
+        >
+          {children}
+        </Suspense>
       </Main>
       <Footer />
     </>

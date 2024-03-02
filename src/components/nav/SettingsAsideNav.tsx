@@ -1,13 +1,14 @@
 "use client";
+
 import { Separator } from "@/components/ui/separator";
 import { SettingsFirstNav, SettingsSecondNav } from "@/lib/nav";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export const SettingsAsideNav = () => {
   const pathname = usePathname();
   return (
-    <aside className="basis-1/5 pb-8 pl-0 pr-12">
+    <aside className="basis-1/5  pl-0 sm:pr-12">
       <ul className="space-y-1">
         {SettingsFirstNav.map(({ name, url, icon }) => (
           <ListItem key={name} url={url} pathname={pathname}>
@@ -27,6 +28,8 @@ export const SettingsAsideNav = () => {
           </ListItem>
         ))}
       </ul>
+
+      <Separator className="my-4" />
     </aside>
   );
 };

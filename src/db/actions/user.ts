@@ -23,6 +23,8 @@ import {
   INVALID_USERNAMES,
   OldSocialMediaType,
 } from "@/types/types";
+import { Old_Standard_TT } from "next/font/google";
+import { utapi } from "@/app/api/uploadthing/route";
 
 export async function checkUserExistsById(userId: string): Promise<boolean> {
   noStore();
@@ -346,5 +348,80 @@ export async function updateSocialMediaLinks(
     return "success";
   } catch (error) {
     throw new Error("Error updating user social media links");
+  }
+}
+
+// export async function updateUserAvatar(imageURL: string, userId: string) {
+//   noStore();
+//   try {
+//     //Check if user exists in database
+//     const [existingUser] = await db
+//       .select()
+//       .from(users)
+//       .where(eq(users.id, userId));
+//     if (!existingUser) return null;
+
+//     //Update user's image field with imageURL
+//     const updatedUser = await db
+//       .update(users)
+//       .set({ image: imageURL })
+//       .where(eq(users.id, userId));
+//     if (!updatedUser) return null;
+
+//     revalidatePath("/test");
+//   } catch (error) {
+//     console.error(error);
+//     throw new Error("Error getting user by id");
+//   }
+// }
+
+export async function updateUserAvatar(
+  imageURL: string,
+  userId: string,
+): Promise<"not-found" | "success" | null> {
+  noStore();
+  try {
+    //Check and find a user that matches id
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    if (!user) return "not-found";
+
+    //Update user with new avatar
+    const updatedUser = await db
+      .update(users)
+      .set({ image: imageURL })
+      .where(eq(users.id, userId));
+
+    revalidatePath("/settings/profile");
+    return updatedUser ? "success" : null;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error updating user avatar");
+  }
+}
+
+export async function deleteOldAvatar(
+  oldImageURL: string | null | undefined,
+): Promise<"not-found" | "success" | null> {
+  noStore();
+
+  function removeSubstring(inputString: string) {
+    const substringToRemove = "https://utfs.io/f/";
+    const resultString = inputString.replace(substringToRemove, "");
+    return resultString;
+  }
+
+  try {
+    const deleteFile = async (key: string) => {
+      await utapi.deleteFiles(key);
+    };
+
+    if (oldImageURL && oldImageURL !== undefined && oldImageURL.length > 0) {
+      const deleteOld = deleteFile(removeSubstring(oldImageURL));
+      if (!deleteOld) return null;
+    }
+    return "success";
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error deleting user avatar");
   }
 }

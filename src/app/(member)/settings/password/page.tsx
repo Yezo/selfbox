@@ -1,5 +1,6 @@
+import { H2 } from "@/components/layout/H2";
 import { WorkInProgress } from "@/components/layout/WorkInProgress";
-import { SettingsHeader } from "@/components/settings/SettingsHeader";
+import { SettingsAsideNav } from "@/components/nav/SettingsAsideNav";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
@@ -12,8 +13,16 @@ export default async function SettingsPasswordPage() {
 
   return (
     <>
-      <SettingsHeader title="Change password" />
-      <WorkInProgress />
+      <div className="flex flex-col sm:flex-row">
+        <SettingsAsideNav />
+
+        <div className="basis-4/5">
+          <div className="flex flex-col md:flex-row">
+            <H2 className="mb-4 tracking-tight">Change password</H2>
+            <WorkInProgress />
+          </div>
+        </div>
+      </div>
     </>
   );
 }

@@ -66,6 +66,7 @@ export const authConfig = {
       token.username = existingUser.username;
       token.name = existingUser.name;
       token.email = existingUser.email;
+      token.image = existingUser.image;
       return token;
     },
 
@@ -83,6 +84,8 @@ export const authConfig = {
         session.user.name = token.name as UserRole;
       if (session.user && token.email)
         session.user.email = token.email as UserRole;
+      if (session.user && token.image)
+        session.user.image = token.image as UserRole;
       return session;
     },
   },

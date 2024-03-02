@@ -1,12 +1,10 @@
 import {
-  BellIcon,
-  EnvelopeClosedIcon,
-  GearIcon,
-  IdCardIcon,
-  LockClosedIcon,
-  PaperPlaneIcon,
-  PersonIcon,
-} from "@radix-ui/react-icons";
+  AccountSVGIcon,
+  BillingSVGIcon,
+  EmailSVGIcon,
+  NotificationsSVGIcon,
+  PersonSVGIcon,
+} from "@/styles/icons";
 
 export const MainNav = [
   {
@@ -27,17 +25,12 @@ export const SettingsFirstNav = [
   {
     name: "Public profile",
     url: "/settings/profile",
-    icon: <PersonIcon />,
+    icon: <PersonSVGIcon size={16} />,
   },
   {
     name: "Account",
     url: "/settings/account",
-    icon: <GearIcon />,
-  },
-  {
-    name: "Change password",
-    url: "/settings/password",
-    icon: <LockClosedIcon />,
+    icon: <AccountSVGIcon size={16} />,
   },
 ];
 
@@ -45,17 +38,17 @@ export const SettingsSecondNav = [
   {
     name: "Billings and plans",
     url: "/settings/billing",
-    icon: <IdCardIcon />,
+    icon: <BillingSVGIcon size={16} />,
   },
   {
     name: "Emails",
     url: "/settings/email",
-    icon: <EnvelopeClosedIcon />,
+    icon: <EmailSVGIcon size={16} />,
   },
   {
     name: "Notifications",
     url: "/settings/notifications",
-    icon: <BellIcon />,
+    icon: <NotificationsSVGIcon size={16} />,
   },
 ];
 

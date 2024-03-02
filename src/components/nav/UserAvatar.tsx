@@ -24,7 +24,7 @@ export const UserAvatar = ({
           alt={`${username ? `${username}'s avatar` : `${name}'s avatar`}`}
           width={size === "large" ? "72" : "36"}
           height={size === "large" ? "72" : "36"}
-          className={`relative flex aspect-square shrink-0 overflow-hidden rounded border object-cover ${size === "large" ? "max-h-[72px] min-h-[72px]" : "max-h-[36px] min-h-[36px]"} `}
+          className={`relative flex aspect-square shrink-0 overflow-hidden rounded object-cover ${size === "large" ? "max-h-[72px] min-h-[72px]" : "max-h-[36px] min-h-[36px]"} `}
           quality={100}
         />
       ) : (
