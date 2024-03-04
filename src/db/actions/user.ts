@@ -2,7 +2,7 @@
 
 import bcryptjs from "bcryptjs";
 import { db, eq, ilike } from "@/db";
-import { User, userProfile, userSocialMedia, users } from "@/db/schema/user";
+import { User, userSocialMedia, users } from "@/db/schema/user";
 import { utapi } from "@/app/api/uploadthing/route";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
@@ -11,12 +11,12 @@ import {
   DatabaseError,
   INVALID_USERNAMES,
   OldSocialMediaType,
-  UserProfileType,
 } from "@/types/types";
 import {
   GetUserByEmailInput,
   GetUserByIdInput,
   GetUserByUsernameInput,
+  GetUserProfileByIdInput,
   GetUserSocialMediaInput,
   SignInWithPasswordFormInput,
   SignUpWithPasswordFormInput,
@@ -107,7 +107,7 @@ export async function getUserSocialMedia(rawData: GetUserSocialMediaInput) {
   }
 }
 
-export async function getUserProfileById(rawData: GetUserSocialMediaInput) {
+export async function getUserProfileById(rawData: GetUserProfileByIdInput) {
   try {
     const validatedData = getUserProfileByIdSchema.safeParse(rawData);
     if (!validatedData.success) return null;
