@@ -47,8 +47,8 @@ export const SessionProfile = async ({
   oldSocialMedia,
 }: SessionProfileProps) => {
   const session = await auth();
-  const userProfile = await getUserProfileById(session?.user.id);
-  const userSocialMedia = await getUserSocialMedia(session?.user.id!);
+  const userProfile = await getUserProfileById({ id: session?.user.id! });
+  const userSocialMedia = await getUserSocialMedia({ id: session?.user.id! });
   const arrWithObjs =
     userSocialMedia &&
     Object.entries(userSocialMedia)

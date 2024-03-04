@@ -216,4 +216,25 @@ export type editProfileSocialMediaSchemaType = z.infer<
 export const getUserByIdSchema = z.object({
   id: z.string(),
 });
+
+export const getUserByEmailSchema = z.object({
+  email: z.string(),
+});
+
+export const getUserByUsernameSchema = z.object({
+  username: z.string(),
+});
+
+export const getUserSocialMediaSchema = z.object({
+  id: z.string(),
+});
+
+export const getUserProfileByIdSchema = z.object({
+  id: z.string(),
+});
+
 export type GetUserByIdInput = z.infer<typeof getUserByIdSchema>;
+export type GetUserByEmailInput = z.infer<typeof getUserByEmailSchema>;
+export type GetUserByUsernameInput = z.infer<typeof getUserByUsernameSchema>;
+export type GetUserSocialMediaInput = z.infer<typeof getUserSocialMediaSchema>;
+export type GetUserProfileByIdInput = z.infer<typeof getUserProfileByIdSchema>;

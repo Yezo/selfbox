@@ -16,7 +16,7 @@ export default async function UserProfilePage({
   const currentSessionUsername = session?.user.username.toLowerCase();
   const currentPathnameUsername = pathnameUsername.toLowerCase();
   const checkIfUsersMatch = currentSessionUsername === currentPathnameUsername;
-  const oldSocialMedia = await getUserSocialMedia(session?.user.id!);
+  const oldSocialMedia = await getUserSocialMedia({ id: session?.user.id! });
 
   return (
     <Main className="min-h-[600px] py-8 lg:min-h-[850px]">

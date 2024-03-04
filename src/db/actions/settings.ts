@@ -65,7 +65,7 @@ export async function updateUserProfile(
 }
 
 export async function updateUserProfileSettings(
-  rawInput: settingsProfileSchemaType,
+  rawData: settingsProfileSchemaType,
   userId: string,
 ): Promise<
   | "invalid-input"
@@ -77,20 +77,22 @@ export async function updateUserProfileSettings(
   | "wtf"
 > {
   //Validate the user's input
-  const validatedInput = settingsProfileSchema.safeParse(rawInput);
+  const validatedData = settingsProfileSchema.safeParse(rawData);
 
   //If invalidated, return an error on the client side
-  if (!validatedInput.success) return "invalid-input";
+  if (!validatedData.success) return "invalid-input";
 
-  const { username, name, bio, pronouns, website } = validatedInput.data;
+  const { username, name, bio, pronouns, website } = validatedData.data;
   try {
     //Check if there is a user that matches user ids
-    const existingUser = await getUserById(userId);
+    const existingUser = await getUserById({ id: userId });
     if (!existingUser) return "user-doesnt-exist";
 
     // Check if the user inputted a new username
     if (username !== undefined && username.length > 0) {
-      const newUsernameAlreadyExists = await getUserByUsername(username);
+      const newUsernameAlreadyExists = await getUserByUsername({
+        username: username,
+      });
       if (newUsernameAlreadyExists) return "username-exists";
       const updatedUsername = await updateUserUsername(userId, username);
       if (updatedUsername === "duplicate") return "username-exists";

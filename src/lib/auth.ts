@@ -33,7 +33,9 @@ export const authConfig = {
           signInWithPasswordSchema.safeParse(rawCredentials);
 
         if (validatedCredentials.success) {
-          const user = await getUserByEmail(validatedCredentials.data.email);
+          const user = await getUserByEmail({
+            email: validatedCredentials.data.email,
+          });
           if (!user || !user.password) return null;
 
           const passwordIsValid = await bcryptjs.compare(
@@ -52,14 +54,14 @@ export const authConfig = {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
 
-      const existingUser = await getUserById(user.id);
+      const existingUser = await getUserById({ id: user.id });
       return !existingUser?.email ? false : true;
     },
 
     async jwt({ token }) {
       if (!token.sub) return token;
 
-      const existingUser = await getUserById(token.sub);
+      const existingUser = await getUserById({ id: token.sub });
       if (!existingUser) return token;
 
       token.role = existingUser.role;

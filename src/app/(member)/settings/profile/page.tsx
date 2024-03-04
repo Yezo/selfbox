@@ -10,7 +10,7 @@ import Image from "next/image";
 
 export default async function SettingsProfilePage() {
   const session = await auth();
-  const userProfile = await getUserProfileById(session?.user.id);
+  const userProfile = await getUserProfileById({ id: session?.user.id! });
   if (!session?.user) redirect("/signup");
   const {
     user: { username, name, id },

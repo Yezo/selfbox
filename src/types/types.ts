@@ -25,7 +25,7 @@ export type OldSocialMediaType = {
   tiktok: string | null;
   patreon: string | null;
   behance: string | null;
-};
+} | null;
 
 export type BadgeType = "release" | "update" | "improvement" | "bugfix";
 

@@ -14,18 +14,39 @@ import {
   UserProfileType,
 } from "@/types/types";
 import {
+  GetUserByEmailInput,
+  GetUserByIdInput,
+  GetUserByUsernameInput,
+  GetUserSocialMediaInput,
   SignInWithPasswordFormInput,
   SignUpWithPasswordFormInput,
   editProfileSocialMediaSchema,
   editProfileSocialMediaSchemaType,
+  getUserByEmailSchema,
+  getUserByIdSchema,
+  getUserByUsernameSchema,
+  getUserProfileByIdSchema,
+  getUserSocialMediaSchema,
   signInWithPasswordSchema,
   signUpWithPasswordSchema,
 } from "@/types/zod";
+import {
+  psGetUserByEmail,
+  psGetUserById,
+  psGetUserByUsername,
+  psGetUserProfileById,
+  psGetUserSocialMedia,
+} from "@/db/prepared/statements";
 
-export async function getUserById(id: string): Promise<User | null> {
-  noStore();
+export async function getUserById(
+  rawData: GetUserByIdInput,
+): Promise<User | null> {
   try {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
+    const validatedData = getUserByIdSchema.safeParse(rawData);
+    if (!validatedData.success) return null;
+
+    noStore();
+    const [user] = await psGetUserById.execute({ id: validatedData.data.id });
     return user || null;
   } catch (error) {
     console.error(error);
@@ -33,64 +54,76 @@ export async function getUserById(id: string): Promise<User | null> {
   }
 }
 
-export async function getUserByEmail(email: string): Promise<User | null> {
-  noStore();
+export async function getUserByEmail(
+  rawData: GetUserByEmailInput,
+): Promise<User | null> {
   try {
-    //Check and find a user that matches emails
-    const [user] = await db.select().from(users).where(eq(users.email, email));
+    const validatedData = getUserByEmailSchema.safeParse(rawData);
+    if (!validatedData.success) return null;
+
+    noStore();
+    const [user] = await psGetUserByEmail.execute({
+      email: validatedData.data.email,
+    });
     return user || null;
   } catch (error) {
+    console.error(error);
     throw new Error("Error getting user by email");
   }
 }
 
 export async function getUserByUsername(
-  username: string,
+  rawData: GetUserByUsernameInput,
 ): Promise<User | null> {
-  noStore();
   try {
-    //Check and find a user that matches emails
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(ilike(users.username, username));
+    const validatedData = getUserByUsernameSchema.safeParse(rawData);
+    if (!validatedData.success) return null;
+
+    noStore();
+    const [user] = await psGetUserByUsername.execute({
+      email: validatedData.data.username,
+    });
     return user || null;
   } catch (error) {
+    console.error(error);
     throw new Error("Error getting user by username");
   }
 }
 
-export async function getUserSocialMedia(userId: string) {
-  noStore();
+export async function getUserSocialMedia(rawData: GetUserSocialMediaInput) {
   try {
-    const [userHasSocialMediaLinks] = await db
-      .select()
-      .from(userSocialMedia)
-      .where(eq(userSocialMedia.userId, userId));
+    const validatedData = getUserSocialMediaSchema.safeParse(rawData);
+    if (!validatedData.success) return null;
 
-    return userHasSocialMediaLinks || null;
+    noStore();
+    const [user] = await psGetUserSocialMedia.execute({
+      id: validatedData.data.id,
+    });
+
+    return user || null;
   } catch (error) {
-    throw new Error("Error getting user's social media links");
+    console.error(error);
+    throw new Error("Error getting user social media links");
   }
 }
 
-export async function getUserProfileById(
-  userId: string | undefined,
-): Promise<UserProfileType | null> {
-  noStore();
+export async function getUserProfileById(rawData: GetUserSocialMediaInput) {
   try {
-    if (userId) {
-      const [profile] = await db
-        .select()
-        .from(userProfile)
-        .where(eq(userProfile.userId, userId));
-      revalidatePath("/settings/profile");
-      return profile || null;
-    }
-    return null;
+    const validatedData = getUserProfileByIdSchema.safeParse(rawData);
+    if (!validatedData.success) return null;
+
+    noStore();
+
+    const [user] = await psGetUserProfileById.execute({
+      id: validatedData.data.id,
+    });
+
+    revalidatePath("/settings/profile");
+
+    return user || null;
   } catch (error) {
     console.error(error);
-    throw new Error("Error getting user by id");
+    throw new Error("Error getting user's profile by id");
   }
 }
 
@@ -156,39 +189,41 @@ export async function updateUserFullName(
 }
 
 export async function signUpWithPassword(
-  rawInput: SignUpWithPasswordFormInput,
+  rawData: SignUpWithPasswordFormInput,
 ): Promise<
   "invalid-input" | "username-exists" | "email-exists" | "success" | "error"
 > {
   //Validate the user's input
-  const validatedInput = signUpWithPasswordSchema.safeParse(rawInput);
+  const validatedData = signUpWithPasswordSchema.safeParse(rawData);
 
   //If invalidated, return an error on the client side
-  if (!validatedInput.success) return "invalid-input";
+  if (!validatedData.success) return "invalid-input";
 
   try {
     //Check if the input's user exists in the database
-    const username = await getUserByUsername(validatedInput.data.username);
+    const username = await getUserByUsername({
+      username: validatedData.data.username,
+    });
     if (username) return "username-exists";
 
     //Check if new username matches with an invalid username
     const isInvalid = INVALID_USERNAMES.map((username) =>
       username.toLowerCase(),
-    ).includes(validatedInput.data.username.toLowerCase());
+    ).includes(validatedData.data.username.toLowerCase());
     if (isInvalid) return "username-exists";
 
     //Check if the input's email exists in the database
-    const user = await getUserByEmail(validatedInput.data.email);
+    const user = await getUserByEmail({ email: validatedData.data.email });
     if (user) return "email-exists";
 
     //Encrypt the password
-    const password = await bcryptjs.hash(validatedInput.data.password, 10);
+    const password = await bcryptjs.hash(validatedData.data.password, 10);
 
     //Insert a new user into the database
     const newUserResponse: any = await db.insert(users).values({
       id: crypto.randomUUID(),
-      email: validatedInput.data.email,
-      username: validatedInput.data.username,
+      email: validatedData.data.email,
+      username: validatedData.data.username,
       password,
     });
 
@@ -203,7 +238,7 @@ export async function signUpWithPassword(
 }
 
 export async function signInWithPassword(
-  rawInput: SignInWithPasswordFormInput,
+  rawData: SignInWithPasswordFormInput,
 ): Promise<
   | "invalid-input"
   | "invalid-credentials"
@@ -211,10 +246,12 @@ export async function signInWithPassword(
   | "incorrect-provider"
   | "success"
 > {
-  const validatedInput = signInWithPasswordSchema.safeParse(rawInput);
-  if (!validatedInput.success) return "invalid-input";
+  const validatedData = signInWithPasswordSchema.safeParse(rawData);
+  if (!validatedData.success) return "invalid-input";
 
-  const existingUser = await getUserByEmail(validatedInput.data.email);
+  const existingUser = await getUserByEmail({
+    email: validatedData.data.email,
+  });
   if (!existingUser) return "not-registered";
 
   if (!existingUser.email || !existingUser.password)
@@ -224,8 +261,8 @@ export async function signInWithPassword(
 
   try {
     await signIn("credentials", {
-      email: validatedInput.data.email,
-      password: validatedInput.data.password,
+      email: validatedData.data.email,
+      password: validatedData.data.password,
       redirect: false,
     });
     revalidatePath("/");
@@ -249,13 +286,13 @@ export async function signInWithPassword(
 }
 
 export async function insertSocialMedia(
-  rawInput: editProfileSocialMediaSchemaType,
+  rawData: editProfileSocialMediaSchemaType,
   userId: string,
 ) {
   noStore();
   //Validate form data
-  const validatedInput = editProfileSocialMediaSchema.safeParse(rawInput);
-  if (!validatedInput.success) return "invalid-input";
+  const validatedData = editProfileSocialMediaSchema.safeParse(rawData);
+  if (!validatedData.success) return "invalid-input";
   const {
     twitter,
     instagram,
@@ -266,7 +303,7 @@ export async function insertSocialMedia(
     tiktok,
     patreon,
     behance,
-  } = validatedInput.data;
+  } = validatedData.data;
 
   try {
     const test = await db.insert(userSocialMedia).values({
@@ -295,8 +332,8 @@ export async function updateSocialMediaLinks(
 ): Promise<DatabaseError> {
   try {
     //Validate form data
-    const validatedInput = editProfileSocialMediaSchema.safeParse(rawInput);
-    if (!validatedInput.success) return "invalid-input";
+    const validatedData = editProfileSocialMediaSchema.safeParse(rawInput);
+    if (!validatedData.success) return "invalid-input";
     const {
       twitter,
       instagram,
@@ -307,10 +344,10 @@ export async function updateSocialMediaLinks(
       tiktok,
       patreon,
       behance,
-    } = validatedInput.data;
+    } = validatedData.data;
 
     // Check if the user already has an existing social media profile
-    const userHasSocials = await getUserSocialMedia(userId);
+    const userHasSocials = await getUserSocialMedia({ id: userId });
 
     // If the user doesn't have social media links, insert the new one
     if (!userHasSocials) {

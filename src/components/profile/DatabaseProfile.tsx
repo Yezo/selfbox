@@ -24,10 +24,12 @@ type DatabaseProfileProps = {
 export const DatabaseProfile = async ({
   pathnameUsername,
 }: DatabaseProfileProps) => {
-  const databaseUser = await getUserByUsername(pathnameUsername);
-  const databaseUserProfile = await getUserProfileById(databaseUser?.id);
+  const databaseUser = await getUserByUsername({ username: pathnameUsername });
+  const databaseUserProfile = await getUserProfileById({
+    id: databaseUser?.id!,
+  });
   if (!databaseUser) notFound();
-  const userSocialMedia = await getUserSocialMedia(databaseUser.id);
+  const userSocialMedia = await getUserSocialMedia({ id: databaseUser.id });
   const arrWithObjs =
     userSocialMedia &&
     Object.entries(userSocialMedia)
