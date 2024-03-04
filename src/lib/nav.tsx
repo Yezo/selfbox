@@ -63,7 +63,7 @@ export const FooterNav = [
   },
   {
     name: "Contact",
-    url: "/contact",
+    url: "mailto:kvo.codes@gmail.com",
   },
 ];
 
