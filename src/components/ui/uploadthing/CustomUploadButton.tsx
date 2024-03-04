@@ -28,7 +28,7 @@ export function CustomUploadButton({
           generateToast({
             type: "success",
             value: "Success!",
-            description: "Your avatar was successfully uploaded.",
+            description: "Your avatar was successfully updated.",
           });
           setPending(false);
           await deleteOldAvatar(oldImageURL);
