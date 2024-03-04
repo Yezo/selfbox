@@ -1,12 +1,12 @@
 import { SettingsProfileForm } from "@/components/forms/SettingsProfileForm";
 import { LoadingIcon } from "@/components/layout/LoadingIcon";
-import { getUserProfileById } from "@/db/actions/settings";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { CustomUploadButton } from "@/components/ui/uploadthing/CustomUploadButton";
-import Image from "next/image";
 import { H2 } from "@/components/layout/H2";
 import { SettingsAsideNav } from "@/components/nav/SettingsAsideNav";
+import { getUserProfileById } from "@/db/actions/user";
+import Image from "next/image";
 
 export default async function SettingsProfilePage() {
   const session = await auth();

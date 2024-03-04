@@ -1,13 +1,18 @@
 "use server";
 
-// CREATE AN ARRAY THAT HAS ALL THE ROUTES ON THE WEBSITE
-// MAKE SURE USERS CANNOT MAKE USERNAMES WITH SAME NAME AS ROUTES
-// OR ELSE IT WILL CAUSE A ROUTING CONFLICT
-
-import { db, eq, ilike } from "@/db";
-import { User, userSocialMedia, users } from "@/db/schema/user";
 import bcryptjs from "bcryptjs";
+import { db, eq, ilike } from "@/db";
+import { User, userProfile, userSocialMedia, users } from "@/db/schema/user";
+import { utapi } from "@/app/api/uploadthing/route";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
+import { AuthError } from "next-auth";
+import { signIn } from "@/lib/auth";
+import {
+  DatabaseError,
+  INVALID_USERNAMES,
+  OldSocialMediaType,
+  UserProfileType,
+} from "@/types/types";
 import {
   SignInWithPasswordFormInput,
   SignUpWithPasswordFormInput,
@@ -16,33 +21,73 @@ import {
   signInWithPasswordSchema,
   signUpWithPasswordSchema,
 } from "@/types/zod";
-import { AuthError } from "next-auth";
-import { signIn } from "@/lib/auth";
-import {
-  DatabaseError,
-  INVALID_USERNAMES,
-  OldSocialMediaType,
-} from "@/types/types";
-import { Old_Standard_TT } from "next/font/google";
-import { utapi } from "@/app/api/uploadthing/route";
-
-export async function checkUserExistsById(userId: string): Promise<boolean> {
-  noStore();
-  try {
-    const [user] = await db.select().from(users).where(eq(users.id, userId));
-    const userExists = user ? true : false;
-    return userExists;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error getting user by id");
-  }
-}
 
 export async function getUserById(id: string): Promise<User | null> {
   noStore();
   try {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user || null;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error getting user by id");
+  }
+}
+
+export async function getUserByEmail(email: string): Promise<User | null> {
+  noStore();
+  try {
+    //Check and find a user that matches emails
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || null;
+  } catch (error) {
+    throw new Error("Error getting user by email");
+  }
+}
+
+export async function getUserByUsername(
+  username: string,
+): Promise<User | null> {
+  noStore();
+  try {
+    //Check and find a user that matches emails
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(ilike(users.username, username));
+    return user || null;
+  } catch (error) {
+    throw new Error("Error getting user by username");
+  }
+}
+
+export async function getUserSocialMedia(userId: string) {
+  noStore();
+  try {
+    const [userHasSocialMediaLinks] = await db
+      .select()
+      .from(userSocialMedia)
+      .where(eq(userSocialMedia.userId, userId));
+
+    return userHasSocialMediaLinks || null;
+  } catch (error) {
+    throw new Error("Error getting user's social media links");
+  }
+}
+
+export async function getUserProfileById(
+  userId: string | undefined,
+): Promise<UserProfileType | null> {
+  noStore();
+  try {
+    if (userId) {
+      const [profile] = await db
+        .select()
+        .from(userProfile)
+        .where(eq(userProfile.userId, userId));
+      revalidatePath("/settings/profile");
+      return profile || null;
+    }
+    return null;
   } catch (error) {
     console.error(error);
     throw new Error("Error getting user by id");
@@ -107,33 +152,6 @@ export async function updateUserFullName(
   } catch (error) {
     console.error(error);
     throw new Error("Error updating name");
-  }
-}
-
-export async function getUserByEmail(email: string): Promise<User | null> {
-  noStore();
-  try {
-    //Check and find a user that matches emails
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    return user || null;
-  } catch (error) {
-    throw new Error("Error getting user by email");
-  }
-}
-
-export async function getUserByUsername(
-  username: string,
-): Promise<User | null> {
-  noStore();
-  try {
-    //Check and find a user that matches emails
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(ilike(users.username, username));
-    return user || null;
-  } catch (error) {
-    throw new Error("Error getting user by username");
   }
 }
 
@@ -227,20 +245,6 @@ export async function signInWithPassword(
     }
   } finally {
     revalidatePath("/");
-  }
-}
-
-export async function getUserSocialMedia(userId: string) {
-  noStore();
-  try {
-    const [userHasSocialMediaLinks] = await db
-      .select()
-      .from(userSocialMedia)
-      .where(eq(userSocialMedia.userId, userId));
-
-    return userHasSocialMediaLinks || null;
-  } catch (error) {
-    throw new Error("Error getting user's social media links");
   }
 }
 
@@ -350,30 +354,6 @@ export async function updateSocialMediaLinks(
     throw new Error("Error updating user social media links");
   }
 }
-
-// export async function updateUserAvatar(imageURL: string, userId: string) {
-//   noStore();
-//   try {
-//     //Check if user exists in database
-//     const [existingUser] = await db
-//       .select()
-//       .from(users)
-//       .where(eq(users.id, userId));
-//     if (!existingUser) return null;
-
-//     //Update user's image field with imageURL
-//     const updatedUser = await db
-//       .update(users)
-//       .set({ image: imageURL })
-//       .where(eq(users.id, userId));
-//     if (!updatedUser) return null;
-
-//     revalidatePath("/test");
-//   } catch (error) {
-//     console.error(error);
-//     throw new Error("Error getting user by id");
-//   }
-// }
 
 export async function updateUserAvatar(
   imageURL: string,

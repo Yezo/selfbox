@@ -212,3 +212,8 @@ export const editProfileSocialMediaSchema = z.object({
 export type editProfileSocialMediaSchemaType = z.infer<
   typeof editProfileSocialMediaSchema
 >;
+
+export const getUserByIdSchema = z.object({
+  id: z.string(),
+});
+export type GetUserByIdInput = z.infer<typeof getUserByIdSchema>;

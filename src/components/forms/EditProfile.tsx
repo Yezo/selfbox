@@ -1,8 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { GearIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,16 +8,15 @@ import { Suspense, useState } from "react";
 import { EditProfileProfileForm } from "@/components/forms/EditProfileProfileForm";
 import { EditProfileSocialMediaForm } from "@/components/forms/EditProfileSocialMediaForm";
 import { z } from "zod";
+import { OldSocialMediaType, UserProfileType } from "@/types/types";
+import { LoadingIcon } from "@/components/layout/LoadingIcon";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { OldSocialMediaType, UserProfileType } from "@/types/types";
-import { LoadingIcon } from "@/components/layout/LoadingIcon";
 
 const searchParamsSchema = z.object({
   edit: z.optional(z.enum(["true", "false"])),
@@ -110,35 +107,6 @@ export function EditProfileForm({
               />
             </Suspense>
           )}
-          {favorites && (
-            <>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    value="Pedro Duarte"
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="username" className="text-right">
-                    Username
-                  </Label>
-                  <Input
-                    id="username"
-                    value="@peduarte"
-                    className="col-span-3"
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </>
-          )}
         </div>
       </DialogContent>
     </Dialog>
@@ -152,7 +120,7 @@ interface UserProfileNavigationProps {
 const TABS = [
   { label: "Profile", route: "?edit=true&profile=1" },
   { label: "Social Media", route: "?edit=true&socials=1" },
-  { label: "Favorites", route: "?edit=true&favorites=1" },
+  // { label: "Favorites", route: "?edit=true&favorites=1" },
 ];
 
 export function UserProfileNavigation({

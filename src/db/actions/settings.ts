@@ -1,37 +1,16 @@
 "use server";
 
 import { db, eq } from "@/db";
-import { UserProfileType, userProfile } from "@/db/schema/user";
+import { userProfile } from "@/db/schema/user";
 import { DatabaseError } from "@/types/types";
-import { unstable_noStore as noStore, revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { settingsProfileSchema, settingsProfileSchemaType } from "@/types/zod";
 import {
-  checkUserExistsById,
+  getUserById,
   getUserByUsername,
   updateUserFullName,
   updateUserUsername,
 } from "@/db/actions/user";
-import { update } from "react-spring";
-
-export async function getUserProfileById(
-  userId: string | undefined,
-): Promise<UserProfileType | null> {
-  noStore();
-  try {
-    if (userId) {
-      const [profile] = await db
-        .select()
-        .from(userProfile)
-        .where(eq(userProfile.userId, userId));
-      revalidatePath("/settings/profile");
-      return profile || null;
-    }
-    return null;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error getting user by id");
-  }
-}
 
 export async function updateUserProfile(
   userId: string,
@@ -106,7 +85,7 @@ export async function updateUserProfileSettings(
   const { username, name, bio, pronouns, website } = validatedInput.data;
   try {
     //Check if there is a user that matches user ids
-    const existingUser = await checkUserExistsById(userId);
+    const existingUser = await getUserById(userId);
     if (!existingUser) return "user-doesnt-exist";
 
     // Check if the user inputted a new username

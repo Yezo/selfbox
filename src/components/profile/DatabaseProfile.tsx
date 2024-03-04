@@ -1,18 +1,21 @@
+import Link from "next/link";
 import { H1 } from "@/components/layout/H1";
 import { UserAvatar } from "@/components/nav/UserAvatar";
-import { getUserProfileById } from "@/db/actions/settings";
-import { getUserByUsername, getUserSocialMedia } from "@/db/actions/user";
+import { Url } from "next/dist/shared/lib/router/router";
+import { notFound } from "next/navigation";
+import { SectionBlock } from "@/components/profile/SectionBlock";
+import { generateSocialMediaIcon } from "@/components/profile/SessionProfile";
+import { Badge } from "@/components/layout/Badge";
+import {
+  getUserByUsername,
+  getUserProfileById,
+  getUserSocialMedia,
+} from "@/db/actions/user";
 import {
   capitalizeEveryWord,
   handleSocialMediaSuffix,
   removeURLPrefixes,
 } from "@/lib/utils";
-import { Url } from "next/dist/shared/lib/router/router";
-import { notFound } from "next/navigation";
-import { SectionBlock } from "@/components/profile/SectionBlock";
-import Link from "next/link";
-import { generateSocialMediaIcon } from "@/components/profile/SessionProfile";
-import { Badge } from "@/components/layout/Badge";
 
 type DatabaseProfileProps = {
   pathnameUsername: string;

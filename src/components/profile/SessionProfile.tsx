@@ -1,27 +1,20 @@
-import { getUserProfileById } from "@/db/actions/settings";
+import Link from "next/link";
+import { Suspense } from "react";
+import { LoadingIcon } from "@/components/layout/LoadingIcon";
+import { Badge } from "@/components/layout/Badge";
 import { auth } from "@/lib/auth";
 import { UserAvatar } from "@/components/nav/UserAvatar";
 import { SectionBlock } from "@/components/profile/SectionBlock";
 import { H1 } from "@/components/layout/H1";
+import { Url } from "next/dist/shared/lib/router/router";
+import { EditProfileForm } from "@/components/forms/EditProfile";
+import { OldSocialMediaType } from "@/types/types";
+import { getUserProfileById, getUserSocialMedia } from "@/db/actions/user";
 import {
   capitalizeEveryWord,
   handleSocialMediaSuffix,
   removeURLPrefixes,
 } from "@/lib/utils";
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
-import { Url } from "next/dist/shared/lib/router/router";
-import { EditProfileForm } from "@/components/forms/EditProfile";
-import { OldSocialMediaType } from "@/types/types";
-import Link from "next/link";
-import Image from "next/image";
-import {
-  socialMediaListOne,
-  socialMediaListTwo,
-  tvShowsList,
-  moviesList,
-  booksList,
-} from "@/lib/temp";
-import { getUserSocialMedia } from "@/db/actions/user";
 import {
   InstagramIcon,
   LinkedInIcon,
@@ -33,13 +26,11 @@ import {
   PatreonIcon,
   BehanceIcon,
 } from "@/styles/icons";
-import { Suspense } from "react";
-import { LoadingIcon } from "@/components/layout/LoadingIcon";
-import { Badge } from "@/components/layout/Badge";
 
 type SessionProfileProps = {
   oldSocialMedia: OldSocialMediaType;
 };
+
 export function generateSocialMediaIcon(website: string) {
   if (website === "twitter") return <TwitterIcon size="small" />;
   if (website === "instagram") return <InstagramIcon size="small" />;
@@ -146,22 +137,6 @@ export const SessionProfile = async ({
               </div>
             </div>
           )}
-          {/* 
-          <div className="min-w-[500px] max-w-[500px] space-y-2 font-bricolage">
-            <h2 className="font-semibold">Favorite TV shows</h2>
-            <div className="grid grid-cols-5 gap-1 text-sm text-gray">
-              {tvShowsList.map((item) => (
-                <Image
-                  key={item}
-                  src={item}
-                  alt="ye"
-                  width="125"
-                  height="350"
-                  className="max-h-[125px] min-h-[125px] rounded border"
-                />
-              ))}
-            </div>
-          </div> */}
         </div>
       </section>
     </>
