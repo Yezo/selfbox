@@ -81,7 +81,7 @@ export async function getUserByUsername(
 
     noStore();
     const [user] = await psGetUserByUsername.execute({
-      email: validatedData.data.username,
+      username: validatedData.data.username,
     });
     return user || null;
   } catch (error) {
