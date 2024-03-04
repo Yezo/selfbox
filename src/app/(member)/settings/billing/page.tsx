@@ -17,7 +17,7 @@ export default async function SettingsBillingPage() {
         <SettingsAsideNav />
 
         <div className="basis-4/5">
-          <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col">
             <H2 className="mb-4 tracking-tight">Billing</H2>
             <WorkInProgress />
           </div>
